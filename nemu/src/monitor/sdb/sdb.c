@@ -109,6 +109,7 @@ static int cmd_info(char *args) {
     isa_reg_display();
     return 0;
   }
+  printf("Command not found: %s", buffer);
   return 1;
 }
 
