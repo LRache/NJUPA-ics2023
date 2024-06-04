@@ -158,9 +158,7 @@ bool packed_by_parentheses(int start, int end) {
     }
     else if (tokens[0].type == TK_RIGHT) {
       counter--;
-      if (counter < 0) {
-        return false;
-      }
+      if (i != end-1) return false;
     }
   }
   return counter == 0;
