@@ -156,8 +156,8 @@ Reutun:
 int check_parentheses(int start, int end) {
   int counter = 0;
   int result = 1;
+  Log("start= %d", start);
   for (int i = start; i < end; i++) {
-    Log("i= %d", i);
     if (tokens[start].type == TK_LEFT) {
       counter++;
     }
