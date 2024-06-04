@@ -284,7 +284,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  if (matched_parentheses(0, nr_token)) {
+  if (!matched_parentheses(0, nr_token)) {
     *success = false;
     printf("Bad parentheses!\n");
     return 0;
