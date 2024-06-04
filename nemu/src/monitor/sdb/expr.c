@@ -155,7 +155,7 @@ word_t eval(bool *success, int start, int end) {
     return 0;
   }
 
-  word_t leftValue = eval(success, start, op-1);
+  word_t leftValue = eval(success, start, op);
   word_t rightValue = eval(success, op+1, end);
   if (!*success) return 0;
   switch (tokens[op].type)
