@@ -51,7 +51,7 @@ static struct rule {
   {" +",              TK_NOTYPE},       // spaces
   {"==",              TK_EQ},           // equal
   {"!=",              TK_NE},           // not equal
-  {"\\>",             TK_GT},           // greater than
+  {">",             TK_GT},           // greater than
   {">=",              TK_GE},           // greater or equal
   {"\\+",             TK_PLUS},         // plus
   {"\\-",             TK_SUB},          // sub
