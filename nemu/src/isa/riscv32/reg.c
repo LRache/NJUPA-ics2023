@@ -29,9 +29,10 @@ void isa_reg_display() {
   {
     for (int k = 0; k < 8; k++)
     {
-      printf("%s=%u", regs[i], cpu.gpr[i]);
+      printf("%s=%x\t", regs[i], cpu.gpr[i]);
       i++;
     }
+    printf("\n");
   }
 }
 
