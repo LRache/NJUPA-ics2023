@@ -22,6 +22,8 @@
 
 enum {
   TK_NOTYPE = 256, 
+  TK_LEFT,
+  TK_RIGHT,
   TK_EQ,
   TK_NE,
   TK_GT,
@@ -49,6 +51,8 @@ static struct rule {
    */
 
   {" +",              TK_NOTYPE},       // spaces
+  {"(",               TK_LEFT},         // left parentheses
+  {")",               TK_RIGHT},        // right parentheses
   {"==",              TK_EQ},           // equal
   {"!=",              TK_NE},           // not equal
   {">=",              TK_GE},           // greater or equal
@@ -143,6 +147,32 @@ static bool make_token(char *e) {
   return true;
 }
 
+/*
+Reutun:
+0 for normal
+1 for expr packed by matched parenthese
+2 for bad parenthese
+*/
+int check_parentheses(int start, int end) {
+  int counter = 0;
+  int result = 1;
+  for (int i = start; i < end; i++) {
+    if (tokens[start].type == TK_LEFT) {
+      counter++;
+    }
+    else if (tokens[i].type == TK_RIGHT) {
+      counter--;
+      if (counter < 0) {
+        return 2;
+      }
+      if (counter == 0 && i != end-1) {
+        result = 0;
+      }
+    }
+  }
+  return result;
+}
+
 word_t eval(bool *success, int start, int end) {
   if (!*success) return 0;
   if (start == end) {
@@ -163,6 +193,19 @@ word_t eval(bool *success, int start, int end) {
       *success = false;
     }
     return num;
+  }
+  
+  switch (check_parentheses(start, end))
+  {
+  case 1:
+    start--;
+    end++;
+    break;
+  case 2:
+    printf("Bad parentheses!\n");
+    *success = false;
+  default:
+    break;
   }
   
   int op = 0;
