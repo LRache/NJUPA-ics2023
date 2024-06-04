@@ -25,6 +25,8 @@ enum {
   TK_EQ,
   TK_PLUS,
   TK_SUB,
+  TK_MULTIPY,
+  TK_DIVIDE,
   TK_NUMBER_DEC,
   TK_NUMBER_HEX_x,
   TK_NUMBER_HEX_X
@@ -44,6 +46,8 @@ static struct rule {
   {" +",              TK_NOTYPE},       // spaces
   {"\\+",             TK_PLUS},         // plus
   {"\\-",             TK_SUB},          // sub
+  {"\\*",             TK_MULTIPY},      // multipy
+  {"\\/",             TK_DIVIDE},       // divide
   {"==",              TK_EQ},           // equal
   {"0x[0-9a-fA-F]+",  TK_NUMBER_HEX_x}, // hex number 0x    
   {"0X[0-9a-fA-F]+",  TK_NUMBER_HEX_X}, // hex number 0X
@@ -154,10 +158,17 @@ word_t eval(bool *success, int start, int end) {
   int priority = 0;
   for (int i = start; i < end; i++) {
     int t = tokens[i].type;
-    if ((t == TK_PLUS || t == TK_SUB) && priority != 1) {
+    if (t == TK_PLUS || t == TK_SUB) {
       op = i;
-      priority = 3;
       break;
+    }
+    if (t == TK_MULTIPY || t == TK_DIVIDE) {
+      op = i;
+      priority = 2;
+    }
+    if (priority < 2 && (t == TK_EQ)) {
+      op = i;
+      priority = 1;
     }
   }
   if (op == 0) {
@@ -174,6 +185,12 @@ word_t eval(bool *success, int start, int end) {
     return leftValue + rightValue;
   case TK_SUB:
     return leftValue - rightValue;
+  case TK_MULTIPY:
+    return leftValue * rightValue;
+  case TK_DIVIDE:
+    return leftValue / rightValue;
+  case TK_EQ:
+    return leftValue == rightValue;
   default:
     break;
   }
