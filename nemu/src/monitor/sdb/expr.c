@@ -155,8 +155,12 @@ Reutun:
 */
 int check_parentheses(int start, int end) {
   int counter = 0;
-  int result = 1;
-  Log("start= %d", start);
+  int result;
+  if (tokens[start].type == TK_LEFT) {
+    result = 1;
+  } else {
+    result = 0;
+  }
   for (int i = start; i < end; i++) {
     if (tokens[start].type == TK_LEFT) {
       counter++;
@@ -177,6 +181,7 @@ int check_parentheses(int start, int end) {
 word_t eval(bool *success, int start, int end) {
   if (!*success) return 0;
   if (start == end) {
+    Log("start equals end: %d", start);
     *success = false;
     return 0;
   }
