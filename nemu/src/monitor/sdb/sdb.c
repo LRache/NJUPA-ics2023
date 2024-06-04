@@ -107,8 +107,9 @@ static int cmd_info(char *args) {
   sscanf(args, "%s", buffer);
   if (strcmp(buffer, "reg") == 0) {
     isa_reg_display();
+    return 0;
   }
-  return 0;
+  return 1;
 }
 
 void sdb_set_batch_mode() {
