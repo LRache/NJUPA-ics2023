@@ -104,7 +104,7 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
   char buffer[100];
   sscanf(args, "%s", buffer);
-  if (strcmp(buffer, "reg")) {
+  if (strcmp(buffer, "reg") == 0) {
     isa_reg_display();
   }
   return 0;
