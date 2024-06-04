@@ -163,6 +163,7 @@ int check_parentheses(int start, int end) {
     else if (tokens[i].type == TK_RIGHT) {
       counter--;
       if (counter < 0) {
+        Log("parentheses match failed at %d", i);
         return 2;
       }
       if (counter == 0 && i != end-1) {
