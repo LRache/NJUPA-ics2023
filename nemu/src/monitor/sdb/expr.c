@@ -126,6 +126,7 @@ static bool make_token(char *e) {
 word_t eval(bool *success, int start, int end) {
   if (!*success) return 0;
   if (start == end) {
+    Log("start equals end: %d", start);
     *success = false;
     return 0;
   }
