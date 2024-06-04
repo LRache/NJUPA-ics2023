@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include "memory/vaddr.h"
 
 static int is_batch_mode = false;
 
@@ -55,7 +56,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
-//static int cmd_x(char *args);
+static int cmd_x(char *args);
 
 static struct {
   const char *name;
@@ -66,7 +67,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si","Step execute", cmd_si},
-  { "info", "Show info", cmd_info}
+  { "info", "Show info: r/reg", cmd_info},
+  { "x", "Read memory", cmd_x}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -97,7 +99,10 @@ static int cmd_help(char *args) {
 static int cmd_si(char *args) {
   int i;
   int n = sscanf(args, "%d", &i);
-  if (n != 1) return -1;
+  if (n != 1) {
+    printf("Invalid step: %s", args);
+    return 1;
+  }
   cpu_exec(i);
   return 0;
 }
@@ -105,12 +110,29 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
   char buffer[100];
   sscanf(args, "%s", buffer);
-  if (strcmp(buffer, "reg") == 0) {
+  if (strcmp(buffer, "reg") == 0 || strcmp(buffer, "r") == 0) {
     isa_reg_display();
     return 0;
   }
-  printf("Command not found: %s", buffer);
+  printf("Command not found: %s\n", buffer);
   return 1;
+}
+
+static int cmd_x(char* args) {
+  int n;
+  vaddr_t addr;
+  int t = scanf("%d " FMT_PADDR, &n, &addr);
+  if (t != 2) {
+    printf("Invalid args: %s\n", args);
+    return 1;
+  }
+  for (int i = 0; i < n; i++)
+  {
+    word_t word = vaddr_read(addr, 4);
+    printf(FMT_PADDR ": 0x%08x\n", addr, word);
+    addr += 4;
+  }
+  return 0;
 }
 
 void sdb_set_batch_mode() {
