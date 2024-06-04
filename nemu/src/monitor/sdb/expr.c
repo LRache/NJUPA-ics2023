@@ -158,15 +158,15 @@ word_t eval(bool *success, int start, int end) {
   int priority = 0;
   for (int i = start; i < end; i++) {
     int t = tokens[i].type;
-    if (t == TK_PLUS || t == TK_SUB) {
+    if (t == TK_EQ) {
       op = i;
       break;
     }
-    if (t == TK_MULTIPY || t == TK_DIVIDE) {
-      op = i;
+    if (t == TK_PLUS || t == TK_SUB) {
       priority = 2;
+      op = i;
     }
-    if (priority < 2 && (t == TK_EQ)) {
+    if (priority < 1 && (t == TK_MULTIPY || t == TK_DIVIDE)) {
       op = i;
       priority = 1;
     }
