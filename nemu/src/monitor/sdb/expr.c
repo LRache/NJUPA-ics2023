@@ -41,7 +41,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},     // plus
   {"==", TK_EQ},        // equal
-  {"\\b(?:0x[a-fA-F0-9]+|\\d+)\\b", TK_NUMBER}, // number
+  {"^[0-9]+$", TK_NUMBER}, // number
 };
 
 #define NR_REGEX ARRLEN(rules)
