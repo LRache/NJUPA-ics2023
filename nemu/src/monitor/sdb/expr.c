@@ -149,23 +149,20 @@ static bool make_token(char *e) {
 
 bool packed_by_parentheses(int start, int end) {
   if (tokens[start].type != TK_LEFT || tokens[end-1].type != TK_RIGHT) {
-    Log("0");
     return false;
   }
   int counter = 0;
   for (int i = start; i < end; i++) {
-    if (tokens[0].type == TK_LEFT) {
+    if (tokens[i].type == TK_LEFT) {
       counter++;
     }
-    else if (tokens[0].type == TK_RIGHT) {
+    else if (tokens[i].type == TK_RIGHT) {
       counter--;
       if (i == end-1) {
-        Log("1");
         return true;
       }
     }
   }
-  Log("2");
   return false;
 }
 
@@ -267,10 +264,10 @@ word_t eval(bool *success, int start, int end) {
 bool matched_parentheses(int start, int end) {
   int counter = 0;
   for (int i = start; i < end; i++) {
-    if (tokens[0].type == TK_LEFT) {
+    if (tokens[i].type == TK_LEFT) {
       counter++;
     }
-    else if (tokens[0].type == TK_RIGHT) {
+    else if (tokens[i].type == TK_RIGHT) {
       counter--;
       if (counter < 0) {
         return false;
