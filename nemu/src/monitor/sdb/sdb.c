@@ -126,6 +126,7 @@ static int cmd_x(char* args) {
     printf("Invalid args: %s\n", args);
     return 1;
   }
+  printf("%d\n", addr);
   for (int i = 0; i < n; i++)
   {
     word_t word = vaddr_read(addr, 4);
