@@ -161,7 +161,6 @@ bool packed_by_parentheses(int start, int end) {
       if (i == end-1) return true;
     }
   }
-  Log("not packed by parentheses.");
   return false;
 }
 
@@ -188,6 +187,7 @@ word_t eval(bool *success, int start, int end) {
   }
   
   if (packed_by_parentheses(start, end)) {
+    Log("packed by parentheses.");
     start++;
     end--;
   }
