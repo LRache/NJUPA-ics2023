@@ -24,6 +24,7 @@ enum {
   TK_NOTYPE = 256, 
   TK_EQ,
   TK_PLUS,
+  TK_SUB,
   TK_NUMBER_DEC,
   TK_NUMBER_HEX_x,
   TK_NUMBER_HEX_X
@@ -42,6 +43,7 @@ static struct rule {
 
   {" +",              TK_NOTYPE},       // spaces
   {"\\+",             TK_PLUS},         // plus
+  {"\\-",             TK_SUB},          // sub
   {"==",              TK_EQ},           // equal
   {"0x[0-9a-fA-F]+",  TK_NUMBER_HEX_x}, // hex number 0x    
   {"0X[0-9a-fA-F]+",  TK_NUMBER_HEX_X}, // hex number 0X
@@ -151,7 +153,8 @@ word_t eval(bool *success, int start, int end) {
   int op = 0;
   int priority = 0;
   for (int i = start; i < end; i++) {
-    if (tokens[i].type == TK_PLUS && priority != 1) {
+    int t = tokens[i].type;
+    if ((t == TK_PLUS || t == TK_SUB) && priority != 1) {
       op = i;
       priority = 3;
       break;
@@ -169,7 +172,8 @@ word_t eval(bool *success, int start, int end) {
   {
   case TK_PLUS:
     return leftValue + rightValue;
-  
+  case TK_SUB:
+    return leftValue - rightValue;
   default:
     break;
   }
