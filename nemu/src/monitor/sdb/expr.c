@@ -147,13 +147,10 @@ static bool make_token(char *e) {
   return true;
 }
 
-/*
-Reutun:
-0 for normal
-1 for expr packed by matched parenthese
-2 for bad parenthese
-*/
 bool packed_by_parentheses(int start, int end) {
+  if (tokens[start].type != TK_LEFT || tokens[end-1].type != TK_RIGHT) {
+    return false;
+  }
   int counter = 0;
   for (int i = start; i < end; i++) {
     if (tokens[0].type == TK_LEFT) {
