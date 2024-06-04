@@ -51,8 +51,8 @@ static struct rule {
    */
 
   {" +",              TK_NOTYPE},       // spaces
-  {"(",               TK_LEFT},         // left parentheses
-  {")",               TK_RIGHT},        // right parentheses
+  {"\\(",               TK_LEFT},         // left parentheses
+  {"\\)",               TK_RIGHT},        // right parentheses
   {"==",              TK_EQ},           // equal
   {"!=",              TK_NE},           // not equal
   {">=",              TK_GE},           // greater or equal
