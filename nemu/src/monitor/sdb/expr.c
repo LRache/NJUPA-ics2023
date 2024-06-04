@@ -177,7 +177,6 @@ int check_parentheses(int start, int end) {
 word_t eval(bool *success, int start, int end) {
   if (!*success) return 0;
   if (start == end) {
-    Log("start equals end: %d", start);
     *success = false;
     return 0;
   }
@@ -199,8 +198,8 @@ word_t eval(bool *success, int start, int end) {
   switch (check_parentheses(start, end))
   {
   case 1:
-    start--;
-    end++;
+    start++;
+    end--;
     break;
   case 2:
     printf("Bad parentheses!\n");
