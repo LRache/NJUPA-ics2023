@@ -276,7 +276,7 @@ bool matched_parentheses(int start, int end) {
       }
     }
   }
-  return true;
+  return counter == 0;
 }
 
 word_t expr(char *e, bool *success) {
