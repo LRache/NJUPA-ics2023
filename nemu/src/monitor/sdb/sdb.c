@@ -54,6 +54,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 static int cmd_si(char *args);
+static int cmd_info(char *args);
 
 static struct {
   const char *name;
@@ -63,10 +64,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si","Step execute", cmd_si}
-
-  /* TODO: Add more commands */
-
+  { "si","Step execute", cmd_si},
+  { "info", "Show info", cmd_info}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -100,6 +99,10 @@ static int cmd_si(char *args) {
   if (n != 1) return -1;
   cpu_exec(i);
   return 0;
+}
+
+static int cmd_info(char *args) {
+  
 }
 
 void sdb_set_batch_mode() {
