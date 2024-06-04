@@ -121,7 +121,7 @@ static int cmd_info(char *args) {
 static int cmd_x(char* args) {
   int n;
   vaddr_t addr;
-  int t = scanf("%d " FMT_PADDR, &n, &addr);
+  int t = sscanf(args, "%d " FMT_PADDR, &n, &addr);
   if (t != 2) {
     printf("Invalid args: %s\n", args);
     return 1;
