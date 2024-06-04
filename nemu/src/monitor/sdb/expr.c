@@ -157,6 +157,7 @@ word_t eval(bool *success, int start, int end) {
     } else if (tokens[start].type == TK_NUMBER_HEX_X) {
       sscanf(tokens[start].str, "0X%x", &num);
     } else {
+      Log("start equals end+1: %d", start);
       *success = false;
     }
     return num;
@@ -166,7 +167,7 @@ word_t eval(bool *success, int start, int end) {
   int priority = 0;
   for (int i = start; i < end; i++) {
     int t = tokens[i].type;
-    if (t == TK_EQ) {
+    if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
       op = i;
       break;
     }
