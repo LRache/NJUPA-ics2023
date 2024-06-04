@@ -158,10 +158,10 @@ bool packed_by_parentheses(int start, int end) {
     }
     else if (tokens[0].type == TK_RIGHT) {
       counter--;
-      if (i != end-1) return false;
+      if (i == end-1) return true;
     }
   }
-  return counter == 0;
+  return false;
 }
 
 word_t eval(bool *success, int start, int end) {
