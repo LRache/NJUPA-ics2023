@@ -149,7 +149,6 @@ static bool make_token(char *e) {
 
 bool packed_by_parentheses(int start, int end) {
   if (tokens[start].type != TK_LEFT || tokens[end-1].type != TK_RIGHT) {
-    Log("not packed by parentheses.");
     return false;
   }
   int counter = 0;
@@ -162,6 +161,7 @@ bool packed_by_parentheses(int start, int end) {
       if (i == end-1) return true;
     }
   }
+  Log("not packed by parentheses.");
   return false;
 }
 
