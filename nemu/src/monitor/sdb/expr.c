@@ -215,6 +215,7 @@ word_t eval(bool *success, int start, int end) {
     }
   }
   if (op == 0) {
+    Log("op equals 0: start=%d, end=%d", start, end);
     *success = false;
     return 0;
   }
