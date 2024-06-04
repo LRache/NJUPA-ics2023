@@ -24,7 +24,9 @@ enum {
   TK_NOTYPE = 256, 
   TK_EQ,
   TK_PLUS,
-  TK_NUMBER,
+  TK_NUMBER_DEC,
+  TK_NUMBER_HEX_x,
+  TK_NUMBER_HEX_X
   /* TODO: Add more token types */
 
 };
@@ -38,11 +40,12 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +",              TK_NOTYPE},    // spaces
-  {"\\+",             TK_PLUS},     // plus
-  {"==",              TK_EQ},
-  {"0x[0-9a-fA-F]+",  TK_NUMBER},       // equal
-  {"[0-9]+",          TK_NUMBER}, // number
+  {" +",              TK_NOTYPE},       // spaces
+  {"\\+",             TK_PLUS},         // plus
+  {"==",              TK_EQ},           // equal
+  {"0x[0-9a-fA-F]+",  TK_NUMBER_HEX_x}, // hex number 0x    
+  {"0X[0-9a-fA-F]+",  TK_NUMBER_HEX_X}, // hex number 0X
+  {"[0-9]+",          TK_NUMBER_DEC},   // dec number 
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -132,14 +135,17 @@ word_t eval(bool *success, int start, int end) {
     return 0;
   }
   if (start+1 == end) {
-    if (tokens[start].type == TK_NUMBER) {
-      word_t num;
+    word_t num = 0;
+    if (tokens[start].type == TK_NUMBER_DEC) {
       sscanf(tokens[start].str, "%u", &num);
-      return num;
+    } else if (tokens[start].type == TK_NUMBER_HEX_x) {
+      sscanf(tokens[start].str, "0x%x", &num);
+    } else if (tokens[start].type == TK_NUMBER_HEX_X) {
+      sscanf(tokens[start].str, "0X%x", &num);
     } else {
       *success = false;
-      return 0;
     }
+    return num;
   }
   
   int op = 0;
