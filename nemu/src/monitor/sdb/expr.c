@@ -53,6 +53,8 @@ static struct rule {
   {"!=",              TK_NE},           // not equal
   {">=",              TK_GE},           // greater or equal
   {">",               TK_GT},           // greater than
+  {"<=",              TK_LE},           // less or equal
+  {"<",               TK_LT},           // less than
   {"\\+",             TK_PLUS},         // plus
   {"\\-",             TK_SUB},          // sub
   {"\\*",             TK_MULTIPY},      // multipy
@@ -195,6 +197,18 @@ word_t eval(bool *success, int start, int end) {
 
   case TK_NE:
     return leftValue != rightValue;
+
+  case TK_GE:
+    return leftValue >= rightValue;
+
+  case TK_GT:
+    return leftValue > rightValue;
+
+  case TK_LE:
+    return leftValue <= rightValue;
+
+  case TK_LT:
+    return leftValue < rightValue;
   
   case TK_PLUS:
     return leftValue + rightValue;
