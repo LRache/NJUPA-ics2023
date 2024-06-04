@@ -134,6 +134,9 @@ word_t eval(bool *success, int start, int end) {
       word_t num;
       sscanf(tokens[start].str, "%u", &num);
       return num;
+    } else {
+      *success = false;
+      return 0;
     }
   }
   
@@ -172,6 +175,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  *success = true;
   word_t result = eval(success, 0, nr_token);
 
   return result;
