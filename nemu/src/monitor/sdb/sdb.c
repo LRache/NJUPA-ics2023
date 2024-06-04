@@ -57,6 +57,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
+static int cmd_p(char *args);
 
 static struct {
   const char *name;
@@ -68,7 +69,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si","Step execute", cmd_si},
   { "info", "Show info: r/reg", cmd_info},
-  { "x", "Read memory", cmd_x}
+  { "x", "Read memory", cmd_x},
+  { "p", "Show the value of the expr", cmd_p}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -133,6 +135,19 @@ static int cmd_x(char* args) {
     addr += 4;
   }
   return 0;
+}
+
+static int cmd_p(char *args) {
+  bool success;
+  word_t result;
+  result = expr(args, &success);
+  if (success) {
+    printf("%u", result);
+    return 0;
+  } else {
+    printf("Invalid expression!\n");
+    return 1;
+  }
 }
 
 void sdb_set_batch_mode() {

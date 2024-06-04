@@ -21,8 +21,10 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
+  TK_NOTYPE = 256, 
+  TK_EQ,
+  TK_PLUS,
+  TK_NUMBER,
   /* TODO: Add more token types */
 
 };
@@ -37,8 +39,9 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
+  {"\\+", TK_PLUS},     // plus
   {"==", TK_EQ},        // equal
+  {"\\b(?:0x[a-fA-F0-9]+|\\d+)\\b", TK_NUMBER}, // number
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -94,10 +97,19 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
-          default: TODO();
+        // switch (rules[i].token_type) {
+        //   case 
+        //   default: TODO();
+        // }
+        if (rules[i].token_type != TK_NOTYPE) {
+          Token token;
+          token.type = rules[i].token_type;
+          for(int i = 0; i < 32 && i < substr_len; i++) {
+            token.str[i] = *(substr_start+i);
+          }
+          token.str[substr_len] = '\0';
+          tokens[nr_token++] = token;
         }
-
         break;
       }
     }
@@ -111,6 +123,47 @@ static bool make_token(char *e) {
   return true;
 }
 
+word_t eval(bool *success, int start, int end) {
+  if (!*success) return 0;
+  if (start == end) {
+    *success = false;
+    return 0;
+  }
+  if (start+1 == end) {
+    if (tokens[start].type == TK_NUMBER) {
+      word_t num;
+      sscanf(tokens[start].str, "%u", &num);
+      return num;
+    }
+  }
+  
+  int op = 0;
+  int priority = 0;
+  for (int i = start; i < end; i++) {
+    if (tokens[i].type == TK_PLUS && priority != 1) {
+      op = i;
+      priority = 3;
+      break;
+    }
+  }
+  if (op == 0) {
+    *success = false;
+    return 0;
+  }
+
+  word_t leftValue = eval(success, start, op-1);
+  word_t rightValue = eval(success, op+1, end);
+  if (!*success) return 0;
+  switch (tokens[op].type)
+  {
+  case TK_PLUS:
+    return leftValue + rightValue;
+  
+  default:
+    break;
+  }
+  return 0;
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -119,7 +172,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  word_t result = eval(success, 0, nr_token);
 
-  return 0;
+  return result;
 }
