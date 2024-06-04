@@ -153,29 +153,20 @@ Reutun:
 1 for expr packed by matched parenthese
 2 for bad parenthese
 */
-int check_parentheses(int start, int end) {
+bool packed_by_parentheses(int start, int end) {
   int counter = 0;
-  int result;
-  if (tokens[start].type == TK_LEFT) {
-    result = 1;
-  } else {
-    result = 0;
-  }
   for (int i = start; i < end; i++) {
-    if (tokens[start].type == TK_LEFT) {
+    if (tokens[0].type == TK_LEFT) {
       counter++;
     }
-    else if (tokens[i].type == TK_RIGHT) {
+    else if (tokens[0].type == TK_RIGHT) {
       counter--;
       if (counter < 0) {
-        return 2;
-      }
-      if (counter == 0 && i != end-1) {
-        result = 0;
+        return false;
       }
     }
   }
-  return result;
+  return counter == 0;
 }
 
 word_t eval(bool *success, int start, int end) {
@@ -200,17 +191,9 @@ word_t eval(bool *success, int start, int end) {
     return num;
   }
   
-  switch (check_parentheses(start, end))
-  {
-  case 1:
+  if (packed_by_parentheses(start, end)) {
     start++;
     end--;
-    break;
-  case 2:
-    printf("Bad parentheses!\n");
-    *success = false;
-  default:
-    break;
   }
   
   int op = 0;
@@ -280,6 +263,22 @@ word_t eval(bool *success, int start, int end) {
   return 0;
 }
 
+bool matched_parentheses(int start, int end) {
+  int counter = 0;
+  for (int i = start; i < end; i++) {
+    if (tokens[0].type == TK_LEFT) {
+      counter++;
+    }
+    else if (tokens[0].type == TK_RIGHT) {
+      counter--;
+      if (counter < 0) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -287,6 +286,11 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  if (matched_parentheses(0, nr_token)) {
+    *success = false;
+    printf("Bad parentheses!\n");
+    return 0;
+  }
   *success = true;
   word_t result = eval(success, 0, nr_token);
 
