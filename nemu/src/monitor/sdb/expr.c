@@ -199,6 +199,8 @@ bool packed_by_parentheses(int start, int end) {
       counter--;
       if (i == end-1) {
         return true;
+      } else {
+        return false;
       }
     }
   }
@@ -245,8 +247,7 @@ word_t eval(bool *success, int start, int end) {
     int t = tokens[i].type;
     if (t == TK_LEFT) {
       int counter = 1;
-      i++;
-      for (; i < end; i++) {
+      for (i++; i < end; i++) {
         if (tokens[i].type == TK_LEFT) counter++;
         else if (tokens[i].type == TK_RIGHT) {
           counter--;
@@ -272,7 +273,7 @@ word_t eval(bool *success, int start, int end) {
     }
   }
   if (op == -1) {
-    Log("op equals -1: start=%d, end=%d", start, end);
+    Log("op not found: start=%d, end=%d", start, end);
     *success = false;
     return 0;
   }
