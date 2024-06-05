@@ -5,9 +5,12 @@
 #include <assert.h>
 #include "./monitor/sdb/sdb.h"
 
+void init_sdb();
+
 void test_expr() {
     FILE *fp = fopen("./src/test_expr/examples.txt", "r");
     assert(fp != NULL);
+    init_sdb();
     unsigned int answer;
     char expression[256];
     bool success;
@@ -21,7 +24,6 @@ void test_expr() {
         if (result != answer) {
             printf("Result is incorrect: expr=%s, res=%u, ans=%u\n", expression, result, answer);
         }
-        printf("A\n");
     }
     fclose(fp);
     printf("PASSED\n");
