@@ -106,7 +106,7 @@ void init_regex() {
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
       regerror(ret, &re[i], error_msg, 128);
-      // panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
+      panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
   }
 }
@@ -136,7 +136,6 @@ static bool make_token(char *e) {
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
-        Log("0\n");
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -148,7 +147,6 @@ static bool make_token(char *e) {
         //   case 
         //   default: TODO();
         // }
-        Log("1\n");
         if (rules[i].token_type != TK_NOTYPE) {
           Token token;
           token.type = rules[i].token_type;
@@ -158,7 +156,6 @@ static bool make_token(char *e) {
           token.str[substr_len] = '\0';
           tokens[nr_token++] = token;
         }
-        Log("2\n");
         break;
       }
     }
