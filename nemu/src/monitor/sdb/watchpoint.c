@@ -52,20 +52,30 @@ WP* new_wp() {
   return wp;
 }
 
-void free_wp(WP *wp) {
-  if (free_ == wp) {
-    free_ = wp;
-  } else {
-    WP *node = free_;
-    while (node->next)
-    {
-      node = node->next;
-    }
-    node->next = wp;
+int delete_wp(int n) {
+  if (n >= NR_WP || n < 0) {
+    return 1;
   }
+  return free_wp(&wp_pool[n]);
+}
+
+int free_wp(WP *wp) {
+  if (free_ == NULL) return 1;
+
   if (wp == head) {
     head = head->next;
-  } else {
+    if (free_ == wp) {
+      free_ = wp;
+    } else {
+      WP *node = free_;
+      while (node->next)
+      {
+        node = node->next;
+      }
+      node->next = wp;
+    }
+    return 0;
+  }
     WP *node = head;
     WP *next = head->next;
     while (next) {
@@ -73,9 +83,20 @@ void free_wp(WP *wp) {
       next = node->next;
       if (next == wp) {
         node->next = wp->next;
+        if (free_ == wp) {
+          free_ = wp;
+        } else {
+          WP *node = free_;
+          while (node->next)
+          {
+            node = node->next;
+          }
+          node->next = wp;
+        }
+        return 0;
       }
     }
-  }
+  return 1;
 }
 
 void watchopint_display() {

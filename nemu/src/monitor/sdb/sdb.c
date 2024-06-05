@@ -59,6 +59,7 @@ static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
+static int cmd_d(char *args);
 
 static struct {
   const char *name;
@@ -68,11 +69,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si","Step execute", cmd_si},
-  { "info", "Show info: r/reg", cmd_info},
-  { "x", "Read memory", cmd_x},
-  { "p", "Show the value of the expr", cmd_p},
-  { "w", "Set watchpoint", cmd_w}
+  { "si","Step execute", cmd_si },
+  { "info", "Show info: r/reg w", cmd_info },
+  { "x", "Read memory", cmd_x },
+  { "p", "Show the value of the expr", cmd_p },
+  { "w", "Set watchpoint", cmd_w },
+  { "d", "Delete watchpoint", cmd_d }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -117,8 +119,10 @@ static int cmd_info(char *args) {
   if (strcmp(buffer, "reg") == 0 || strcmp(buffer, "r") == 0) {
     isa_reg_display();
     return 0;
-  } else if (strcmp(buffer, "w") == 0) {
+  }
+  if (strcmp(buffer, "w") == 0) {
     watchopint_display();
+    return 0;
   }
   printf("Command not found: %s\n", buffer);
   return 1;
@@ -166,6 +170,13 @@ static int cmd_w(char *args) {
   strncpy(wp->expr, args, 31);
   wp->value = value;
   
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  int n;
+  sscanf(args, "%d", &n);
+
   return 0;
 }
 

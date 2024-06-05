@@ -29,7 +29,8 @@ typedef struct watchpoint {
 
 word_t expr(char *e, bool *success);
 WP* new_wp();
-void free_wp(WP *wp);
+int delete_wp(int n);
+int free_wp(WP *wp);
 void watchopint_display();
 
 #endif
