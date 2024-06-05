@@ -253,6 +253,11 @@ word_t eval(bool *success, int start, int end) {
     return leftValue * rightValue;
   
   case TK_DIVIDE:
+    if (rightValue == 0) {
+      printf("Divided by zero error\n");
+      *success = false;
+      return 0;
+    }
     return leftValue / rightValue;
   
   default:
