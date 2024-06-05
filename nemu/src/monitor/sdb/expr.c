@@ -149,7 +149,8 @@ static bool make_token(char *e) {
         //   default: TODO();
         // }
         if (nr_token == 31) {
-          panic("Expression is too long!");
+          Log("Expression is too long!");
+          return false;
         }
         if (rules[i].token_type != TK_NOTYPE) {
           Token token;
