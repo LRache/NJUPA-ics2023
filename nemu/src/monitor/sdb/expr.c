@@ -212,6 +212,7 @@ word_t eval(bool *success, int start, int end) {
     *success = false;
     return 0;
   }
+  Log("start=%d, end=%d", start, end);
   if (start+1 == end) {
     word_t num = 0;
     if (tokens[start].type == TK_NUMBER_DEC) {
