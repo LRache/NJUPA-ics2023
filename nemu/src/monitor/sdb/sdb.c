@@ -155,14 +155,17 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
-  WP *wp = new_wp();
-  strncpy(wp->expr, args, 31);
   bool success;
-  wp->value = expr(wp->expr, &success);
+  word_t value = expr(args, &success);
   if (!success) {
     printf("Invalid expression!\n");
     return 1;
   }
+  
+  WP *wp = new_wp();
+  strncpy(wp->expr, args, 31);
+  wp->value = value;
+  
   return 0;
 }
 
