@@ -15,7 +15,7 @@ void test_expr() {
     unsigned int answer;
     char expression[256];
     bool success;
-    while (fscanf(fp, "%255s %u", expression, &answer))
+    while (~fscanf(fp, "%255s %u", expression, &answer))
     {
         printf("%s %u\n", expression, answer);
         unsigned int result = expr(expression, &success);
