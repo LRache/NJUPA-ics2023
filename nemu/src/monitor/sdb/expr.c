@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, 
+  TK_NOTYPE,
   TK_LEFT,
   TK_RIGHT,
   TK_EQ,
@@ -38,7 +38,8 @@ enum {
   TK_NUMBER_DEC,
   TK_NUMBER_HEX_x,
   TK_NUMBER_HEX_X,
-  TK_VAR
+  TK_VAR,
+  TK_DEREF
   /* TODO: Add more token types */
 
 };
@@ -69,7 +70,7 @@ static struct rule {
   {"0x[0-9a-fA-F]+",  TK_NUMBER_HEX_x}, // hex number 0x    
   {"0X[0-9a-fA-F]+",  TK_NUMBER_HEX_X}, // hex number 0X
   {"[0-9]+",          TK_NUMBER_DEC},   // dec number
-  {"^\\$([a-zA-Z0-9]+)", TK_VAR}        // variable
+  {"^\\$([a-zA-Z0-9$]+)", TK_VAR}        // variable
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -181,11 +182,17 @@ word_t eval(bool *success, int start, int end) {
     word_t num = 0;
     if (tokens[start].type == TK_NUMBER_DEC) {
       sscanf(tokens[start].str, "%u", &num);
-    } else if (tokens[start].type == TK_NUMBER_HEX_x) {
+    } 
+    else if (tokens[start].type == TK_NUMBER_HEX_x) {
       sscanf(tokens[start].str, "0x%x", &num);
-    } else if (tokens[start].type == TK_NUMBER_HEX_X) {
+    } 
+    else if (tokens[start].type == TK_NUMBER_HEX_X) {
       sscanf(tokens[start].str, "0X%x", &num);
-    } else {
+    } 
+    else if (tokens[start].type == TK_VAR) {
+      num = isa_reg_str2val(tokens[start].str+1, success);
+    }
+    else {
       Log("start equals end+1: %d", start);
       *success = false;
     }
@@ -211,7 +218,6 @@ word_t eval(bool *success, int start, int end) {
           if (counter == 0) break;
         }
       }
-      // Log("Scan to %d", i);
       continue;
     }
     if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
