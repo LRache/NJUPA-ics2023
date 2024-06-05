@@ -46,6 +46,7 @@ enum {
 };
 
 static const int DEREF_PREFIX_OP[] = {
+  TK_LEFT,
   TK_EQ,
   TK_NE,
   TK_GT,
