@@ -276,22 +276,14 @@ word_t eval(bool *success, int start, int end) {
     return 0;
   }
 
-  int opLength = 1;
-  switch (tokens[op].type)
-  {
-  case TK_EQ: case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT: case TK_AND:
-    opLength = 2;
-    break;
-  }
-
   if (tokens[op].type == TK_DEREF) {
-    word_t rightValue = eval(success, op+opLength, end);
+    word_t rightValue = eval(success, op+1, end);
     word_t result = vaddr_read(rightValue, sizeof(word_t));
     return result;
   }
 
   word_t leftValue = eval(success, start, op);
-  word_t rightValue = eval(success, op+opLength, end);
+  word_t rightValue = eval(success, op+1, end);
   if (!*success) return 0;
   
   switch (tokens[op].type)
