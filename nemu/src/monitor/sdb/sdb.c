@@ -115,7 +115,8 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   char buffer[100];
-  sscanf(args, "%s", buffer);
+  int n = sscanf(args, "%s", buffer);
+  if (n == 0) return 1;
   if (strcmp(buffer, "reg") == 0 || strcmp(buffer, "r") == 0) {
     isa_reg_display();
     return 0;
