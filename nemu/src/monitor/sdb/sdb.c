@@ -117,6 +117,8 @@ static int cmd_info(char *args) {
   if (strcmp(buffer, "reg") == 0 || strcmp(buffer, "r") == 0) {
     isa_reg_display();
     return 0;
+  } else if (strcmp(buffer, "w") == 0) {
+    watchopint_display();
   }
   printf("Command not found: %s\n", buffer);
   return 1;

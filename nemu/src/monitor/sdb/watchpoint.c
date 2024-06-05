@@ -76,3 +76,12 @@ void free_wp(WP *wp) {
     }
   }
 }
+
+void watchopint_display() {
+  WP *node = head;
+  while (node)
+  {
+    printf("%d %s\n", node->NO, node->expr);
+    node = node->next;
+  }
+}
