@@ -207,6 +207,7 @@ bool packed_by_parentheses(int start, int end) {
       }
     }
   }
+  Log("Invalid return: start=%d, end=%d", start, end);
   return false;
 }
 
