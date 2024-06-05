@@ -235,6 +235,15 @@ void sdb_mainloop() {
 }
 
 bool watchpoint_triggered() {
+  WP *node = wp_head();
+  while (node) {
+    bool s;
+    if (expr(node->expr, &s) != node->value) {
+      printf("Watchpoint %d triggered.\n", node->NO);
+      return true;
+    }
+    node = node->next;
+  }
   return false;
 }
 
