@@ -51,8 +51,8 @@ static struct rule {
    */
 
   {" +",              TK_NOTYPE},       // spaces
-  {"\\(",               TK_LEFT},         // left parentheses
-  {"\\)",               TK_RIGHT},        // right parentheses
+  {"\\(",             TK_LEFT},         // left parentheses
+  {"\\)",             TK_RIGHT},        // right parentheses
   {"==",              TK_EQ},           // equal
   {"!=",              TK_NE},           // not equal
   {">=",              TK_GE},           // greater or equal
@@ -200,11 +200,14 @@ word_t eval(bool *success, int start, int end) {
     if (t == TK_LEFT) {
       int counter = 1;
       i++;
-      for (; counter && i < end; i++) {
+      for (; i < end; i++) {
         if (tokens[i].type == TK_LEFT) counter++;
-        else if (tokens[i].type == TK_RIGHT) counter--;
+        else if (tokens[i].type == TK_RIGHT) {
+          counter--;
+          if (counter == 0) break;
+        }
       }
-      Log("Scan to %d", i);
+      // Log("Scan to %d", i);
       continue;
     }
     if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
