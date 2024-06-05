@@ -176,7 +176,11 @@ static int cmd_w(char *args) {
 static int cmd_d(char *args) {
   int n;
   sscanf(args, "%d", &n);
-
+  int t = delete_wp(n);
+  if (t) {
+    printf("Cannot delete watchpoints %d\n", n);
+    return 1;
+  }
   return 0;
 }
 
