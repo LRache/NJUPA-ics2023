@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include "memory/vaddr.h"
 
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -43,6 +44,22 @@ enum {
   /* TODO: Add more token types */
 
 };
+
+static const int DEREF_PREFIX_OP[] = {
+  TK_EQ,
+  TK_NE,
+  TK_GT,
+  TK_GE,
+  TK_LT,
+  TK_LE,
+  TK_AND,
+  TK_PLUS,
+  TK_SUB,
+  TK_MULTIPY,
+  TK_DIVIDE,
+};
+
+#define NR_DEREF_PREFIX_OP ARRLEN(DEREF_PREFIX_OP)
 
 static struct rule {
   const char *regex;
@@ -149,6 +166,23 @@ static bool make_token(char *e) {
     }
   }
 
+  if (tokens[0].type == TK_MULTIPY) {
+    tokens[0].type = TK_DEREF;
+  }
+  for (int i = 1; i < nr_token; i++)
+  {
+    if (tokens[i].type == TK_MULTIPY) {
+      for (int j = 0; j < NR_DEREF_PREFIX_OP; j++)
+      {
+        if (tokens[i-1].type == DEREF_PREFIX_OP[j]) {
+          tokens[i].type = TK_DEREF;
+          break;
+        }
+      }
+    }
+  }
+  
+
   return true;
 }
 
@@ -220,19 +254,20 @@ word_t eval(bool *success, int start, int end) {
       }
       continue;
     }
-    if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
+    else if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
       op = i;
       break;
     }
-    if (t == TK_PLUS || t == TK_SUB) {
+    else if (t == TK_PLUS || t == TK_SUB) {
       priority = 2;
       op = i;
-      Log("Caught op plus or sub at %d", op);
     }
-    if (priority < 1 && (t == TK_MULTIPY || t == TK_DIVIDE)) {
+    else if (priority < 1 && (t == TK_MULTIPY || t == TK_DIVIDE)) {
       op = i;
       priority = 1;
-      Log("Caught op mul or div at %d", op);
+    }
+    else if (priority == 0 && t == TK_DEREF) {
+      op = i;
     }
   }
   if (op == -1) {
@@ -247,6 +282,12 @@ word_t eval(bool *success, int start, int end) {
   case TK_EQ: case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT: case TK_AND:
     opLength = 2;
     break;
+  }
+
+  if (tokens[op].type == TK_DEREF) {
+    word_t rightValue = eval(success, op+opLength, end);
+    word_t result = vaddr_read(rightValue, sizeof(word_t));
+    return result;
   }
 
   word_t leftValue = eval(success, start, op);
