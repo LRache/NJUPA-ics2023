@@ -153,6 +153,14 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
+  WP *wp = new_wp();
+  strncpy(wp->expr, args, 31);
+  bool success;
+  wp->value = expr(wp->expr, &success);
+  if (!success) {
+    printf("Invalid expression");
+    return 1;
+  }
   return 0;
 }
 
