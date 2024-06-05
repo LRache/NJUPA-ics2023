@@ -204,6 +204,9 @@ word_t eval(bool *success, int start, int end) {
         if (tokens[i].type == TK_LEFT) counter++;
         else if (tokens[i].type == TK_RIGHT) counter--;
       }
+      if (i == end) {
+        Log("Scan to end: end=%d", end);
+      }
       continue;
     }
     if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
