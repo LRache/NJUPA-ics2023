@@ -11,6 +11,7 @@ void test_expr() {
     FILE *fp = fopen("./src/test_expr/examples.txt", "r");
     assert(fp != NULL);
     init_sdb();
+    
     unsigned int answer;
     char expression[256];
     bool success;

@@ -156,6 +156,7 @@ static bool make_token(char *e) {
           token.str[substr_len] = '\0';
           tokens[nr_token++] = token;
         }
+        Log("2\n");
         break;
       }
     }
