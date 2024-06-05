@@ -216,10 +216,12 @@ word_t eval(bool *success, int start, int end) {
     if (t == TK_PLUS || t == TK_SUB) {
       priority = 2;
       op = i;
+      Log("Caught op plus or sub at %d", op);
     }
     if (priority < 1 && (t == TK_MULTIPY || t == TK_DIVIDE)) {
       op = i;
       priority = 1;
+      Log("Caught op mul or div at %d", op);
     }
   }
   if (op == 0) {
