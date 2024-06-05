@@ -200,10 +200,12 @@ bool packed_by_parentheses(int start, int end) {
     }
     else if (tokens[i].type == TK_RIGHT) {
       counter--;
-      if (i == end-1) {
-        return true;
-      } else {
-        return false;
+      if (counter == 0) {
+        if (i == end-1) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }
