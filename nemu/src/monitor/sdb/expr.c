@@ -30,13 +30,15 @@ enum {
   TK_GE,
   TK_LT,
   TK_LE,
+  TK_AND,
   TK_PLUS,
   TK_SUB,
   TK_MULTIPY,
   TK_DIVIDE,
   TK_NUMBER_DEC,
   TK_NUMBER_HEX_x,
-  TK_NUMBER_HEX_X
+  TK_NUMBER_HEX_X,
+  TK_VAR
   /* TODO: Add more token types */
 
 };
@@ -59,13 +61,15 @@ static struct rule {
   {">",               TK_GT},           // greater than
   {"<=",              TK_LE},           // less or equal
   {"<",               TK_LT},           // less than
+  {"\\&\\&",          TK_AND},          // and
   {"\\+",             TK_PLUS},         // plus
   {"\\-",             TK_SUB},          // sub
   {"\\*",             TK_MULTIPY},      // multipy
   {"\\/",             TK_DIVIDE},       // divide
   {"0x[0-9a-fA-F]+",  TK_NUMBER_HEX_x}, // hex number 0x    
   {"0X[0-9a-fA-F]+",  TK_NUMBER_HEX_X}, // hex number 0X
-  {"[0-9]+",          TK_NUMBER_DEC},   // dec number 
+  {"[0-9]+",          TK_NUMBER_DEC},   // dec number
+  {"^\\$([a-zA-Z0-9]+)", TK_VAR}        // variable
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -193,7 +197,7 @@ word_t eval(bool *success, int start, int end) {
     end--;
   }
   
-  int op = 0;
+  int op = -1;
   int priority = 0;
   for (int i = start; i < end; i++) {
     int t = tokens[i].type;
@@ -225,15 +229,24 @@ word_t eval(bool *success, int start, int end) {
       Log("Caught op mul or div at %d", op);
     }
   }
-  if (op == 0) {
-    Log("op equals 0: start=%d, end=%d", start, end);
+  if (op == -1) {
+    Log("op equals -1: start=%d, end=%d", start, end);
     *success = false;
     return 0;
   }
 
+  int opLength = 1;
+  switch (tokens[op].type)
+  {
+  case TK_EQ: case TK_NE: case TK_GE: case TK_GT: case TK_LE: case TK_LT: case TK_AND:
+    opLength = 2;
+    break;
+  }
+
   word_t leftValue = eval(success, start, op);
-  word_t rightValue = eval(success, op+1, end);
+  word_t rightValue = eval(success, op+opLength, end);
   if (!*success) return 0;
+  
   switch (tokens[op].type)
   {
   case TK_EQ:
@@ -274,6 +287,7 @@ word_t eval(bool *success, int start, int end) {
   default:
     break;
   }
+  
   return 0;
 }
 
