@@ -237,8 +237,7 @@ word_t eval(bool *success, int start, int end) {
   }
   
   if (packed_by_parentheses(start, end)) {
-    start++;
-    end--;
+    return eval(success, start+1, end-1);
   }
   
   int op = -1;
