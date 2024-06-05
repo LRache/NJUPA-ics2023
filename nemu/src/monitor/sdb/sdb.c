@@ -58,6 +58,7 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
 
 static struct {
   const char *name;
@@ -70,7 +71,8 @@ static struct {
   { "si","Step execute", cmd_si},
   { "info", "Show info: r/reg", cmd_info},
   { "x", "Read memory", cmd_x},
-  { "p", "Show the value of the expr", cmd_p}
+  { "p", "Show the value of the expr", cmd_p},
+  { "w", "Set watchpoint", cmd_w}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -148,6 +150,10 @@ static int cmd_p(char *args) {
     printf("Invalid expression!\n");
     return 1;
   }
+}
+
+static int cmd_w(char *args) {
+  return 0;
 }
 
 void sdb_set_batch_mode() {
