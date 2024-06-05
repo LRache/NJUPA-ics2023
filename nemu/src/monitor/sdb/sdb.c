@@ -158,7 +158,7 @@ static int cmd_w(char *args) {
   bool success;
   wp->value = expr(wp->expr, &success);
   if (!success) {
-    printf("Invalid expression");
+    printf("Invalid expression!\n");
     return 1;
   }
   return 0;
