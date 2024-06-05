@@ -234,6 +234,10 @@ void sdb_mainloop() {
   }
 }
 
+bool watchpoint_triggered() {
+  return false;
+}
+
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
