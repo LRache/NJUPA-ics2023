@@ -87,6 +87,7 @@ int free_wp(WP *wp)
       }
       node->next = wp;
     }
+    wp->next = NULL;
     return 0;
   }
   WP *node = head;
@@ -111,6 +112,7 @@ int free_wp(WP *wp)
         }
         node->next = wp;
       }
+      wp->next = NULL;
       return 0;
     }
   }
