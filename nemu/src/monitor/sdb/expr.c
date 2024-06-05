@@ -116,7 +116,7 @@ typedef struct token {
   char str[32];
 } Token;
 
-static Token tokens[64] __attribute__((used)) = {};
+static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -147,6 +147,9 @@ static bool make_token(char *e) {
         //   case 
         //   default: TODO();
         // }
+        if (nr_token == 31) {
+          panic("Expression is too long!");
+        }
         if (rules[i].token_type != TK_NOTYPE) {
           Token token;
           token.type = rules[i].token_type;
