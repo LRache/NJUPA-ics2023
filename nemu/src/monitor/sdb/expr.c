@@ -199,7 +199,7 @@ word_t eval(bool *success, int start, int end) {
     int t = tokens[i].type;
     if (t == TK_LEFT) {
       int counter = 1;
-      for (; counter; i++) {
+      for (; counter && i < end; i++) {
         if (tokens[i].type == TK_LEFT) counter++;
         else if (tokens[i].type == TK_RIGHT) counter--;
       }
