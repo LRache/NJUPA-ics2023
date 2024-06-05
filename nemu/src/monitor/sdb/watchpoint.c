@@ -68,7 +68,7 @@ int delete_wp(int n)
 
 int free_wp(WP *wp)
 {
-  if (free_ == NULL)
+  if (head == NULL)
     return 1;
 
   if (wp == head)
