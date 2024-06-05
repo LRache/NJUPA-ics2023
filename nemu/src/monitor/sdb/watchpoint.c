@@ -48,6 +48,7 @@ WP* new_wp() {
     }
     node->next = wp;
   }
+  wp->next = NULL;
   return wp;
 }
 
