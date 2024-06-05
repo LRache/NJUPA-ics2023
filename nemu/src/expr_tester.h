@@ -21,6 +21,7 @@ void test_expr() {
             printf("Result is incorrect: expr=%s, res=%u, ans=%u\n", expression, result, answer);
         }
     }
+    fclose(fp);
     printf("PASSED\n");
 }
 
