@@ -198,13 +198,13 @@ word_t eval(bool *success, int start, int end) {
   for (int i = start; i < end; i++) {
     int t = tokens[i].type;
     if (t == TK_LEFT) {
-      Log("Scan to %d", i);
       int counter = 1;
       i++;
       for (; counter && i < end; i++) {
         if (tokens[i].type == TK_LEFT) counter++;
         else if (tokens[i].type == TK_RIGHT) counter--;
       }
+      Log("Scan to %d", i);
       continue;
     }
     if (t == TK_EQ || t == TK_NE || t == TK_GT || t == TK_GE) {
