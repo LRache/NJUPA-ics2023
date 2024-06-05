@@ -13,6 +13,7 @@ void test_expr() {
     bool success;
     while (fscanf(fp, "%255s %u", expression, &answer))
     {
+        printf("%s %u\n", expression, answer);
         unsigned int result = expr(expression, &success);
         if (!success) {
             printf("success=false: expr=%s\n", expression);
