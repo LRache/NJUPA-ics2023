@@ -147,6 +147,7 @@ static bool make_token(char *e) {
         //   case 
         //   default: TODO();
         // }
+        Log("1\n");
         if (rules[i].token_type != TK_NOTYPE) {
           Token token;
           token.type = rules[i].token_type;
