@@ -31,7 +31,7 @@ void test_expr() {
     unsigned int answer;
     char expression[256];
     bool success;
-    while (fscanf(fp, "%255s %u", expression, &answer))
+    while (~fscanf(fp, "%255s %u", expression, &answer))
     {
         unsigned int result = expr(expression, &success);
         if (!success) {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 #endif
 
   /* Start engine. */
-  //engine_start();
+  engine_start();
   test_expr();
 
   return is_exit_status_bad();
