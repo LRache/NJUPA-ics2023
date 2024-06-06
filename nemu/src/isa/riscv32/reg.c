@@ -33,6 +33,7 @@ void isa_reg_display() {
       i++;
     }
     printf("\n");
+    
   }
 }
 
