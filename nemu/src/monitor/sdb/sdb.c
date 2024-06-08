@@ -132,6 +132,10 @@ static int cmd_info(char *args) {
     watchopint_display();
     return 0;
   }
+  if (strcmp(buffer, "pc") == 0) {
+    printf("pc=0x%u\n", cpu.pc);    
+    return 0;
+  }
   printf("Command not found: %s\n", buffer);
   return 1;
 }
