@@ -12,3 +12,4 @@
 !.vscode
 !reports/*
 /fceux-am
+/am-kernels
