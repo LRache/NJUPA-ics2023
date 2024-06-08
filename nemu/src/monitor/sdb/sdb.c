@@ -133,7 +133,7 @@ static int cmd_info(char *args) {
     return 0;
   }
   if (strcmp(buffer, "pc") == 0) {
-    printf("pc=0x%u\n", cpu.pc);    
+    printf("pc=0x%x\n", cpu.pc);    
     return 0;
   }
   printf("Command not found: %s\n", buffer);
