@@ -47,11 +47,11 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_B: src1R(); src2R(); immB(); break;
     case TYPE_J:                   immJ(); break;
   }
-  if (type ==TYPE_B) {
-    Log("imm[12]=%x", (uint32_t)(BITS(i, 31, 31)) << 12);
-    Log("imm[10:5]=%x", (uint32_t)(BITS(i, 30, 25)) << 5);
-    Log("imm[4:1]=%x", (uint32_t)(BITS(i, 11, 8)) << 1);
-    Log("imm[11]=%x", (uint32_t)(BITS(i, 7, 7) << 11));
+  if (type ==TYPE_J) {
+    Log("imm[20]=%x", (uint32_t)(BITS(i, 31, 31)) << 20);
+    Log("imm[10:1]=%x", (uint32_t)(BITS(i, 30, 21)) << 1);
+    Log("imm[11]=%x", (uint32_t)(BITS(i, 20, 20)) << 11);
+    Log("imm[19:12]=%x", (uint32_t)(BITS(i, 19, 12) << 12));
     Log("0x%x", *imm);
   }
 }
