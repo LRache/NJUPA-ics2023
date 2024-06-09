@@ -47,7 +47,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_B: src1R(); src2R(); immB(); break;
     case TYPE_J:                   immJ(); break;
   }
-  if (type ==TYPE_J) {
+  if (type ==TYPE_I) {
     Log("rs1=%d", rs1);
   }
 }
