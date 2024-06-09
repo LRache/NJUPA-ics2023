@@ -47,9 +47,9 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_B: src1R(); src2R(); immB(); break;
     case TYPE_J:                   immJ(); break;
   }
-  if (type == TYPE_J) {
-    Log("%x\n", (uint32_t)(SEXT(BITS(i, 31, 31), 1) << 20));
-    Log("%x\n", (uint32_t)(SEXT(BITS(i, 30, 21), 10) << 1));
+  if (type == TYPE_B) {
+    Log("%x\n", (uint32_t)(SEXT(BITS(i, 31, 31), 1) << 12));
+    Log("%x\n", (uint32_t)(SEXT(BITS(i, 30, 25), 6) << 5));
   }
 }
 
