@@ -52,6 +52,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     Log("imm[10:5]=%x", (uint32_t)(BITS(i, 30, 25)) << 5);
     Log("imm[4:1]=%x", (uint32_t)(BITS(i, 11, 8)) << 1);
     Log("imm[11]=%x", (uint32_t)(BITS(i, 7, 7) << 11));
+    Log("0x%x", *imm);
   }
 }
 
