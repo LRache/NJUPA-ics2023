@@ -49,7 +49,8 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
   if (type ==TYPE_B) {
     Log("imm[12]=%x", (uint32_t)(SEXT(BITS(i, 31, 31), 1) << 12));
-    Log("imm[11:5]%x", (uint32_t)(SEXT(BITS(i, 30, 25), 6) << 5));
+    Log("imm[11:5]=%x", (uint32_t)(SEXT(BITS(i, 30, 25), 6) << 5));
+    Log("imm=%x", *imm);
   }
 }
 
