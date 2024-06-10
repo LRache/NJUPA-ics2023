@@ -39,6 +39,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
+  
+  strcpy(instBuffer.inst[instBuffer.end], _this->logbuf);
+  instBuffer.end = (instBuffer.end + 1) % INST_BUFFER_SIZE;
+  if (instBuffer.end == instBuffer.start) instBuffer.start = (instBuffer.start + 1) % INST_BUFFER_SIZE;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
 #ifdef CONFIG_WATCHPOINTS
@@ -68,10 +72,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
-
-  instBuffer.inst[instBuffer.end].ilen =ilen;
-  instBuffer.inst[instBuffer.end].pc = s->pc;
-  instBuffer.inst[instBuffer.end].inst = s->isa;
 
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
@@ -103,8 +103,18 @@ static void statistic() {
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
+void ins_display() {
+  int i = instBuffer.start;
+  while (i != instBuffer.end)
+  {
+    puts(instBuffer.inst[i]);
+    i = (i + 1) % INST_BUFFER_SIZE;
+  }
+}
+
 void assert_fail_msg() {
   isa_reg_display();
+  ins_display();
   statistic();
 }
 

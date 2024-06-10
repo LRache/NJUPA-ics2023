@@ -26,16 +26,10 @@ typedef struct Decode {
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } Decode;
 
-typedef struct Inst
-{
-  ISADecodeInfo inst;
-  size_t ilen;
-  int64_t pc;
-} Inst;
 
 #define INST_BUFFER_SIZE 32
 typedef struct InstBuffer {
-  Inst inst[INST_BUFFER_SIZE];
+  char inst[INST_BUFFER_SIZE][128];
   int start;
   int end;
 } InstBuffer;
