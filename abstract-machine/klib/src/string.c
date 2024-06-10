@@ -73,7 +73,7 @@ void *memmove(void *dst, const void *src, size_t n) {
 
 void *memcpy(void *out, const void *in, size_t n) {
   unsigned char *o = out, *i = (unsigned char *)in;
-  for (size_t j = 0; j < n; j++) *o = *i;
+  for (size_t j = 0; j < n; j++, o++, i++) *o = *i;
   return out;
 }
 
