@@ -26,6 +26,12 @@ typedef struct Decode {
   IFDEF(CONFIG_ITRACE, char logbuf[128]);
 } Decode;
 
+typedef struct InstBuffer {
+  ISADecodeInfo isa[32];
+  int start;
+  int end;
+} InstBuffer;
+
 // --- pattern matching mechanism ---
 __attribute__((always_inline))
 static inline void pattern_decode(const char *str, int len,
