@@ -69,6 +69,10 @@ static void exec_once(Decode *s, vaddr_t pc) {
   memset(p, ' ', space_len);
   p += space_len;
 
+  instBuffer.inst[instBuffer.end].ilen =ilen;
+  instBuffer.inst[instBuffer.end].pc = s->pc;
+  instBuffer.inst[instBuffer.end].inst = s->isa;
+
 #ifndef CONFIG_ISA_loongarch32r
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
