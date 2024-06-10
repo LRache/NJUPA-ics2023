@@ -12,7 +12,7 @@ size_t strlen(const char *s) {
 
 char *strcpy(char *dst, const char *src) {
   char *p = (char*)src, *d = dst;
-  while (*p) *d = *(p++);
+  while (*p) *(d++) = *(p++);
   *d = 0;
   return dst;  
 }
