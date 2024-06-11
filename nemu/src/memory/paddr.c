@@ -40,7 +40,7 @@ void mem_trace_display() {
   int p = memTracer.head;
   while (p != memTracer.tail) {
     printf(
-      "PC=" FMT_WORD " %s " FMT_PADDR " %d bytes\n",
+      "pc=" FMT_WORD " %s addr=" FMT_PADDR " %d bytes\n",
       memTracer.mem[p].pc,
       memTracer.mem[p].type == MEM_READ ? " read" : "write",
       memTracer.mem[p].addr,
