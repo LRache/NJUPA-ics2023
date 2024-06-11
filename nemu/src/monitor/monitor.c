@@ -107,6 +107,7 @@ static long load_img() {
     size = load_elf();
     break;
   }
+  Log("A");
   
   return size;
 }
@@ -148,7 +149,6 @@ static int parse_args(int argc, char *argv[]) {
   } else {
     Log("Unknown type of image: %s", imgTypeStr);
   }
-  Log("A");
   return 0;
 }
 
