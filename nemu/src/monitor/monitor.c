@@ -121,7 +121,7 @@ static int parse_args(int argc, char *argv[]) {
     {"type"     , required_argument, NULL, 't'},
     {0          , 0                , NULL,  0 },
   };
-  char imgTypeStr[12] = "img";
+  char *imgTypeStr;
   int o;
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:t", table, NULL)) != -1) {
     switch (o) {
@@ -129,7 +129,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 't': sscanf(optarg, "%s", imgTypeStr); break;
+      case 't': imgTypeStr = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
