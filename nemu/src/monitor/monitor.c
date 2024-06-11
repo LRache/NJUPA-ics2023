@@ -96,7 +96,6 @@ static long load_img() {
     Log("No image is given. Use the default build-in image.");
     size = 4096; // built-in image size
   }
-  Log("A");
 
   switch (imgType)
   {
@@ -149,6 +148,7 @@ static int parse_args(int argc, char *argv[]) {
   } else {
     Log("Unknown type of image: %s", imgTypeStr);
   }
+  Log("A");
   return 0;
 }
 
