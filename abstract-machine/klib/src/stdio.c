@@ -31,7 +31,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           d = d / 10;
         }
         char *h = q;
-        while (h<=t) *(out++) = *(h++);
+        while (h<t) *(out++) = *(h++);
       }
     } else {
       *(out++) = *(p++);
