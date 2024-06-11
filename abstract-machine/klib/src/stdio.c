@@ -32,6 +32,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         }
         char *h = q;
         while (h<t) *(out++) = *(h++);
+        p++;
       }
     } else {
       *(out++) = *(p++);
