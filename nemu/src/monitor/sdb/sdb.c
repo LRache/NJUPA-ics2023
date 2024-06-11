@@ -24,6 +24,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void ins_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -60,6 +61,7 @@ static int cmd_x(char *args);
 static int cmd_p(char *args);
 static int cmd_w(char *args);
 static int cmd_d(char *args);
+static int cmd_trace(char *args);
 
 static struct {
   const char *name;
@@ -74,7 +76,8 @@ static struct {
   { "x", "Read memory", cmd_x },
   { "p", "Show the value of the expr", cmd_p },
   { "w", "Set watchpoint", cmd_w },
-  { "d", "Delete watchpoint", cmd_d }
+  { "d", "Delete watchpoint", cmd_d },
+  { "trace", "Trace instructions, memeory or function call.", cmd_trace }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -183,6 +186,14 @@ static int cmd_w(char *args) {
   wp->value = value;
   
   return 0;
+}
+
+static int cmd_trace(char *args) {
+  if (args[0] == 'i') {
+    ins_display();
+    return 0;
+  }
+  return 1;
 }
 
 static int cmd_d(char *args) {
