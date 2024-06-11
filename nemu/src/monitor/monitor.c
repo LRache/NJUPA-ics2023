@@ -107,7 +107,6 @@ static long load_img() {
     size = load_elf();
     break;
   }
-  Log("A");
   
   return size;
 }
