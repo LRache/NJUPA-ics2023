@@ -31,7 +31,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           d = d / 10;
         }
         char *h = stack;
-        while (t >= h) *(out++) = *(t--);
+        while (t > h) *(out++) = *(--t);
         p++;
       }
     } else {
