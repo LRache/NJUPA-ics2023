@@ -42,7 +42,7 @@ void mem_trace_display() {
     printf(
       FMT_WORD " %s " FMT_PADDR " %dbytes\n",
       memTracer.mem[p].pc,
-      memTracer.mem[p].type == MEM_READ ? "read" : "write",
+      memTracer.mem[p].type == MEM_READ ? " read" : "write",
       memTracer.mem[p].addr,
       memTracer.mem[p].len
     );
