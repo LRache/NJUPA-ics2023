@@ -96,6 +96,7 @@ static long load_img() {
     Log("No image is given. Use the default build-in image.");
     size = 4096; // built-in image size
   }
+  Log("A");
 
   switch (imgType)
   {
