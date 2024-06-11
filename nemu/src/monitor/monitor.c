@@ -87,6 +87,7 @@ static long load_elf() {
   //Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
   
   fclose(fp);
+  Log("Load ELF successfully");
   return 0;
 }
 
