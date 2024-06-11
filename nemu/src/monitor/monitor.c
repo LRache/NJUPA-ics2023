@@ -149,6 +149,7 @@ static int parse_args(int argc, char *argv[]) {
   } else {
     Log("Unknown type of image: %s", imgTypeStr);
   }
+  Log("%s", imgTypeStr);
   return 0;
 }
 
