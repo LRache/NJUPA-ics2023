@@ -121,7 +121,7 @@ static int parse_args(int argc, char *argv[]) {
     {"type"     , required_argument, NULL, 't'},
     {0          , 0                , NULL,  0 },
   };
-  char *imgTypeStr;
+  static char *imgTypeStr = "img";
   int o;
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:t", table, NULL)) != -1) {
     switch (o) {
@@ -141,7 +141,6 @@ static int parse_args(int argc, char *argv[]) {
         exit(0);
     }
   }
-  Log("%s", imgTypeStr);
   if (strcmp(imgTypeStr, "img") == 0) {
     imgType = IMG_IMAGE;
   } else if (strcmp(imgTypeStr, "elf") == 0) {
