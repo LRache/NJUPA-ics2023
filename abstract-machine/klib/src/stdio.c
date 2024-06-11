@@ -24,14 +24,22 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         p++;
       } else if (*p == 'd') {
         int d = va_arg(ap, int);
-        char stack[13] = {};
-        char *t = stack;
-        while (d) {
-          *(t++) = d % 10 + '0';
-          d = d / 10;
+        
+        if (d == 0) {
+          *(out++) = '0';
+        } else {
+          int sign = d < 0;
+          if (sign) d = -d;
+          char stack[13] = {};
+          char *t = stack;
+          while (d) {
+            *(t++) = d % 10 + '0';
+            d = d / 10;
+          }
+          char *h = stack;
+          if (sign) (*out++) = '-';
+          while (t > h) *(out++) = *(--t);
         }
-        char *h = stack;
-        while (t > h) *(out++) = *(--t);
         p++;
       }
     } else {
