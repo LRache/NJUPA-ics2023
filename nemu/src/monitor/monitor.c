@@ -13,8 +13,16 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include <isa.h>
-#include <memory/paddr.h>
+#include <elf.h>
+#include "isa.h"
+#include "memory/paddr.h"
+
+enum IMG_TYEP{
+  IMG_IMAGE, IMG_ELF
+};
+
+int imgType = IMG_IMAGE;
+static const char ELF_MAGIC_NUMBER[] = {0x7f, 'E', 'L', 'F'};
 
 void init_rand();
 void init_log(const char *log_file);
@@ -44,12 +52,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
 
-static long load_img() {
-  if (img_file == NULL) {
-    Log("No image is given. Use the default build-in image.");
-    return 4096; // built-in image size
-  }
-
+static long load_normal_image() {
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
@@ -66,6 +69,48 @@ static long load_img() {
   return size;
 }
 
+static long load_elf() {
+  FILE *fp = fopen(img_file, "rb");
+  Assert(fp, "Can not open '%s'", img_file);
+
+  Elf32_Ehdr elfHeader;
+  int r = fread(&elfHeader, sizeof(elfHeader), 1, fp);
+  Assert(r == 1, "Read error.");
+  Assert(memcmp(ELF_MAGIC_NUMBER, elfHeader.e_ident, 4) == 0, "Bad elf head");
+  Assert(elfHeader.e_ident[EI_CLASS] != ELFCLASS32, "Bad elf class");
+  Assert(elfHeader.e_machine == EM_RISCV, "Bad isa");
+  
+  Elf32_Phdr programHeader;
+  r = fread(&programHeader, sizeof(programHeader), 1, fp);
+  Assert(r == 1, "Read error.");
+  
+  //Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
+  
+  fclose(fp);
+  return 0;
+}
+
+static long load_img() {
+  long size = 0;
+  if (img_file == NULL) {
+    Log("No image is given. Use the default build-in image.");
+    size = 4096; // built-in image size
+  }
+
+  switch (imgType)
+  {
+  case IMG_IMAGE:
+    size = load_normal_image();
+    break;
+
+  case IMG_ELF:
+    size = load_elf();
+    break;
+  }
+  
+  return size;
+}
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
@@ -73,8 +118,10 @@ static int parse_args(int argc, char *argv[]) {
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
     {"help"     , no_argument      , NULL, 'h'},
+    {"type"     , required_argument, NULL, 't'},
     {0          , 0                , NULL,  0 },
   };
+  char imgTypeStr[12] = "img";
   int o;
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
     switch (o) {
@@ -82,6 +129,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
+      case 't': sscanf(optarg, "%s", imgTypeStr); break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -92,6 +140,13 @@ static int parse_args(int argc, char *argv[]) {
         printf("\n");
         exit(0);
     }
+  }
+  if (strcmp(imgTypeStr, "img") == 0) {
+    imgType = IMG_IMAGE;
+  } else if (strcmp(imgTypeStr, "elf") == 0) {
+    imgType = IMG_ELF;
+  } else {
+    Log("Unknown type of image: %s", imgTypeStr);
   }
   return 0;
 }
