@@ -19,12 +19,13 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include "memory/vaddr.h"
+#include "memory/paddr.h"
+#include "cpu/cpu.h"
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-void ins_display();
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -190,8 +191,11 @@ static int cmd_w(char *args) {
 
 static int cmd_trace(char *args) {
   if (args[0] == 'i') {
-    ins_display();
+    ins_trace_display();
     return 0;
+  }
+  if (args[0] == 'm') {
+    mem_trace_display();
   }
   return 1;
 }

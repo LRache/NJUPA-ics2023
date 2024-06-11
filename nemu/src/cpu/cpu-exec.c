@@ -103,7 +103,7 @@ static void statistic() {
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
-void ins_display() {
+void ins_trace_display() {
   int i = instBuffer.start;
   while (i != instBuffer.end)
   {
@@ -114,7 +114,7 @@ void ins_display() {
 
 void assert_fail_msg() {
   isa_reg_display();
-  ins_display();
+  ins_trace_display();
   statistic();
 }
 
