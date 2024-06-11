@@ -141,6 +141,7 @@ static int parse_args(int argc, char *argv[]) {
         exit(0);
     }
   }
+  Log("A");
   if (strcmp(imgTypeStr, "img") == 0) {
     imgType = IMG_IMAGE;
   } else if (strcmp(imgTypeStr, "elf") == 0) {
