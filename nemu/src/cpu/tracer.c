@@ -23,7 +23,7 @@ void trace_function(Decode *_this) {
             funTracerTail = funTracer;
         } else {
             funTracerTail->next = malloc(sizeof(FunTracer));
-            funTracerTail = funTracer->next;
+            funTracerTail = funTracerTail->next;
         }
         funTracerTail->dst = _this->dnpc;
         funTracerTail->pc = _this->pc;
@@ -35,7 +35,7 @@ void trace_function(Decode *_this) {
             funTracerTail = funTracer;
         } else {
             funTracerTail->next = malloc(sizeof(FunTracer));
-            funTracerTail = funTracer->next;
+            funTracerTail = funTracerTail->next;
         }
         funTracerTail->dst = _this->dnpc;
         funTracerTail->pc = _this->pc;
