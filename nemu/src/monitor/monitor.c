@@ -115,6 +115,18 @@ static long load_elf() {
         r = fread(guest_to_host(shdr.sh_addr), shdr.sh_size, 1, fp);
         Assert(r == 1, "Read error.");
       }
+    } else if (shdr.sh_type == SHT_SYMTAB) {
+      fseek(fp, shdr.sh_offset, SEEK_SET);
+      int count = shdr.sh_size / shdr.sh_entsize;
+      for (int i = 0; i < count; i++) {
+        Elf32_Sym entry;
+        r = fread(&entry, sizeof(entry), 1, fp);
+        Assert(r == 1, "Read error.");
+        char symName[12];
+        strncpy(symName, &stringTable[entry.st_name], 11);
+        Log(FMT_PADDR " %s", entry.st_value, symName);
+      }
+      
     }
   }
   
