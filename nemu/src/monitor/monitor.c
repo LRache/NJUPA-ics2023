@@ -100,7 +100,7 @@ static long load_elf() {
       long offset = shdr.sh_offset;
       fseek(fp, offset, SEEK_SET);
       stringTable = malloc(shdr.sh_size);
-      int r = fread(stringTable, 1, shdr.sh_size, fp);
+      r = fread(stringTable, shdr.sh_size, 1, fp);
       Assert(r == shdr.sh_size, "Read string table error");
       break;
     }
