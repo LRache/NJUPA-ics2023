@@ -79,6 +79,7 @@ static long load_elf() {
   int r = fread(&elfHeader, sizeof(elfHeader), 1, fp);
   Assert(r == 1, "Read error.");
   Assert(memcmp(ELF_MAGIC_NUMBER, elfHeader.e_ident, 4) == 0, "Bad elf head");
+  Log("%d", elfHeader.e_ident[EI_CLASS]);
   Assert(elfHeader.e_ident[EI_CLASS] != ELFCLASS32, "Bad elf class");
   Assert(elfHeader.e_machine == EM_RISCV, "Bad isa");
   
