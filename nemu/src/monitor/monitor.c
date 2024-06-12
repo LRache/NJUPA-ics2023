@@ -91,10 +91,25 @@ static long load_elf() {
   Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
   r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
   Assert(r == elfHeader.e_shnum, "Read error.");
+
+  char *stringTable = NULL;
+  for (int i = 0; i < elfHeader.e_shnum; i++) {
+    Elf32_Shdr shdr = sectionHeaderArray[i];
+    if (shdr.sh_type == SHT_STRTAB) {
+      long offset = shdr.sh_offset;
+      fseek(fp, offset, SEEK_SET);
+      stringTable = malloc(shdr.sh_size);
+      int r = fread(stringTable, 1, shdr.sh_size, fp);
+      Assert(r == shdr.sh_size, "Read string table error");
+    }
+  }
   
   for (int i = 0; i < elfHeader.e_shnum; i++) {
-    Log("%d", sectionHeaderArray[i].sh_type);
-    if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
+    Elf32_Shdr shdr = sectionHeaderArray[i];
+    char sectionName[12];
+    strncpy(sectionName, &stringTable[shdr.sh_name], 11);
+    Log("%s", sectionName);
+    if (shdr.sh_type == SHT_PROGBITS && shdr.sh_flags) {
       size = sectionHeaderArray[i].sh_size;
       long offset = sectionHeaderArray[i].sh_offset;
       fseek(fp, offset, SEEK_SET);
@@ -105,6 +120,7 @@ static long load_elf() {
   }
   
   fclose(fp);
+  free(stringTable);
   Log("Load ELF successfully");
   return size;
 }
