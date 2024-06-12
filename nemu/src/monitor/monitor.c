@@ -52,6 +52,8 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *img_file_type = NULL;
 static int difftest_port = 1234;
+static char _bytes[1024];
+static char *bytes = _bytes;
 
 static long load_normal_image() {
   FILE *fp = fopen(img_file, "rb");
@@ -114,11 +116,17 @@ static long load_elf() {
       if (shdr.sh_type == SHT_PROGBITS) {
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), size, 1, fp);
+        fseek(fp, shdr.sh_offset, SEEK_SET);
+        r = fread(bytes+shdr.sh_addr-RESET_VECTOR, size, 1, fp);
         Assert(r == 1, "Read error.");
         Log("Load section %s", sectionName);
       }
     }
   }
+
+  FILE *fp2 = fopen("./test.bin", "w");
+  r = fwrite(bytes, 1, 1024, fp2);
+  Assert(r == 1024, "Write error");
   
   fclose(fp);
   free(stringTable);
