@@ -114,12 +114,12 @@ static long load_elf() {
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
+        Log("Load section %s", sectionName);
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), size, 1, fp);
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(bytes+shdr.sh_addr-RESET_VECTOR, size, 1, fp);
         Assert(r == 1, "Read error.");
-        Log("Load section %s", sectionName);
       }
     }
   }
