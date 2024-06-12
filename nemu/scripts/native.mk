@@ -23,7 +23,7 @@ compile_git:
 $(BINARY):: compile_git
 
 # Some convenient rules
-INPUT_FILE=/home/rache/Documents/code/ics2023/am-kernels/tests/cpu-tests/build/string-riscv32-nemu.elf
+INPUT_FILE=/home/rache/Documents/code/ics2023/am-kernels/tests/cpu-tests/build/load-store-riscv32-nemu.elf
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt --t=elf ${INPUT_FILE}
 override ARGS += $(ARGS_DIFF)
 
