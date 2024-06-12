@@ -21,12 +21,6 @@
 
 void cpu_exec(uint64_t n);
 
-void trace_function(Decode *_this);
-void free_function_tracer();
-void function_trace_display();
-void trace_ins(Decode *_this);
-void ins_trace_display();
-
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 void invalid_inst(vaddr_t thispc);
 

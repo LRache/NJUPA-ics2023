@@ -1,17 +1,6 @@
 #include "cpu/cpu.h"
 #include "cpu/decode.h"
-
-enum CALL_TRACE_TYPE {
-    FUN_CAL, FUN_RET
-};
-
-typedef struct CallLinkNode
-{
-    word_t pc;
-    vaddr_t dst;
-    struct CallLinkNode *next;
-    int type; 
-} FunTracer;
+#include "cpu/tracer.h"
 
 static FunTracer *funTracer = NULL; 
 static FunTracer *funTracerTail = NULL;
@@ -72,14 +61,6 @@ void function_trace_display(){
         node = node->next;
     }
 }
-
-#define INST_TRACER_SIZE 32
-
-typedef struct InstBuffer {
-  char inst[INST_TRACER_SIZE][128];
-  int start;
-  int end;
-} InstTracer;
 
 static InstTracer instTracer = {};
 

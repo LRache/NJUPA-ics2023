@@ -21,6 +21,7 @@
 #include "memory/vaddr.h"
 #include "memory/paddr.h"
 #include "cpu/cpu.h"
+#include "cpu/tracer.h"
 
 static int is_batch_mode = false;
 
