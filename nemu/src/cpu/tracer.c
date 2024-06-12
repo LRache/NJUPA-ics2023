@@ -29,7 +29,7 @@ void trace_function(Decode *_this) {
         funTracerTail->pc = _this->pc;
         funTracerTail->type = FUN_CAL;
         funTracerTail->next = NULL;
-    } else if (BITS(_this->isa.inst.val, 6, 0) == 0b1100111 && BITS(_this->isa.inst.val, 14, 12) == 0) {
+    } else if (_this->isa.inst.val == 0x00008067) {
         if (funTracer == NULL) {
             funTracer = malloc(sizeof(FunTracer));
             funTracerTail = funTracer;
