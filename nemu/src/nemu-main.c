@@ -49,6 +49,7 @@ void test_expr() {
 }
 
 void at_nemu_exit() {
+  Log("Bye~");
   free_function_tracer();
 }
 
