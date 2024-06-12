@@ -100,6 +100,7 @@ static long load_elf() {
       stringTable = malloc(shdr.sh_size);
       int r = fread(stringTable, 1, shdr.sh_size, fp);
       Assert(r == shdr.sh_size, "Read string table error");
+      break;
     }
   }
   
