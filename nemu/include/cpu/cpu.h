@@ -36,7 +36,7 @@ typedef struct CallLinkNode
     vaddr_t dst;
     struct CallLinkNode *next;
     int type; 
-} CallTracer;
+} FunTracer;
 
 void cpu_exec(uint64_t n);
 
