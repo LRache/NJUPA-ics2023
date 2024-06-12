@@ -58,7 +58,7 @@ void function_trace_display(){
     int level = 0;
     FunTracer *node = funTracer;
     while (node) {
-        printf("["FMT_WORD"]", node->pc);
+        printf(FMT_WORD":", node->pc);
         if (node->type == FUN_CAL) {
             for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
             level++;
