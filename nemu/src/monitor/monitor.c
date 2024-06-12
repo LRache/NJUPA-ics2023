@@ -109,7 +109,7 @@ static long load_elf() {
   long size = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     Elf32_Shdr shdr = sectionHeaderArray[i];
-    Log("%d", i);
+    Log("%d %x", i, shdr.sh_flags);
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
