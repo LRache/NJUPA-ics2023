@@ -50,6 +50,7 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *img_file_type = NULL;
 static int difftest_port = 1234;
 
 static long load_normal_image() {
@@ -99,15 +100,12 @@ static long load_img() {
     size = 4096; // built-in image size
   }
 
-  switch (imgType)
-  {
-  case IMG_IMAGE:
+  if (img_file_type == NULL) {
     size = load_normal_image();
-    break;
-
-  case IMG_ELF:
+  } else if (strcmp(img_file_type, "elf") == 0) {
     size = load_elf();
-    break;
+  } else {
+    panic("Invalid type of image file.");
   }
   
   return size;
@@ -123,7 +121,7 @@ static int parse_args(int argc, char *argv[]) {
     {"type"     , required_argument, NULL, 't'},
     {0          , 0                , NULL,  0 },
   };
-  static char *imgTypeStr = "img";
+
   int o;
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:t", table, NULL)) != -1) {
     switch (o) {
@@ -131,7 +129,7 @@ static int parse_args(int argc, char *argv[]) {
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 't': imgTypeStr = optarg; break;
+      case 't': img_file_type = optarg; break;
       case 1: img_file = optarg; break;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
@@ -143,14 +141,6 @@ static int parse_args(int argc, char *argv[]) {
         exit(0);
     }
   }
-  if (strcmp(imgTypeStr, "img") == 0) {
-    imgType = IMG_IMAGE;
-  } else if (strcmp(imgTypeStr, "elf") == 0) {
-    imgType = IMG_ELF;
-  } else {
-    Log("Unknown type of image: %s", imgTypeStr);
-  }
-  Log("%s", imgTypeStr);
   return 0;
 }
 
