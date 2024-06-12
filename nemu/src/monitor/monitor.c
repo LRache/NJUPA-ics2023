@@ -94,22 +94,17 @@ static long load_elf() {
   Assert(r == elfHeader.e_shnum, "Read error.");
 
   char *stringTable = NULL;
-  int s = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     Elf32_Shdr shdr = sectionHeaderArray[i];
     if (shdr.sh_type == SHT_STRTAB) {
       long offset = shdr.sh_offset;
       fseek(fp, offset, SEEK_SET);
       stringTable = malloc(shdr.sh_size);
-      s = shdr.sh_size;
       r = fread(stringTable, shdr.sh_size, 1, fp);
       Assert(r == 1, "Read string table error");
       break;
     }
   }
-  FILE* fp3 = fopen("/home/rache/Documents/code/ics2023/nemu/table.bin", "w");
-  r = fwrite(stringTable, 1, s, fp3);
-  fclose(fp3);
   
   long size = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
