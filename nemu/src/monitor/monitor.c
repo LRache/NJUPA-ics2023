@@ -122,11 +122,9 @@ static long load_elf() {
         Elf32_Sym entry;
         r = fread(&entry, sizeof(entry), 1, fp);
         Assert(r == 1, "Read error.");
-        if (entry.st_info == STT_FUNC) {
           char symName[12];
           strncpy(symName, &stringTable[entry.st_name], 11);
-          Log(FMT_PADDR " %s", entry.st_value, symName);
-        }
+          Log(FMT_PADDR " %s %d", entry.st_value, symName, entry.st_info);
         
       }
       
