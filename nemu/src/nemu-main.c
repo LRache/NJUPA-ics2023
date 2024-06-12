@@ -13,8 +13,11 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#include <common.h>
+#include <stdlib.h>
+
+#include "common.h"
 #include "./monitor/sdb/sdb.h"
+#include "cpu/cpu.h"
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -46,10 +49,12 @@ void test_expr() {
 }
 
 void at_nemu_exit() {
-  
+  free_function_tracer();
 }
 
 int main(int argc, char *argv[]) {
+  atexit(at_nemu_exit);
+
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();

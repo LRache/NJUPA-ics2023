@@ -41,6 +41,7 @@ typedef struct CallLinkNode
 void cpu_exec(uint64_t n);
 
 void trace_function(Decode *_this);
+void free_function_tracer();
 void ins_trace_display();
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
