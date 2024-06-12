@@ -2,6 +2,30 @@
 #include "cpu/decode.h"
 #include "cpu/tracer.h"
 
+static SymTableEntry *symTable = NULL;
+static SymTableEntry *symTableTail = NULL;
+
+void add_sym_table_entry(vaddr_t addr, int size, char *name) {
+    if (symTable == NULL) {
+        symTableTail = symTable = malloc(sizeof(SymTableEntry));
+    } else {
+        symTableTail->next = malloc(sizeof(SymTableEntry));
+        symTableTail = symTableTail->next;
+    }
+    symTableTail->start = addr;
+    symTableTail->end = addr + size;
+    strncpy(symTableTail->name, name, 11);
+}
+
+void free_sym_table() {
+    SymTableEntry *t;
+    while (symTable) {
+        t = symTable->next;
+        free(symTable);
+        symTable = t;
+    }
+}
+
 static FunTracer *funTracer = NULL; 
 static FunTracer *funTracerTail = NULL;
 
@@ -47,15 +71,26 @@ void function_trace_display(){
     int level = 0;
     FunTracer *node = funTracer;
     while (node) {
+        char* symName = "\0";
+        SymTableEntry *entry = symTable;
+        while (entry)
+        {
+            if (node->dst >= entry->start || node->dst < entry->end) {
+                symName = entry->name;
+                break;
+            }
+            entry = entry->next;
+        }
+        
         printf(FMT_WORD":", node->pc);
         if (node->type == FUN_CAL) {
             for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
             level++;
-            printf("call [@"FMT_WORD"]\n", node->dst);
+            printf("call [%s@"FMT_WORD"]\n", symName, node->dst);
         } else {
             if (level > 0) level--;
             for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
-            printf("ret  [@"FMT_WORD"]\n", node->dst);
+            printf("ret  [%s@"FMT_WORD"]\n", symName, node->dst);
 
         }
         node = node->next;

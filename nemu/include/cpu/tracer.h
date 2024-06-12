@@ -4,6 +4,13 @@
 #include "common.h"
 #include "decode.h"
 
+typedef struct SymTableEntry{
+  vaddr_t start;
+  vaddr_t end;
+  char name[12];
+  struct SymTableEntry *next;
+} SymTableEntry;
+
 enum CALL_TRACE_TYPE {
     FUN_CAL, FUN_RET
 };
@@ -24,9 +31,13 @@ typedef struct InstBuffer {
   int end;
 } InstTracer;
 
+void add_sym_table_entry(vaddr_t addr, int size, char *name);
+void free_sym_table();
+
 void trace_function(Decode *_this);
 void free_function_tracer();
 void function_trace_display();
+
 void trace_ins(Decode *_this);
 void ins_trace_display();
 

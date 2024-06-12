@@ -16,6 +16,7 @@
 #include <elf.h>
 #include "isa.h"
 #include "memory/paddr.h"
+#include "cpu/tracer.h"
 
 enum IMG_TYEP{
   IMG_IMAGE, IMG_ELF
@@ -123,12 +124,9 @@ static long load_elf() {
         r = fread(&entry, sizeof(entry), 1, fp);
         Assert(r == 1, "Read error.");
         if (ELF32_ST_TYPE(entry.st_info) == STT_FUNC) {
-          char symName[12];
-          strncpy(symName, &stringTable[entry.st_name], 11);
-          Log(FMT_PADDR " %s", entry.st_value, symName);
+          add_sym_table_entry(entry.st_value, entry.st_size, &stringTable[entry.st_name]);
         }
       }
-      
     }
   }
   
