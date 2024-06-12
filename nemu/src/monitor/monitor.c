@@ -87,21 +87,21 @@ static long load_elf() {
   r = fread(programHeaderArray, sizeof(Elf32_Phdr), elfHeader.e_phnum, fp);
   Assert(r == 1, "Read error.");
   
-  Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
-  r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
-  Assert(r == 1, "Read error.");
-  for (int i = 0; i < elfHeader.e_shnum; i++) {
-    if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
-      size = sectionHeaderArray[i].sh_size;
-      long offset = sectionHeaderArray[i].sh_offset;
-      fseek(fp, offset, SEEK_SET);
-      r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-    }
-  }
+  // Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
+  // r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
+  // Assert(r == 1, "Read error.");
+  // for (int i = 0; i < elfHeader.e_shnum; i++) {
+  //   if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
+  //     size = sectionHeaderArray[i].sh_size;
+  //     long offset = sectionHeaderArray[i].sh_offset;
+  //     fseek(fp, offset, SEEK_SET);
+  //     r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+  //   }
+  // }
   
   fclose(fp);
   Log("Load ELF successfully");
-  return r;
+  return size;
 }
 
 static long load_img() {
