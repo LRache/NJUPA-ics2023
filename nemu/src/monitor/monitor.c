@@ -87,9 +87,11 @@ static long load_elf() {
   r = fread(programHeaderArray, sizeof(Elf32_Phdr), elfHeader.e_phnum, fp);
   Assert(r == elfHeader.e_phnum, "Read error.");
   
+  fseek(fp, elfHeader.e_shoff, SEEK_SET);
   Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
   r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
   Assert(r == elfHeader.e_shnum, "Read error.");
+  
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     Log("%d", sectionHeaderArray[i].sh_type);
     if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
@@ -98,6 +100,7 @@ static long load_elf() {
       fseek(fp, offset, SEEK_SET);
       r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
       Assert(r == 1, "Read error.");
+      break;
     }
   }
   
