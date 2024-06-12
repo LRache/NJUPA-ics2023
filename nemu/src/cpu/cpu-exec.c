@@ -26,9 +26,6 @@
 #define MAX_INST_TO_PRINT 10
 
 CPU_state cpu = {};
-static InstBuffer instBuffer = {};
-
-
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
@@ -39,10 +36,6 @@ bool watchpoint_triggered();
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
-  
-  strcpy(instBuffer.inst[instBuffer.end], _this->logbuf);
-  instBuffer.end = (instBuffer.end + 1) % INST_BUFFER_SIZE;
-  if (instBuffer.end == instBuffer.start) instBuffer.start = (instBuffer.start + 1) % INST_BUFFER_SIZE;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
   trace_function(_this);
@@ -106,15 +99,6 @@ static void statistic() {
   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
-}
-
-void ins_trace_display() {
-  int i = instBuffer.start;
-  while (i != instBuffer.end)
-  {
-    puts(instBuffer.inst[i]);
-    i = (i + 1) % INST_BUFFER_SIZE;
-  }
 }
 
 void call_trace_display(){}

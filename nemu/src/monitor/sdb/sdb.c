@@ -197,6 +197,9 @@ static int cmd_trace(char *args) {
   if (args[0] == 'm') {
     mem_trace_display();
   }
+  if (args[0] == 'f') {
+    function_trace_display();
+  }
   return 1;
 }
 

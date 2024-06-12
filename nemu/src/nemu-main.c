@@ -49,8 +49,8 @@ void test_expr() {
 }
 
 void at_nemu_exit() {
-  Log("Bye~");
   free_function_tracer();
+  Log("Bye~");
 }
 
 int main(int argc, char *argv[]) {

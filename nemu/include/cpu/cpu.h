@@ -19,29 +19,12 @@
 #include <common.h>
 #include "decode.h"
 
-#define INST_BUFFER_SIZE 32
-typedef struct InstBuffer {
-  char inst[INST_BUFFER_SIZE][128];
-  int start;
-  int end;
-} InstBuffer;
-
-enum CALL_TRACE_TYPE {
-    FUN_CAL, FUN_RET
-};
-
-typedef struct CallLinkNode
-{
-    word_t pc;
-    vaddr_t dst;
-    struct CallLinkNode *next;
-    int type; 
-} FunTracer;
-
 void cpu_exec(uint64_t n);
 
 void trace_function(Decode *_this);
 void free_function_tracer();
+void function_trace_display();
+void trace_ins(Decode *_this);
 void ins_trace_display();
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
