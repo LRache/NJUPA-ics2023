@@ -111,10 +111,10 @@ static long load_elf() {
     char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
+    Log("%s", sectionName);
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
-        Log("Load section %s", sectionName);
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), size, 1, fp);
         // fseek(fp, shdr.sh_offset, SEEK_SET);
