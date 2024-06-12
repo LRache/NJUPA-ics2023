@@ -123,7 +123,7 @@ static long load_elf() {
   }
 
   FILE *fp2 = fopen("/home/rache/Documents/code/ics2023/nemu/test.bin", "w");
-  r = fwrite(bytes, 1, 1024, fp2);
+  r = fwrite(guest_to_host(RESET_VECTOR), 1, 800, fp2);
   fclose(fp2);
   Assert(r == 1024, "Write error");
   
