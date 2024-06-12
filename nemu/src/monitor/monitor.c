@@ -96,6 +96,7 @@ static long load_elf() {
       long offset = sectionHeaderArray[i].sh_offset;
       fseek(fp, offset, SEEK_SET);
       r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+      Assert(r == 1, "Read error.");
     }
   }
   
