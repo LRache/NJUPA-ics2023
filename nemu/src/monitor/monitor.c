@@ -107,6 +107,7 @@ static long load_elf() {
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
+    Log("%s", sectionName);
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
     if (strcmp(sectionName, ".text") == 0) {
       size = sectionHeaderArray[i].sh_size;
@@ -114,7 +115,6 @@ static long load_elf() {
       fseek(fp, offset, SEEK_SET);
       r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
       Assert(r == 1, "Read error.");
-      break;
     }
   }
   
