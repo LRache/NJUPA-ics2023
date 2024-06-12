@@ -108,6 +108,7 @@ static long load_elf() {
     char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
     Log("%s", sectionName);
+    Log("%d", shdr.sh_addr);
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
     if (strcmp(sectionName, ".text") == 0) {
       size = sectionHeaderArray[i].sh_size;
