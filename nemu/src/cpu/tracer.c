@@ -55,17 +55,17 @@ void free_function_tracer() {
 }
 
 void function_trace_display(){
-    //int level = 0;
+    int level = 0;
     FunTracer *node = funTracer;
     while (node) {
         printf("["FMT_WORD"]", node->pc);
         if (node->type == FUN_CAL) {
-            // for (int i = 0; i < level; i++) puts("  ");
-            // level++;
+            for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
+            level++;
             printf("call [@"FMT_WORD"]\n", node->dst);
         } else {
-            // if (level > 0) level--;
-            // for (int i = 0; i < level; i++) puts("  ");
+            if (level > 0) level--;
+            for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
             printf(" ret [@"FMT_WORD"]\n", node->dst);
 
         }
