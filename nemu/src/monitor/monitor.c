@@ -72,7 +72,6 @@ static long load_normal_image() {
 
 static long load_elf() {
   Log("Loading elf file");
-  long size = 0;
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
@@ -104,18 +103,20 @@ static long load_elf() {
     }
   }
   
+  long size = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
     Log("%s", sectionName);
     Log("%x", shdr.sh_addr);
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
-    if (strcmp(sectionName, ".text") == 0) {
-      size = sectionHeaderArray[i].sh_size;
-      long offset = sectionHeaderArray[i].sh_offset;
-      fseek(fp, offset, SEEK_SET);
-      r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-      Assert(r == 1, "Read error.");
+    if (shdr.sh_flags & SHF_ALLOC) {
+      size += shdr.sh_size;
+      if (shdr.sh_type == SHT_PROGBITS) {
+        fseek(fp, shdr.sh_offset, SEEK_SET);
+        r = fread(guest_to_host(shdr.sh_addr), size, 1, fp);
+        Assert(r == 1, "Read error.");
+      }
     }
   }
   
