@@ -27,13 +27,6 @@ typedef struct Decode {
 } Decode;
 
 
-#define INST_BUFFER_SIZE 32
-typedef struct InstBuffer {
-  char inst[INST_BUFFER_SIZE][128];
-  int start;
-  int end;
-} InstBuffer;
-
 // --- pattern matching mechanism ---
 __attribute__((always_inline))
 static inline void pattern_decode(const char *str, int len,

@@ -18,8 +18,28 @@
 
 #include <common.h>
 
+#define INST_BUFFER_SIZE 32
+typedef struct InstBuffer {
+  char inst[INST_BUFFER_SIZE][128];
+  int start;
+  int end;
+} InstBuffer;
+
+enum CALL_TRACE_TYPE {
+    FUN_CAL, FUN_RET
+};
+
+typedef struct CallLinkNode
+{
+    word_t pc;
+    vaddr_t dst;
+    struct CallLinkNode *next;
+    int type; 
+} CallTracer;
+
 void cpu_exec(uint64_t n);
 void ins_trace_display();
+void call_trace_display();
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 void invalid_inst(vaddr_t thispc);

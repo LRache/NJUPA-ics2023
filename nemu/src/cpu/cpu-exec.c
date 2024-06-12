@@ -26,7 +26,9 @@
 #define MAX_INST_TO_PRINT 10
 
 CPU_state cpu = {};
-InstBuffer instBuffer = {};
+static InstBuffer instBuffer = {};
+static __attribute_used__ CallTracer *calltrace = NULL; 
+
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
@@ -37,13 +39,18 @@ bool watchpoint_triggered();
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
-#endif
-  if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   
   strcpy(instBuffer.inst[instBuffer.end], _this->logbuf);
   instBuffer.end = (instBuffer.end + 1) % INST_BUFFER_SIZE;
   if (instBuffer.end == instBuffer.start) instBuffer.start = (instBuffer.start + 1) % INST_BUFFER_SIZE;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+
+  if ((_this->isa.inst.val & 0b1101111) == 0b1101111) {
+    Log("Jal at pc=" FMT_WORD, cpu.pc);
+  }
+
+#endif
+  if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
 
 #ifdef CONFIG_WATCHPOINTS
   if (watchpoint_triggered()) {
@@ -111,6 +118,8 @@ void ins_trace_display() {
     i = (i + 1) % INST_BUFFER_SIZE;
   }
 }
+
+void call_trace_display(){}
 
 void assert_fail_msg() {
   isa_reg_display();
