@@ -83,9 +83,9 @@ static long load_elf() {
   Assert(elfHeader.e_ident[EI_CLASS] == ELFCLASS32, "Bad elf class");
   Assert(elfHeader.e_machine == EM_RISCV, "Bad isa");
   
-  Elf32_Phdr programHeaderArray[elfHeader.e_phnum];
-  r = fread(programHeaderArray, sizeof(Elf32_Phdr), elfHeader.e_phnum, fp);
-  Assert(r == elfHeader.e_phnum, "Read error.");
+  // Elf32_Phdr programHeaderArray[elfHeader.e_phnum];
+  // r = fread(programHeaderArray, sizeof(Elf32_Phdr), elfHeader.e_phnum, fp);
+  // Assert(r == elfHeader.e_phnum, "Read error.");
   
   fseek(fp, elfHeader.e_shoff, SEEK_SET);
   Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
