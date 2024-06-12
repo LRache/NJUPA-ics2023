@@ -25,6 +25,8 @@
  */
 #define MAX_INST_TO_PRINT 10
 
+#define RISCV_JAL_OPCODE 0b1101111
+
 CPU_state cpu = {};
 static InstBuffer instBuffer = {};
 static __attribute_used__ CallTracer *calltrace = NULL; 
@@ -45,8 +47,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (instBuffer.end == instBuffer.start) instBuffer.start = (instBuffer.start + 1) % INST_BUFFER_SIZE;
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
-  if ((_this->isa.inst.val & 0b1101111) == 0b1101111) {
-    Log("Jal at pc=" FMT_WORD, cpu.pc);
+  if ((_this->isa.inst.val & RISCV_JAL_OPCODE) == RISCV_JAL_OPCODE) {
+    Log("Jal at pc=" FMT_WORD, _this->pc);
   }
 
 #endif
