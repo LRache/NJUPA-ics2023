@@ -114,6 +114,7 @@ static long load_elf() {
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), size, 1, fp);
         Assert(r == 1, "Read error.");
+        Log("Load section %s", sectionName);
       }
     }
   }
