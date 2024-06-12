@@ -75,7 +75,7 @@ void function_trace_display(){
         SymTableEntry *entry = symTable;
         while (entry)
         {
-            if (node->dst >= entry->start || node->dst < entry->end) {
+            if (node->dst >= entry->start && node->dst < entry->end) {
                 symName = entry->name;
                 break;
             }
