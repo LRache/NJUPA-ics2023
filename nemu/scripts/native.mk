@@ -23,8 +23,8 @@ compile_git:
 $(BINARY):: compile_git
 
 # Some convenient rules
-
-override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt --t=elf /home/rache/Documents/code/ics2023/am-kernels/tests/cpu-tests/build/hello-str-riscv32-nemu.elf
+INPUT_FILE=/home/rache/Documents/code/ics2023/am-kernels/tests/cpu-tests/build/dummy-riscv32-nemu.elf
+override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt --t=elf ${INPUT_FILE}
 override ARGS += $(ARGS_DIFF)
 
 # Command to execute NEMU
