@@ -91,13 +91,13 @@ static long load_elf() {
   r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
   Assert(r == elfHeader.e_shnum, "Read error.");
   for (int i = 0; i < elfHeader.e_shnum; i++) {
+    Log("%d", sectionHeaderArray[i].sh_type);
     if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
       size = sectionHeaderArray[i].sh_size;
       long offset = sectionHeaderArray[i].sh_offset;
       fseek(fp, offset, SEEK_SET);
       r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
       Assert(r == 1, "Read error.");
-      Log("Load elf image.");
     }
   }
   
