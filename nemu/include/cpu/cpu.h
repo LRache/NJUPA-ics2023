@@ -17,6 +17,7 @@
 #define __CPU_CPU_H__
 
 #include <common.h>
+#include "decode.h"
 
 #define INST_BUFFER_SIZE 32
 typedef struct InstBuffer {
@@ -38,8 +39,9 @@ typedef struct CallLinkNode
 } CallTracer;
 
 void cpu_exec(uint64_t n);
+
+void trace_function(Decode *_this);
 void ins_trace_display();
-void call_trace_display();
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 void invalid_inst(vaddr_t thispc);

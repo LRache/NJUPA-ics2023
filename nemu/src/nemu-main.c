@@ -45,6 +45,10 @@ void test_expr() {
     printf("PASSED\n");
 }
 
+void at_nemu_exit() {
+  
+}
+
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
