@@ -72,6 +72,7 @@ static long load_normal_image() {
 
 static long load_elf() {
   Log("Loading elf file");
+  long size = 0;
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
@@ -79,19 +80,28 @@ static long load_elf() {
   int r = fread(&elfHeader, sizeof(elfHeader), 1, fp);
   Assert(r == 1, "Read error.");
   Assert(memcmp(ELF_MAGIC_NUMBER, elfHeader.e_ident, 4) == 0, "Bad elf head");
-  Log("%d", elfHeader.e_ident[EI_CLASS]);
   Assert(elfHeader.e_ident[EI_CLASS] == ELFCLASS32, "Bad elf class");
   Assert(elfHeader.e_machine == EM_RISCV, "Bad isa");
   
-  Elf32_Phdr programHeader;
-  r = fread(&programHeader, sizeof(programHeader), 1, fp);
+  Elf32_Phdr programHeaderArray[elfHeader.e_phnum];
+  r = fread(programHeaderArray, sizeof(Elf32_Phdr), elfHeader.e_phnum, fp);
   Assert(r == 1, "Read error.");
   
-  //Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
+  Elf32_Shdr sectionHeaderArray[elfHeader.e_shnum];
+  r = fread(sectionHeaderArray, sizeof(Elf32_Shdr), elfHeader.e_shnum, fp);
+  Assert(r == 1, "Read error.");
+  for (int i = 0; i < elfHeader.e_shnum; i++) {
+    if (sectionHeaderArray[i].sh_type == SHT_PROGBITS) {
+      size = sectionHeaderArray[i].sh_size;
+      long offset = sectionHeaderArray[i].sh_offset;
+      fseek(fp, offset, SEEK_SET);
+      r = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+    }
+  }
   
   fclose(fp);
   Log("Load ELF successfully");
-  return 0;
+  return r;
 }
 
 static long load_img() {
