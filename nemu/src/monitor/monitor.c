@@ -52,8 +52,8 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *img_file_type = NULL;
 static int difftest_port = 1234;
-static char _bytes[1024];
-static char *bytes = _bytes;
+// static char _bytes[1024];
+// static char *bytes = _bytes;
 
 static long load_normal_image() {
   FILE *fp = fopen(img_file, "rb");
@@ -124,9 +124,9 @@ static long load_elf() {
     }
   }
 
-  FILE *fp2 = fopen("./test.bin", "w");
-  r = fwrite(bytes, 1, 1024, fp2);
-  Assert(r == 1024, "Write error");
+  // FILE *fp2 = fopen("./test.bin", "w");
+  // r = fwrite(bytes, 1, 1024, fp2);
+  // Assert(r == 1024, "Write error");
   
   fclose(fp);
   free(stringTable);
