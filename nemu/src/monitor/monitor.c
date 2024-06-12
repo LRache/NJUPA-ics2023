@@ -113,10 +113,8 @@ static long load_elf() {
   
   long size = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
-    char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
-    strncpy(sectionName, &stringTable[shdr.sh_name], 11);
-    Log("%s %x", sectionName, shdr.sh_name);
+    Log("%d", i);
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
