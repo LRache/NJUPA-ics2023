@@ -70,6 +70,7 @@ static long load_normal_image() {
 }
 
 static long load_elf() {
+  Log("Loading elf file");
   FILE *fp = fopen(img_file, "rb");
   Assert(fp, "Can not open '%s'", img_file);
 
