@@ -104,15 +104,13 @@ static long load_elf() {
     }
   }
   
+  memset(guest_to_host(RESET_VECTOR), 0, CONFIG_MSIZE);
   long size = 0;
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     Elf32_Shdr shdr = sectionHeaderArray[i];
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
-        if (shdr.sh_size & 3) {
-          memset(guest_to_host(shdr.sh_addr), 0, shdr.sh_size + (shdr.sh_size & 3));
-        }
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), shdr.sh_size, 1, fp);
         Assert(r == 1, "Read error.");
