@@ -23,9 +23,9 @@ compile_git:
 $(BINARY):: compile_git
 
 # Some convenient rules
-#INPUT_FILE=$(NEMU_HOME)/../am-kernels/tests/cpu-tests/build/recursion-riscv32-nemu.elf
-INPUT_FILE=$(NEMU_HOME)/test.bin
-override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt ${INPUT_FILE}
+INPUT_FILE=$(NEMU_HOME)/../am-kernels/tests/cpu-tests/build/recursion-riscv32-nemu.elf
+#INPUT_FILE=$(NEMU_HOME)/test.bin
+override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt ${INPUT_FILE} --t=elf
 override ARGS += $(ARGS_DIFF)
 
 # Command to execute NEMU
