@@ -48,7 +48,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
   if ((_this->isa.inst.val & RISCV_JAL_OPCODE) == RISCV_JAL_OPCODE) {
-    Log("Jal at pc=" FMT_WORD, _this->pc);
+    Log("Jal at pc= " FMT_WORD "to " FMT_WORD, _this->pc, _this->dnpc);
   }
 
 #endif
