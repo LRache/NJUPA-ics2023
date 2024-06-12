@@ -107,8 +107,6 @@ static long load_elf() {
   for (int i = 0; i < elfHeader.e_shnum; i++) {
     char sectionName[12];
     Elf32_Shdr shdr = sectionHeaderArray[i];
-    Log("%s", sectionName);
-    Log("%x", shdr.sh_addr);
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
@@ -122,7 +120,6 @@ static long load_elf() {
   
   fclose(fp);
   free(stringTable);
-  Log("Load ELF successfully");
   return size;
 }
 
