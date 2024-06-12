@@ -105,11 +105,10 @@ static long load_elf() {
   }
   
   for (int i = 0; i < elfHeader.e_shnum; i++) {
-    Elf32_Shdr shdr = sectionHeaderArray[i];
     char sectionName[12];
+    Elf32_Shdr shdr = sectionHeaderArray[i];
     strncpy(sectionName, &stringTable[shdr.sh_name], 11);
-    Log("%s", sectionName);
-    if (shdr.sh_type == SHT_PROGBITS && shdr.sh_flags) {
+    if (strcmp(sectionName, ".text") == 0) {
       size = sectionHeaderArray[i].sh_size;
       long offset = sectionHeaderArray[i].sh_offset;
       fseek(fp, offset, SEEK_SET);
