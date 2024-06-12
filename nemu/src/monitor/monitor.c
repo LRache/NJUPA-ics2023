@@ -52,8 +52,6 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *img_file_type = NULL;
 static int difftest_port = 1234;
-static char _bytes[1024];
-static char *bytes = _bytes;
 
 static long load_normal_image() {
   FILE *fp = fopen(img_file, "rb");
@@ -112,19 +110,15 @@ static long load_elf() {
     if (shdr.sh_flags & SHF_ALLOC) {
       size += shdr.sh_size;
       if (shdr.sh_type == SHT_PROGBITS) {
+        if (shdr.sh_size & 0b11) {
+          memset(guest_to_host(shdr.sh_addr + shdr.sh_size - 4), 0, 4);
+        }
         fseek(fp, shdr.sh_offset, SEEK_SET);
         r = fread(guest_to_host(shdr.sh_addr), shdr.sh_size, 1, fp);
-        fseek(fp, shdr.sh_offset, SEEK_SET);
-        r = fread(bytes+shdr.sh_addr-RESET_VECTOR, shdr.sh_size, 1, fp);
         Assert(r == 1, "Read error.");
       }
     }
   }
-
-  FILE *fp2 = fopen("/home/rache/Documents/code/ics2023/nemu/test.bin", "w");
-  r = fwrite(guest_to_host(RESET_VECTOR), 1, 800, fp2);
-  fclose(fp2);
-  Assert(r == 800, "Write error");
   
   fclose(fp);
   free(stringTable);
