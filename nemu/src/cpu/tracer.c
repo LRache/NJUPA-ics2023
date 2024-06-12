@@ -66,7 +66,7 @@ void function_trace_display(){
         } else {
             if (level > 0) level--;
             for (int i = 0; i < level; i++) {putchar(' '); putchar(' ');}
-            printf(" ret [@"FMT_WORD"]\n", node->dst);
+            printf("ret  [@"FMT_WORD"]\n", node->dst);
 
         }
         node = node->next;
