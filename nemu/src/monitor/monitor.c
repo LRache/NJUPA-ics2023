@@ -136,12 +136,12 @@ static long load_elf() {
 }
 
 static long load_img() {
-  long size = 0;
   if (img_file == NULL) {
     Log("No image is given. Use the default build-in image.");
-    size = 4096; // built-in image size
+    return 4096; // built-in image size
   }
 
+  long size = 0;
   if (img_file_type == NULL) {
     size = load_normal_image();
   } else if (strcmp(img_file_type, "elf") == 0) {
