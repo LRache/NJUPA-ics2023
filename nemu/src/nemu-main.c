@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
 
   /* Start engine. */
   engine_start();
-  //test_expr();
 
   return is_exit_status_bad();
 }
