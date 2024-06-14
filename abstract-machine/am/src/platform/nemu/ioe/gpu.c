@@ -10,12 +10,12 @@ static AM_GPU_CONFIG_T gpuConfig;
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg);
 void __am_gpu_init() {
   __am_gpu_config(&gpuConfig);
-  int i;
-  int w = gpuConfig.width; 
-  int h = gpuConfig.height;
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i;
-  outl(SYNC_ADDR, 1);
+  // int i;
+  // int w = gpuConfig.width; 
+  // int h = gpuConfig.height;
+  // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+  // for (i = 0; i < w * h; i ++) fb[i] = i;
+  // outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
