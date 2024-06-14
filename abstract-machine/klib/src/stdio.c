@@ -131,13 +131,15 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         continue;
       }
 
+      int arglen = 0;
       char arg[10] = {};
-      for (int i = 0; isalpha(*p) && *p; i++, p++) arg[i] = *p;
+      for (arglen = 0; isalpha(*p) && *p; arglen++, p++) arg[arglen] = *p;
       
       for (int i = 0; i < FMT_TABLE_LEN; i++) {
         if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
           fmtTable[i].fun(&out, &ap, arg);
           p += fmtTable[i].length;
+          p += arglen;
           break;
         } 
       }
