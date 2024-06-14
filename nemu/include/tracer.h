@@ -64,7 +64,7 @@ void function_trace_display();
 void trace_ins(Decode *_this);
 void ins_trace_display();
 
-void trace_device(const char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc);
+void trace_device(const char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc, int len);
 void device_trace_display();
 
 #endif

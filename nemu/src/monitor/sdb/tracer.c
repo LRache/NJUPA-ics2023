@@ -118,8 +118,8 @@ void ins_trace_display() {
 
 static DeviceTracer deviceTracer = {};
 
-void trace_device(const char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc) {
-    deviceTracer.trace[deviceTracer.end] = (DeviceTracerEntry) { .addr = addr, .offset = offset, .type = type, .pc = pc};
+void trace_device(const char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc, int len) {
+    deviceTracer.trace[deviceTracer.end] = (DeviceTracerEntry) { .addr = addr, .offset = offset, .type = type, .pc = pc, .len=len};
     strcpy(deviceTracer.trace[deviceTracer.end].name, name);
     
     deviceTracer.end = (deviceTracer.end + 1) % INST_TRACER_SIZE;
@@ -130,10 +130,10 @@ void device_trace_display() {
     int i = deviceTracer.start;
     while (i != deviceTracer.end) {
         printf("pc=" FMT_PADDR " ", deviceTracer.trace[i].pc);
-        printf(deviceTracer.trace[i].type == DEVICE_READ ? "read" : "write");
+        printf(deviceTracer.trace[i].type == DEVICE_READ ? " read" : "write");
         printf(
-            " %s offset=" FMT_PADDR " len=%d\n", 
-            deviceTracer.trace[i].name, deviceTracer.trace[i].offset, deviceTracer.trace[i].len
+            " " FMT_PADDR "(%s) offset=" FMT_PADDR " len=%d\n", 
+            deviceTracer.trace[i].addr, deviceTracer.trace[i].name, deviceTracer.trace[i].offset, deviceTracer.trace[i].len
             );
         i = (i + 1) % DEVICE_TRACER_SIZE;
     }
