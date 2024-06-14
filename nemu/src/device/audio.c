@@ -35,8 +35,6 @@ static uint32_t buf_tail = 0;
 static uint32_t *audio_base = NULL;
 static uint32_t count = 0;
 
-static SDL_AudioSpec s = {};
-
 static inline void set_buf_count(uint32_t c) {
   buf_count = c;
   audio_base[reg_count] = buf_count;
@@ -61,6 +59,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   if (is_write) {
     assert(reg != reg_sbuf_size);
     if (reg == reg_init) {
+      SDL_AudioSpec s = {};
       s.format = AUDIO_S16SYS;  // 假设系统中音频数据的格式总是使用16位有符号数来表示
       s.userdata = NULL;        // 不使用
       s.freq = *(audio_base + reg_freq);

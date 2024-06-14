@@ -13,7 +13,6 @@ static uint32_t bufsize = 0;
 
 void __am_audio_init() {
   *(uint32_t*)AUDIO_INIT_ADDR = 1;
-  printf("AAA");
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
