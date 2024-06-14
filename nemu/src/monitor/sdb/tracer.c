@@ -116,6 +116,25 @@ void ins_trace_display() {
   }
 }
 
-void deviceTrace() {
+static DeviceTracer deviceTracer = {};
 
+void trace_device(char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc) {
+    deviceTracer.trace[deviceTracer.end] = (DeviceTracerEntry) { .addr = addr, .offset = offset, .type = type, .pc = pc};
+    strcpy(deviceTracer.trace[deviceTracer.end].name, name);
+    
+    deviceTracer.end = (deviceTracer.end + 1) % INST_TRACER_SIZE;
+    if (deviceTracer.end == deviceTracer.start) deviceTracer.start = (deviceTracer.start + 1) % DEVICE_TRACER_SIZE;
+}
+
+void trace_device_display() {
+    int i = deviceTracer.start;
+    while (i != deviceTracer.end) {
+        printf("pc=" FMT_PADDR " ", deviceTracer.trace[i].pc);
+        printf(deviceTracer.trace[i].type == DEVICE_READ ? "read" : "write");
+        printf(
+            " %s offset=" FMT_PADDR " len=%d\n", 
+            deviceTracer.trace[i].name, deviceTracer.trace[i].offset, deviceTracer.trace[i].len
+            );
+        i = (i + 1) % DEVICE_TRACER_SIZE;
+    }
 }

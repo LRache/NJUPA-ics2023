@@ -23,13 +23,36 @@ typedef struct CallLinkNode
     int type; 
 } FunTracer;
 
+#define BUFFER_TRACER_HEADER int start, end;
+
 #define INST_TRACER_SIZE 32
 
-typedef struct InstBuffer {
+typedef struct {
+  BUFFER_TRACER_HEADER
   char inst[INST_TRACER_SIZE][128];
-  int start;
-  int end;
 } InstTracer;
+
+#define DEVICE_TRACER_SIZE 32
+
+enum {
+  DEVICE_READ, DEVICE_WRITE
+};
+
+typedef struct {
+  char name[32];
+  paddr_t pc;
+  paddr_t addr;
+  int len;
+  paddr_t offset;
+  int type;
+} DeviceTracerEntry;
+
+typedef struct
+{
+  BUFFER_TRACER_HEADER;
+  DeviceTracerEntry trace[DEVICE_TRACER_SIZE];
+} DeviceTracer;
+
 
 void add_sym_table_entry(vaddr_t addr, int size, char *name);
 void free_sym_table();
@@ -40,5 +63,7 @@ void function_trace_display();
 
 void trace_ins(Decode *_this);
 void ins_trace_display();
+
+void trace_device(char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc);
 
 #endif
