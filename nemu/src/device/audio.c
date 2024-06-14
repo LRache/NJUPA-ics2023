@@ -67,11 +67,10 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 }
 
 static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
-  assert(offset == 0);
   assert(is_write == 1);
   assert(len <= buffer_count);
   for (int i = 0; i < len; i++) {
-    audio_buffer[buf_tail] = sbuf[i];
+     audio_buffer[buf_tail] = sbuf[offset+i];
     buf_tail = (buf_tail + 1) % CONFIG_SB_SIZE;
   }
   buffer_count -= len;
