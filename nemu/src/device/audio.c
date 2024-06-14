@@ -43,6 +43,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
       buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
     }
     buffer_count += len;
+    Log("write %u", len);
     audio_base[reg_count] = buffer_count; 
   }
 }
