@@ -36,6 +36,11 @@ static uint32_t *audio_base = NULL;
 
 static SDL_AudioSpec s = {};
 
+static inline void set_buf_count(uint32_t c) {
+  buf_count = c;
+  audio_base[reg_count] = buf_count;
+}
+
 static void audio_callback(void *userdata, uint8_t *stream, int len) {
   uint32_t buf_ready = CONFIG_SB_SIZE - buf_count;
   if (buf_ready >= len) {
@@ -43,8 +48,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
       stream[i] = audio_buffer[buf_head];
       buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
     }
-    buf_count += len;
-    audio_base[reg_count] = buf_count; 
+    set_buf_count(buf_count + len);
     Log("%u", len);
   }
 }
@@ -75,8 +79,7 @@ static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
     audio_buffer[buf_tail] = sbuf[offset+i];
     buf_tail = (buf_tail + 1) % CONFIG_SB_SIZE;
   }
-  buf_count -= len;
-  audio_base[reg_count] = buf_count;
+  set_buf_count(buf_count - len);
 }
 
 void init_audio() {
@@ -89,6 +92,6 @@ void init_audio() {
   add_mmio_map("audio", CONFIG_AUDIO_CTL_MMIO, audio_base, space_size, audio_io_handler);
 #endif
   sbuf = (uint8_t *)new_space(CONFIG_SB_SIZE);
-  buf_count = CONFIG_SB_SIZE;
+  set_buf_count(CONFIG_SB_SIZE);
   add_mmio_map("audio-sbuf", CONFIG_SB_ADDR, sbuf, CONFIG_SB_SIZE, audio_buf_io_handler);
 }
