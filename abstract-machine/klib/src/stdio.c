@@ -7,7 +7,7 @@
 
 static void __fmt_s(char **out, va_list ap);
 static void __fmt_d(char **out, va_list ap);
-static void __fmt_ull(char **out, va_list ap);
+static void __fmt_llu(char **out, va_list ap);
 static void __fmt_avoid(char **out, va_list ap);
 
 typedef struct {
@@ -19,7 +19,7 @@ typedef struct {
 static FmtEntry fmtTable[] = {
   {"s"   , 1, __fmt_s},
   {"d"   , 1, __fmt_d},
-  {"ull" , 3, __fmt_ull},
+  {"llu" , 3, __fmt_llu},
   {"%"   , 1, __fmt_avoid}
 };
 
@@ -50,7 +50,7 @@ static void __fmt_d(char **out, va_list ap) {
   }
 }
 
-static void __fmt_ull(char **out, va_list ap) {
+static void __fmt_llu(char **out, va_list ap) {
   unsigned long long d = va_arg(ap, unsigned long long);
   if (d == 0) {
     *(*out) = '0';
