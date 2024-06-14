@@ -47,6 +47,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
     stream[i] = audio_buffer[buf_head];
     buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
   }
+  Log("%d %d", i, len);
   for (; i < len; i++) {
     stream[i] = 0;
   }
