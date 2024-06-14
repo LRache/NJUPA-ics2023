@@ -118,7 +118,7 @@ void ins_trace_display() {
 
 static DeviceTracer deviceTracer = {};
 
-void trace_device(char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc) {
+void trace_device(const char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc) {
     deviceTracer.trace[deviceTracer.end] = (DeviceTracerEntry) { .addr = addr, .offset = offset, .type = type, .pc = pc};
     strcpy(deviceTracer.trace[deviceTracer.end].name, name);
     
@@ -126,7 +126,7 @@ void trace_device(char *name, paddr_t addr, paddr_t offset, int type, paddr_t pc
     if (deviceTracer.end == deviceTracer.start) deviceTracer.start = (deviceTracer.start + 1) % DEVICE_TRACER_SIZE;
 }
 
-void trace_device_display() {
+void device_trace_display() {
     int i = deviceTracer.start;
     while (i != deviceTracer.end) {
         printf("pc=" FMT_PADDR " ", deviceTracer.trace[i].pc);

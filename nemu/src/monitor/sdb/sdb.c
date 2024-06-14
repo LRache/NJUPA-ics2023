@@ -191,15 +191,19 @@ static int cmd_w(char *args) {
 }
 
 static int cmd_trace(char *args) {
-  if (args[0] == 'i') {
+  if (strcmp(args, "i") == 0 || strcmp(args, "ins") == 0) {
     ins_trace_display();
     return 0;
   }
-  if (args[0] == 'm') {
+  if (strcmp(args, "m") == 0 || strcmp(args, "mem") == 0) {
     mem_trace_display();
+    return 0;
   }
-  if (args[0] == 'f') {
+  if (strcmp(args, "f") == 0 || strcmp(args, "func") == 0) {
     function_trace_display();
+  }
+  if (strcmp(args, "d") == 0 || strcmp(args, "dev") == 0) {
+    device_trace_display();
   }
   return 1;
 }
