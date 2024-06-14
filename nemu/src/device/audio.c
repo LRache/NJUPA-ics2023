@@ -66,9 +66,6 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
       s.freq = *(audio_base + reg_freq);
       s.channels = *(audio_base + reg_channels);
       s.samples = *(audio_base + reg_samples);
-      // s.freq = 8000;
-      // s.channels = 1;
-      // s.samples = 1024;
       s.callback = audio_callback;
       SDL_InitSubSystem(SDL_INIT_AUDIO);
       SDL_OpenAudio(&s, NULL);
