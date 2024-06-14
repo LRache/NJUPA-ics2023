@@ -5,6 +5,31 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+static void __fmt_s(char **out, va_list ap);
+static void __fmt_d(char **out, va_list ap);
+static void __fmt_ull(char **out, va_list ap);
+static void __fmt_avoid(char **out, va_list ap);
+
+typedef struct {
+  char fmt[10];
+  int length;
+  void (*fun)(char**, va_list);
+} FmtEntry;
+
+static FmtEntry fmtTable[] = {
+  {"s"   , 1, __fmt_s},
+  {"d"   , 1, __fmt_d},
+  {"ull" , 3, __fmt_ull},
+  {"%"   , 1, __fmt_avoid}
+};
+
+#define FMT_TABLE_LEN (sizeof(fmtTable) / sizeof(fmtTable[0]))
+
+static void __fmt_s(char **out, va_list ap) {
+  char *s = va_arg(ap, char*);
+  while (*s) *((*out)++) = *(s++);
+}
+
 static void __fmt_d(char **out, va_list ap) {
   int d = va_arg(ap, int);
         
@@ -42,6 +67,10 @@ static void __fmt_ull(char **out, va_list ap) {
   }
 }
 
+static void __fmt_avoid(char **out, va_list ap) {
+  *(*out)++ = '%';
+}
+
 int printf(const char *fmt, ...) {
   char buffer[1024];
   va_list ap;
@@ -63,39 +92,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   {
     if (*p == '%') {
       p++;
-      if (*p == '%') {
-        *(out++) = *(p++);
-      } else if (*p == 's') {
-        char *s = va_arg(ap, char*);
-        while (*s) *(out++) = *(s++);
-        p++;
-      } else if (*p == 'd') {
-        __fmt_d(&out, ap);
-        p++;
-      } 
-      else if (strncmp(p, "ld", 2) == 0) {
-        long d = va_arg(ap, long);
-        
-        if (d == 0) {
-          *(out++) = '0';
-        } else {
-          int sign = d < 0;
-          if (sign) d = -d;
-          char stack[13] = {};
-          char *t = stack;
-          while (d) {
-            *(t++) = d % 10 + '0';
-            d = d / 10;
-          }
-          char *h = stack;
-          if (sign) (*out++) = '-';
-          while (t > h) *(out++) = *(--t);
-        }
-        p+=2;
-      } 
-      else if (strncmp(p, "ull", 3) == 0) {
-        __fmt_ull(&out, ap);
-        p+=3;
+      for (int i = 0; i < FMT_TABLE_LEN; i++) {
+        if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
+          fmtTable[i].fun(&out, ap);
+          p += fmtTable[i].length;
+          break;
+        } 
       }
     }
     else {
