@@ -94,6 +94,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       p++;
       for (int i = 0; i < FMT_TABLE_LEN; i++) {
         putch(fmtTable[i].fmt[0]);
+        putch('\n');
         if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
           fmtTable[i].fun(&out, ap);
           p += fmtTable[i].length;
