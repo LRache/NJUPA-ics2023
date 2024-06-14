@@ -139,7 +139,6 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
           fmtTable[i].fun(&out, &ap, arg);
           p += fmtTable[i].length;
-          p += arglen;
           break;
         } 
       }
