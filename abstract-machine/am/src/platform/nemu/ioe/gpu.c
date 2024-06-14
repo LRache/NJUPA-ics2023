@@ -1,6 +1,8 @@
 #include <am.h>
 #include <nemu.h>
 
+#include "klib.h"
+
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
 static AM_GPU_CONFIG_T gpuConfig;
@@ -31,6 +33,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
+  printf("DBDRAW");
   uint32_t *pixels = ctl->pixels;
   for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
   {
