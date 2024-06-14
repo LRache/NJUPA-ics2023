@@ -47,11 +47,11 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
     stream[i] = audio_buffer[buf_head];
     buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
   }
-  Log("%d %d", i, len);
+  set_buf_count(buf_count - i);
+  Log("%d %d %u", i, len, buf_count);
   for (; i < len; i++) {
     stream[i] = 0;
   }
-  set_buf_count(buf_count - i);
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
