@@ -6,11 +6,11 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  volatile uint32_t *ptr = (uint32_t*)RTC_ADDR;
-  // volatile uint32_t v = *ptr;
-  ptr++;
-  volatile uint32_t u = *ptr;
-  uptime->us = (uint64_t)(*(uint32_t*)RTC_ADDR) + ((uint64_t)u << 32);
+  // volatile uint32_t *ptr = (uint32_t*)RTC_ADDR;
+  // // volatile uint32_t v = *ptr;
+  // ptr++;
+  // volatile uint32_t u = *ptr;
+  uptime->us = (uint64_t)(*(uint32_t*)RTC_ADDR) + ((uint64_t)*(((uint32_t*)RTC_ADDR)+1) << 32);
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
