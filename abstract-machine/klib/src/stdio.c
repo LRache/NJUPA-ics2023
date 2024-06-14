@@ -32,11 +32,7 @@ static void __fmt_s(char **out, va_list *ap, char *arg) {
 
 static void __fmt_d(char **out, va_list *ap, char *arg) {
   int d = va_arg(*ap, int);
-        
-  if (d == 0) {
-    *((*out)++) = '0';
-    return;
-  }
+
   int leftAlign = 0;
   int minWidth = 0;
   int zeroFill = 0;
@@ -60,9 +56,13 @@ static void __fmt_d(char **out, va_list *ap, char *arg) {
   
   char stack[13] = {};
   char *t = stack;
-  while (d) {
-    *(t++) = d % 10 + '0';
-    d = d / 10;
+  if (d == 0) {
+    *(t++) = '0';
+  } else {
+    while (d) {
+      *(t++) = d % 10 + '0';
+      d = d / 10;
+    }
   }
 
   int width = t - stack;
