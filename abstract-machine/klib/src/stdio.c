@@ -52,7 +52,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         }
         p++;
       } else if (*p == 'l' && *(p+1) == 'd') {
-        int d = va_arg(ap, int);
+        int d = va_arg(ap, long);
         
         if (d == 0) {
           *(out++) = '0';

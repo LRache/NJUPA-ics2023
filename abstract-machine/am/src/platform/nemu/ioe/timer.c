@@ -12,7 +12,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   // ptr++;
   // volatile uint32_t u = *ptr;
   uptime->us = v;
-  printf("%ld\n", v);
+  printf("a%ld\n", v);
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
