@@ -51,7 +51,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           while (t > h) *(out++) = *(--t);
         }
         p++;
-      } else if (*p == 'l' && *(p+1) == 'd') {
+      } 
+      else if (strncmp(p, "ld", 2)) {
         long d = va_arg(ap, long);
         
         if (d == 0) {
