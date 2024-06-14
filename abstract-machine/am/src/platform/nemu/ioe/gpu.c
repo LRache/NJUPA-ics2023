@@ -35,13 +35,12 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   }
   uint32_t *pixels = ctl->pixels;
   volatile uint32_t *buffer = (uint32_t*) FB_ADDR;
-  for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
-  {
-    *(buffer+i) = *(pixels+i);
-    if (*(buffer+i) != 0)
-    printf("%d\n", *(buffer+i));
-  }
-  outl(SYNC_ADDR, 1);
+  memcpy(buffer, pixels, sizeof(uint32_t) * gpuConfig.width * gpuConfig.height);
+  // for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
+  // {
+  //   *(buffer+i) = *(pixels+i);
+  // }
+  //outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
