@@ -32,20 +32,20 @@ static uint8_t audio_buffer[CONFIG_SB_SIZE];
 static uint32_t buf_count = 0;
 static uint32_t buf_head = 0;
 static uint32_t buf_tail = 0;
-static uint32_t buf_ready = 0;
 static uint32_t *audio_base = NULL;
 
 static SDL_AudioSpec s = {};
 
 static void audio_callback(void *userdata, uint8_t *stream, int len) {
+  uint32_t buf_ready = CONFIG_SB_SIZE - buf_count;
   if (buf_ready >= len) {
     for (int i = 0; i < len; i++) {
       stream[i] = audio_buffer[buf_head];
       buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
     }
     buf_count += len;
-    buf_ready -= len;
     audio_base[reg_count] = buf_count; 
+    Log("%u", buf_count);
   }
 }
 
@@ -76,7 +76,6 @@ static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
     buf_tail = (buf_tail + 1) % CONFIG_SB_SIZE;
   }
   buf_count -= len;
-  buf_ready += len;
   audio_base[reg_count] = buf_count;
 }
 
