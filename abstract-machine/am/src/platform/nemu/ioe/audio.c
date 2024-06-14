@@ -38,8 +38,5 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
 
   uint8_t *dst = (uint8_t*)AUDIO_SBUF_ADDR;
   uint8_t *src = (uint8_t*)ctl->buf.start;
-  // for (int i = 0; i < len; i++, dst++, src++) {
-  //   *dst = *src;
-  // }
   memcpy(dst, src, len);
 }
