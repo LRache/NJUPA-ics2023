@@ -33,6 +33,7 @@ static uint32_t buf_count = 0;
 static uint32_t buf_head = 0;
 static uint32_t buf_tail = 0;
 static uint32_t *audio_base = NULL;
+static uint32_t count = 0;
 
 static SDL_AudioSpec s = {};
 
@@ -48,6 +49,8 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
     buf_head = (buf_head + 1) % CONFIG_SB_SIZE;
   }
   set_buf_count(buf_count - i);
+  count += i;
+  Log("%u", count);
   for (; i < len; i++) {
     stream[i] = 0;
   }
