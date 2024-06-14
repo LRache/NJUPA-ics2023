@@ -16,7 +16,7 @@
 #include <elf.h>
 #include "isa.h"
 #include "memory/paddr.h"
-#include "cpu/tracer.h"
+#include "tracer.h"
 
 enum IMG_TYEP{
   IMG_IMAGE, IMG_ELF

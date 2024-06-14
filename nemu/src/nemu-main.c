@@ -17,7 +17,7 @@
 
 #include "common.h"
 #include "monitor/sdb/sdb.h"
-#include "cpu/tracer.h"
+#include "tracer.h"
 
 void init_monitor(int, char *[]);
 void am_init_monitor();

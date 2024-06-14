@@ -1,6 +1,6 @@
 #include "cpu/cpu.h"
 #include "cpu/decode.h"
-#include "cpu/tracer.h"
+#include "tracer.h"
 
 static SymTableEntry *symTable = NULL;
 static SymTableEntry *symTableTail = NULL;
@@ -114,4 +114,8 @@ void ins_trace_display() {
     puts(instTracer.inst[i]);
     i = (i + 1) % INST_TRACER_SIZE;
   }
+}
+
+void deviceTrace() {
+
 }

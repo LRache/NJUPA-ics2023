@@ -2,7 +2,7 @@
 #define __CPU_TRACER_H__
 
 #include "common.h"
-#include "decode.h"
+#include "cpu/decode.h"
 
 typedef struct SymTableEntry{
   vaddr_t start;
