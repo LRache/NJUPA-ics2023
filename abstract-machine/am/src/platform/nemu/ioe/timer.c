@@ -11,7 +11,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   volatile uint32_t v = *ptr;
   ptr++;
   volatile uint32_t u = *ptr;
-  uptime->us = v;
+  uptime->us = (uint64_t)v + ((uint64_t)u << 32);
   printf("a%d %d\n",v, u);
 }
 
