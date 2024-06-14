@@ -11,12 +11,12 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg);
 
 void __am_gpu_init() {
   __am_gpu_config(&gpuConfig);
-  // int i;
-  // int w = gpuConfig.width; 
-  // int h = gpuConfig.height;
-  // uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  // for (i = 0; i < w * h; i ++) fb[i] = i;
-  // outl(SYNC_ADDR, 1);
+  int i;
+  int w = gpuConfig.width; 
+  int h = gpuConfig.height;
+  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+  for (i = 0; i < w * h; i ++) fb[i] = i;
+  outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
@@ -31,16 +31,15 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-  uint32_t *pixels = ctl->pixels;
-  uint32_t *buffer = (uint32_t*) FB_ADDR;
-  for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
-  {
-     *(buffer+i) = *(pixels+i);
-  }
-  outl(SYNC_ADDR, 1);
-  if (ctl->sync) {
-    outl(SYNC_ADDR, 1);
-  }
+  // uint32_t *pixels = ctl->pixels;
+  // uint32_t *buffer = (uint32_t*) FB_ADDR;
+  // for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
+  // {
+  //    *(buffer+i) = *(pixels+i);
+  // }
+  // if (ctl->sync) {
+  //   outl(SYNC_ADDR, 1);
+  // }
 }
 
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
