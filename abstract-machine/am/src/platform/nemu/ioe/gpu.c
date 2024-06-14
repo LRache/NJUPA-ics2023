@@ -38,7 +38,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int w = gpuConfig.width; 
   int h = gpuConfig.height;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i;
+  uint32_t *pixels = (uint32_t *)ctl->pixels;
+  for (i = 0; i < w * h; i ++) fb[i] = pixels[i];
   outl(SYNC_ADDR, 1);
 }
 
