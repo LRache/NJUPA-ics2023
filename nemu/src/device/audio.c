@@ -45,7 +45,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
     }
     buf_count += len;
     audio_base[reg_count] = buf_count; 
-    Log("%u", buf_count);
+    Log("%u", len);
   }
 }
 
