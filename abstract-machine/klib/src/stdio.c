@@ -51,6 +51,25 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           while (t > h) *(out++) = *(--t);
         }
         p++;
+      } else if (*p == 'l' && *(p+1) == 'd') {
+        int d = va_arg(ap, int);
+        
+        if (d == 0) {
+          *(out++) = '0';
+        } else {
+          int sign = d < 0;
+          if (sign) d = -d;
+          char stack[13] = {};
+          char *t = stack;
+          while (d) {
+            *(t++) = d % 10 + '0';
+            d = d / 10;
+          }
+          char *h = stack;
+          if (sign) (*out++) = '-';
+          while (t > h) *(out++) = *(--t);
+        }
+        p+=2;
       }
     } else {
       *(out++) = *(p++);
