@@ -41,6 +41,6 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   volatile uint8_t *src = (uint8_t*)ctl->buf.start;
   for (int i = 0; i < len; i++, dst++, src++) {
     *dst = *src;
-    printf("out:%d", (int32_t)*src);
+    printf("out:%d\n", (int32_t)*src);
   }
 }
