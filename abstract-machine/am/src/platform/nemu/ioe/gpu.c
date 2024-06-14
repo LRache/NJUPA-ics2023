@@ -37,9 +37,9 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   volatile uint32_t *buffer = (uint32_t*) FB_ADDR;
   for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
   {
-    if (*(pixels+i) != 0)
-    printf("%d\n", *(pixels+i));
     *(buffer+i) = *(pixels+i);
+    if (*(buffer+i) != 0)
+    printf("%d\n", *(buffer+i));
   }
   outl(SYNC_ADDR, 1);
 }
