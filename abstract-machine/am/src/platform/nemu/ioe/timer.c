@@ -10,8 +10,8 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   // // volatile uint32_t v = *ptr;
   // ptr++;
   // volatile uint32_t u = *ptr;
-  // uptime->us = (uint64_t)(*(uint32_t*)RTC_ADDR) + ((uint64_t)*(((uint32_t*)RTC_ADDR)+1) << 32);
-  uptime->us = (uint64_t)inw(RTC_ADDR) + ((uint64_t)inw(RTC_ADDR+4) << 32);
+  uptime->us = (uint64_t)(*(uint32_t*)RTC_ADDR) + ((uint64_t)*(((uint32_t*)RTC_ADDR)+1) << 32);
+  //uptime->us = (uint64_t)inw(RTC_ADDR) + ((uint64_t)inw(RTC_ADDR+4) << 32);
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
