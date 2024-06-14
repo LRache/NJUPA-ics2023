@@ -33,7 +33,7 @@ void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint32_t len = ctl->buf.end - ctl->buf.start;
   volatile uint32_t count = *(uint32_t*)AUDIO_COUNT_ADDR;
   printf("1\n");
-  while (count > len) count = *(uint32_t*)AUDIO_COUNT_ADDR;
+  while (count < len) count = *(uint32_t*)AUDIO_COUNT_ADDR;
   printf("2\n");
 
   volatile uint8_t *dst = (uint8_t*)AUDIO_SBUF_ADDR;
