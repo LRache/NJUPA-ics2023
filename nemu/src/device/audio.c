@@ -77,7 +77,6 @@ static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(CONFIG_SB_SIZE - buf_count > len);
   for (int i = 0; i < len; i++) {
     audio_buffer[buf_tail] = sbuf[offset+i];
-    Log("in: %u", sbuf[offset+i]);
     buf_tail = (buf_tail + 1) % CONFIG_SB_SIZE;
   }
   set_buf_count(buf_count + len);
