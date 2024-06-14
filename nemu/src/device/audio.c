@@ -50,7 +50,6 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
   }
   set_buf_count(buf_count - i);
   count += i;
-  Log("%u", count);
   for (; i < len; i++) {
     stream[i] = 0;
   }
