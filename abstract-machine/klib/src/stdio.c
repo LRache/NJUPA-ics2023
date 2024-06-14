@@ -70,13 +70,13 @@ static void __fmt_d(char **out, va_list *ap, char *arg) {
   if (width < minWidth) {
     if (leftAlign) {
       while (t > h) *((*out)++) = *(--t);
-      while (width <= minWidth) {
+      while (width < minWidth) {
         *((*out)++) = ' ';
         width ++;
       }
     } else {
       char fill = zeroFill ? '0' : ' ';
-      while (width <= minWidth) {
+      while (width < minWidth) {
         *((*out)++) = fill;
         width++;
       }
