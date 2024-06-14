@@ -48,9 +48,11 @@ int strcmp(const char *s1, const char *s2) {
 
 int strncmp(const char *s1, const char *s2, size_t n) {
   unsigned char *p1 = (unsigned char *)s1, *p2 = (unsigned char *)s2;
-  for (size_t i = 0; i < n && *p1 && *p2; i++, p1++, p2++) {
+  size_t i;
+  for (i = 0; i < n && *p1 && *p2; i++, p1++, p2++) {
     if (*p1 != *p2) return *p1 - *p2;
   }
+  if (i == n) return 0;
   if (*p1) return 1;
   if (*p2) return -1;
   return 0;
