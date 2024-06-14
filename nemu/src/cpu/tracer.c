@@ -100,9 +100,11 @@ void function_trace_display(){
 static InstTracer instTracer = {};
 
 void trace_ins(Decode *_this) {
+    #ifdef CONFIG_ITRACE_COND
     strcpy(instTracer.inst[instTracer.end], _this->logbuf);
     instTracer.end = (instTracer.end + 1) % INST_TRACER_SIZE;
     if (instTracer.end == instTracer.start) instTracer.start = (instTracer.start + 1) % INST_TRACER_SIZE;
+    # endif
 }
 
 void ins_trace_display() {
