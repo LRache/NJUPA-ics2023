@@ -11,5 +11,5 @@
 !init.sh
 !.vscode
 !reports/*
-/fceux-am
+!/fceux-am
 /am-kernels
