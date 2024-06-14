@@ -5,15 +5,17 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-static void __fmt_s(char **out, va_list *ap);
-static void __fmt_d(char **out, va_list *ap);
-static void __fmt_llu(char **out, va_list *ap);
-static void __fmt_avoid(char **out, va_list *ap);
+typedef void (*fmt_fun_t)(char**, va_list*, char*);
+
+static void __fmt_s    (char **out, va_list *ap, char *arg);
+static void __fmt_d    (char **out, va_list *ap, char *arg);
+static void __fmt_llu  (char **out, va_list *ap, char *arg);
+static void __fmt_avoid(char **out, va_list *ap, char *arg);
 
 typedef struct {
   char fmt[10];
   int length;
-  void (*fun)(char**, va_list*);
+  fmt_fun_t fun;
 } FmtEntry;
 
 static FmtEntry fmtTable[] = {
@@ -25,12 +27,12 @@ static FmtEntry fmtTable[] = {
 
 #define FMT_TABLE_LEN (sizeof(fmtTable) / sizeof(fmtTable[0]))
 
-static void __fmt_s(char **out, va_list *ap) {
+static void __fmt_s(char **out, va_list *ap, char *arg) {
   char *s = va_arg(*ap, char*);
   while (*s) *((*out)++) = *(s++);
 }
 
-static void __fmt_d(char **out, va_list *ap) {
+static void __fmt_d(char **out, va_list *ap, char *arg) {
   int d = va_arg(*ap, int);
         
   if (d == 0) {
@@ -50,7 +52,7 @@ static void __fmt_d(char **out, va_list *ap) {
   }
 }
 
-static void __fmt_llu(char **out, va_list *ap) {
+static void __fmt_llu(char **out, va_list *ap, char *arg) {
   unsigned long long d = va_arg(*ap, unsigned long long);
   if (d == 0) {
     *(*out) = '0';
@@ -67,7 +69,7 @@ static void __fmt_llu(char **out, va_list *ap) {
   }
 }
 
-static void __fmt_avoid(char **out, va_list *ap) {
+static void __fmt_avoid(char **out, va_list *ap, char *arg) {
   *(*out)++ = '%';
 }
 
@@ -94,7 +96,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       p++;
       for (int i = 0; i < FMT_TABLE_LEN; i++) {
         if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
-          fmtTable[i].fun(&out, &ap);
+          fmtTable[i].fun(&out, &ap, NULL);
           p += fmtTable[i].length;
           break;
         } 
