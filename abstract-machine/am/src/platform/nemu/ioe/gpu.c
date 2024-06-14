@@ -3,20 +3,21 @@
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
+static AM_GPU_CONFIG_T gpuConfig;
+
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg);
 void __am_gpu_init() {
-  AM_GPU_CONFIG_T cfg;
-  __am_gpu_config(&cfg);
+  __am_gpu_config(&gpuConfig);
   int i;
-  int w = cfg.width; 
-  int h = cfg.height;
+  int w = gpuConfig.width; 
+  int h = gpuConfig.height;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) fb[i] = i;
   outl(SYNC_ADDR, 1);
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
-  uint32_t screenSize = inw(VGACTL_ADDR);
+  uint32_t screenSize = inl(VGACTL_ADDR);
   int width = screenSize >> 16;
   int height = screenSize & 0x7fff;
   *cfg = (AM_GPU_CONFIG_T) {
@@ -29,6 +30,11 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
+  }
+  uint32_t *pixels = ctl->pixels;
+  for (int i = 0; i < gpuConfig.width * gpuConfig.height; i++)
+  {
+    outl(FB_ADDR + i * 4, pixels[i]);
   }
 }
 
