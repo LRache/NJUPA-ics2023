@@ -13,6 +13,7 @@ static uint32_t bufsize = 0;
 
 void __am_audio_init() {
   bufsize = *(uint32_t*)AUDIO_SBUF_SIZE_ADDR;
+  printf("%d\n", bufsize);
 }
 
 void __am_audio_config(AM_AUDIO_CONFIG_T *cfg) {
