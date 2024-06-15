@@ -64,6 +64,10 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
   int reg = offset / 4;
   assert(reg < nr_reg);
+  if (reg == reg_count) {
+    Log("count=%u", buf_count);
+    return;
+  }
   if (is_write) {
     assert(reg != reg_sbuf_size);
     if (reg == reg_init) {
