@@ -34,7 +34,7 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint32_t len = ctl->buf.end - ctl->buf.start;
   uint32_t left = bufsize - *(uint32_t*)AUDIO_COUNT_ADDR;
-  printf("%u %u\n", left, len);
+  printf("%u %u\n", *(uint32_t*)AUDIO_COUNT_ADDR, len);
   while (left < len) left = bufsize - *(uint32_t*)AUDIO_COUNT_ADDR;
   printf("DONE\n");
 
