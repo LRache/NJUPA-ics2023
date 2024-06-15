@@ -43,7 +43,6 @@ static SDL_AudioSpec s = {};
 static inline void set_buf_count(uint32_t c) {
   buf_count = c;
   audio_base[reg_count] = buf_count;
-  //Log("Set buffet count %u", c);
 }
 
 static void audio_callback(void *userdata, uint8_t *stream, int len) {
