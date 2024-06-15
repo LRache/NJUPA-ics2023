@@ -43,10 +43,11 @@ static SDL_AudioSpec s = {};
 static inline void set_buf_count(uint32_t c) {
   buf_count = c;
   audio_base[reg_count] = buf_count;
+  Log("Set buffet count %u", c);
 }
 
 static void audio_callback(void *userdata, uint8_t *stream, int len) {
-  //pthread_mutex_lock(&mutex);
+  pthread_mutex_lock(&mutex);
   int i = 0;
   for (; i < len && i < buf_count; i++) {
     stream[i] = audio_buffer[buf_head];
@@ -57,7 +58,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
   for (; i < len; i++) {
     stream[i] = 0;
   }
-  //pthread_mutex_unlock(&mutex);
+  pthread_mutex_unlock(&mutex);
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
