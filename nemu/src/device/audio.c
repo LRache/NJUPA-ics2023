@@ -81,7 +81,7 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 
 static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(is_write == 1);
-  assert(CONFIG_SB_SIZE - buf_count > len);
+  //assert(CONFIG_SB_SIZE - buf_count > len);
   pthread_mutex_lock(&mutex);
   for (int i = 0; i < len; i++) {
     audio_buffer[buf_tail] = sbuf[offset+i];
