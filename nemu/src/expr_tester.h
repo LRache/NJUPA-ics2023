@@ -27,7 +27,6 @@ void test_expr() {
         }
     }
     fclose(fp);
-    printf("PASSED\n");
 }
 
 #endif
