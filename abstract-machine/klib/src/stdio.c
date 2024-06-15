@@ -9,6 +9,7 @@ typedef void (*fmt_fun_t)(char**, va_list*, char*);
 
 static void __fmt_s    (char **out, va_list *ap, char *arg);
 static void __fmt_d    (char **out, va_list *ap, char *arg);
+static void __fmt_u    (char **out, va_list *ap, char *arg);
 static void __fmt_llu  (char **out, va_list *ap, char *arg);
 
 typedef struct {
@@ -20,6 +21,7 @@ typedef struct {
 static FmtEntry fmtTable[] = {
   {"s"   , 1, __fmt_s},
   {"d"   , 1, __fmt_d},
+  {"u"   , 1, __fmt_u},
   {"llu" , 3, __fmt_llu},
 };
 
@@ -32,7 +34,6 @@ static void __fmt_s(char **out, va_list *ap, char *arg) {
 
 static void __fmt_d(char **out, va_list *ap, char *arg) {
   int d = va_arg(*ap, int);
-
   int leftAlign = 0;
   int minWidth = 0;
   int zeroFill = 0;
@@ -50,7 +51,6 @@ static void __fmt_d(char **out, va_list *ap, char *arg) {
       arg++;
     }
   } 
-
   int sign = d < 0;
   if (sign) d = -d;
   
@@ -84,6 +84,59 @@ static void __fmt_d(char **out, va_list *ap, char *arg) {
     }
   } else {
     if (sign) (*(*out)++) = '-';
+    while (t > h) *((*out)++) = *(--t);
+  }
+}
+
+static void __fmt_u(char **out, va_list *ap, char *arg) {
+  unsigned int d = va_arg(*ap, unsigned int);
+  int leftAlign = 0;
+  int minWidth = 0;
+  int zeroFill = 0;
+  if (*arg != 0) {
+    if (*arg == '0') {
+      zeroFill = 1;
+      arg++;
+    }
+    if (*arg == '-') {
+      leftAlign = 1;
+      arg++;
+    } 
+    while (*arg) {
+      minWidth = minWidth * 10 + *arg - '0';
+      arg++;
+    }
+  } 
+  
+  char stack[13] = {};
+  char *t = stack;
+  if (d == 0) {
+    *(t++) = '0';
+  } else {
+    while (d) {
+      *(t++) = d % 10 + '0';
+      d = d / 10;
+    }
+  }
+
+  int width = t - stack;
+  char *h = stack;
+  if (width < minWidth) {
+    if (leftAlign) {
+      while (t > h) *((*out)++) = *(--t);
+      while (width < minWidth) {
+        *((*out)++) = ' ';
+        width ++;
+      }
+    } else {
+      char fill = zeroFill ? '0' : ' ';
+      while (width < minWidth) {
+        *((*out)++) = fill;
+        width++;
+      }
+      while (t > h) *((*out)++) = *(--t);
+    }
+  } else {
     while (t > h) *((*out)++) = *(--t);
   }
 }
