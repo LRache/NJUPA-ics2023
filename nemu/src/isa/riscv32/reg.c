@@ -58,5 +58,6 @@ word_t* get_csr(int idx) {
   default:
     break;
   }
+  panic("Unknown csr id %x", idx);
   return NULL;
 }
