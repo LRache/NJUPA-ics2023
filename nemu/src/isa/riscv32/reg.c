@@ -55,6 +55,7 @@ word_t* get_csr(int idx) {
     case 0x300: return &cpu.mstatus;
     case 0x304: return &cpu.mtvec;
   }
-  panic("Unknown csr id %x", idx);
+  Log("Unknown csr id %x", idx);
+  panic();
   return NULL;
 }
