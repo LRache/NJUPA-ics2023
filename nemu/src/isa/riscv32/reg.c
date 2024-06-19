@@ -47,3 +47,16 @@ word_t isa_reg_str2val(const char *s, bool *success) {
   *success = false;
   return 0;
 }
+
+word_t* get_csr(int idx) {
+  switch (idx)
+  {
+  case 0x300:
+    return &cpu.mstatus;
+    break;
+  
+  default:
+    break;
+  }
+  return NULL;
+}
