@@ -15,6 +15,7 @@
 
 #include <isa.h>
 #include "local-include/reg.h"
+#include "common.h"
 
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -51,12 +52,8 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 word_t* get_csr(int idx) {
   switch (idx)
   {
-  case 0x300:
-    return &cpu.mstatus;
-    break;
-  
-  default:
-    break;
+    case 0x300: return &cpu.mstatus;
+    case 0x304: return &cpu.mtvec;
   }
   panic("Unknown csr id %x", idx);
   return NULL;
