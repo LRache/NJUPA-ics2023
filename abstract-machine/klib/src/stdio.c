@@ -191,7 +191,7 @@ static void __fmt_llu(char **out, va_list *ap, char *arg) {
 }
 
 int printf(const char *fmt, ...) {
-  char buffer[1024];
+  char buffer[4096];
   va_list ap;
   va_start(ap, fmt);
   int r = vsprintf(buffer, fmt, ap);
