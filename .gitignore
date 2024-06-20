@@ -9,7 +9,7 @@
 !README.md
 !.gitignore
 !init.sh
-!.vscode
-!reports/*
-!/fceux-am
-/am-kernels
+!/.vscode/*
+!/reports/*
+!/fceux-am/*
+!/am-kernels/*
