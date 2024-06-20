@@ -10,6 +10,8 @@ typedef void (*fmt_fun_t)(char**, va_list*, char*);
 static void __fmt_s    (char **out, va_list *ap, char *arg);
 static void __fmt_d    (char **out, va_list *ap, char *arg);
 static void __fmt_u    (char **out, va_list *ap, char *arg);
+static void __fmt_x    (char **out, va_list *ap, char *arg);
+static void __fmt_X    (char **out, va_list *ap, char *arg);
 static void __fmt_llu  (char **out, va_list *ap, char *arg);
 
 typedef struct {
@@ -22,6 +24,8 @@ static FmtEntry fmtTable[] = {
   {"s"   , 1, __fmt_s},
   {"d"   , 1, __fmt_d},
   {"u"   , 1, __fmt_u},
+  {"x"   , 1, __fmt_x},
+  {"X"   , 1, __fmt_X},
   {"llu" , 3, __fmt_llu},
 };
 
@@ -139,6 +143,34 @@ static void __fmt_u(char **out, va_list *ap, char *arg) {
   } else {
     while (t > h) *((*out)++) = *(--t);
   }
+}
+
+static void __fmt_hex(char **out, va_list *ap, char *arg, char base) {
+  unsigned int d = va_arg(*ap, unsigned int);
+  
+  char stack[9] = {};
+  char *t = stack;
+  if (d == 0) {
+    *(t++) = '0';
+  } else {
+    while (d) {
+      int x = d % 16;
+      if (x > 9) *(t++) = x - 10 + base;
+      else *(t++) = x + '0';
+      d = d / 16;
+    }
+  }
+
+  char *h = stack;
+  while (t > h) *((*out)++) = *(--t); 
+}
+
+static void __fmt_x(char **out, va_list *ap, char *arg) {
+  __fmt_hex(out, ap, arg, 'a');
+}
+
+static void __fmt_X(char **out, va_list *ap, char *arg) {
+  __fmt_hex(out, ap, arg, 'A');
 }
 
 static void __fmt_llu(char **out, va_list *ap, char *arg) {
