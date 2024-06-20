@@ -24,6 +24,7 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   for (int i = 0; i < 32; i++) {
     if (cpu.gpr[i] != ref_r->gpr[i]) {
       printf("Register %d 0x%x!=0x%x\n", i, cpu.gpr[i], ref_r->gpr[i]);
+      printf("%x\n", ref_r->mcause);
       return false;
     }
   }
