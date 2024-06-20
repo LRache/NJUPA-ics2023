@@ -1,0 +1,41 @@
+{
+    "env": {
+        "myDefines": [
+            "__GUEST_ISA__=riscv32",
+            "ITRACE_COND=true",
+            "ARCH_H=\"arch/riscv.h\"",
+            "ISA_H=\"riscv/riscv.h\"",
+            "__ISA__=\"riscv32\""
+        ],
+        "includePath": [
+            "${workspaceFolder}/nemu/include",
+            "${workspaceFolder}/nemu/include/config", 
+            "${workspaceFolder}/nemu/include/cpu",
+            "${workspaceFolder}/nemu/include/device",
+            "${workspaceFolder}/nemu/include/memory",
+            "${workspaceFolder}/nemu/src/monitor/sdb",
+            "${workspaceFolder}/nemu/src/isa/riscv32/**",
+            "${workspaceFolder}/abstract-machine/klib/include",
+            "${workspaceFolder}/abstract-machine/am/include",
+            "${workspaceFolder}/abstract-machine/am/src",
+            "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include",
+            "${workspaceFolder}/am-kernels/tests/am-tests/include",
+        ],
+    },
+    "configurations": [
+        {
+            "name": "Linux",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64",
+            "includePath": ["${includePath}"],
+            "forcedInclude": [
+                "${workspaceFolder}/nemu/include/generated/autoconf.h", 
+                "${workspaceFolder}/nemu/include/macro.h"
+            ],
+            "defines": ["${myDefines}"],
+            "compilerPath": "/usr/bin/gcc"
+        }
+    ],
+    "version": 4
+}
