@@ -134,8 +134,8 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
 
@@ -218,11 +218,9 @@ bool packed_by_parentheses(int start, int end) {
 word_t eval(bool *success, int start, int end) {
   if (!*success) return 0;
   if (start == end) {
-    Log("start equals end: %d", start);
     *success = false;
     return 0;
   }
-  Log("start=%d, end=%d", start, end);
   if (start+1 == end) {
     word_t num = 0;
     if (tokens[start].type == TK_NUMBER_DEC) {
@@ -238,7 +236,6 @@ word_t eval(bool *success, int start, int end) {
       num = isa_reg_str2val(tokens[start].str+1, success);
     }
     else {
-      Log("start equals end+1: %d", start);
       *success = false;
     }
     return num;
@@ -280,7 +277,6 @@ word_t eval(bool *success, int start, int end) {
     }
   }
   if (op == -1) {
-    Log("op not found: start=%d, end=%d", start, end);
     *success = false;
     return 0;
   }
