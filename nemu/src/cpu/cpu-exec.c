@@ -35,24 +35,24 @@ void device_update();
 bool watchpoint_triggered();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
-// #ifdef CONFIG_ITRACE_COND
-//   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
-//   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+#ifdef CONFIG_ITRACE_COND
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
-//   trace_ins(_this);
-//   trace_function(_this);
+  trace_ins(_this);
+  trace_function(_this);
+  if (cpu.pc == 0x800014e8) {
+      Log("%d", nemu_state.state);
+    }
 
-// #endif
-//   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
+#endif
+  if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
 
-// #ifdef CONFIG_WATCHPOINTS
-//   if (watchpoint_triggered()) {
-//     nemu_state.state = NEMU_STOP;
-//   }
-// #endif
-// if (cpu.pc == 0x800014e8) {
-//       Log("%d", nemu_state.state);
-//     }
+#ifdef CONFIG_WATCHPOINTS
+  if (watchpoint_triggered()) {
+    nemu_state.state = NEMU_STOP;
+  }
+#endif
 }
 
 static void nemu_intr(Decode *s) {
