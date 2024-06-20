@@ -36,10 +36,13 @@ enum {
 #define immB() do { *imm = SEXT((BITS(i, 31, 31) << 12) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1) | (BITS(i, 7, 7) << 11), 13); } while (0)
 #define immJ() do { *imm = SEXT((BITS(i, 31, 31) << 20) | (BITS(i, 30, 21) << 1) | (BITS(i, 20, 20) << 11) | (BITS(i, 19, 12) << 12), 21); } while(0)
 
+static bool rs1_is_x0 = false;
+
 static void decode_operand(Decode *s, int *rd, int *csr, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
   int rs1 = BITS(i, 19, 15);
   int rs2 = BITS(i, 24, 20);
+  rs1_is_x0 = rs1 == 0;
   *csr    = BITS(i, 31, 20);
   *rd     = BITS(i, 11, 7);
   switch (type) {
@@ -118,7 +121,8 @@ static int decode_exec(Decode *s) {
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10)));
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, {NEMUINTR(s->pc, R(17)); Log("ECALL");});
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , C, {R(rd) = CSR(csr); CSR(csr) = src1;});
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , C, {R(rd) = CSR(csr); if (!rs1_is_x0) CSR(csr) = src1;});
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , C, {R(rd) = CSR(csr); CSR(csr) = src1 | CSR(csr);});
   
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
