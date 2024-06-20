@@ -66,9 +66,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   if (nemu_state.state == NEMU_INTR) {
       nemu_intr(s);
   }
-  if (cpu.pc == 0x800014e4) {
-    Log("%d", nemu_state.state);
-  }
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -102,6 +99,9 @@ static void execute(uint64_t n) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
+    if (cpu.pc == 0x800014e8) {
+    Log("%d", nemu_state.state);
+  }
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
