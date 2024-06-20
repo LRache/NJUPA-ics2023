@@ -52,10 +52,20 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 }
 
+static void nemu_intr(Decode *s) {
+  vaddr_t dnpc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
+  s->dnpc = dnpc;
+  nemu_state.state = NEMU_RUNNING;
+  Log(FMT_PADDR, dnpc);
+}
+
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
+  if (nemu_state.state == NEMU_INTR) {
+      nemu_intr(s);
+  }
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -83,23 +93,13 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 }
 
-static void nemu_intr(Decode *s) {
-  vaddr_t dnpc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
-  s->dnpc = dnpc;
-  nemu_state.state = NEMU_RUNNING;
-  Log(FMT_PADDR, dnpc);
-}
-
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state == NEMU_INTR) {
-      nemu_intr(&s);
-    }
-    else if (nemu_state.state != NEMU_RUNNING) break;
+    if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
