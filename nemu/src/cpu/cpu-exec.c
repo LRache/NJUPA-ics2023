@@ -50,6 +50,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     nemu_state.state = NEMU_STOP;
   }
 #endif
+if (cpu.pc == 0x800014e8) {
+      Log("%d", nemu_state.state);
+    }
 }
 
 static void nemu_intr(Decode *s) {
