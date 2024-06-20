@@ -103,11 +103,13 @@ static void statistic() {
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
 }
 
-void call_trace_display(){}
+void nemu_intr() {
+  vaddr_t pc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
+  cpu.pc = pc;
+  nemu_state.state = NEMU_STOP;
+}
 
 void assert_fail_msg() {
-  isa_reg_display();
-  ins_trace_display();
   statistic();
 }
 
@@ -130,6 +132,7 @@ void cpu_exec(uint64_t n) {
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
+    case NEMU_INTR: nemu_intr();
 
     case NEMU_END: case NEMU_ABORT:
       Log("nemu: %s at pc = " FMT_WORD,
