@@ -87,6 +87,7 @@ static void nemu_intr(Decode *s) {
   vaddr_t dnpc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
   s->dnpc = dnpc;
   nemu_state.state = NEMU_RUNNING;
+  Log("INTR");
 }
 
 static void execute(uint64_t n) {
