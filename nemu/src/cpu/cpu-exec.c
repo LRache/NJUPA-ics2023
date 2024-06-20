@@ -66,6 +66,9 @@ static void exec_once(Decode *s, vaddr_t pc) {
   if (nemu_state.state == NEMU_INTR) {
       nemu_intr(s);
   }
+  if (cpu.pc == 0x800014e4) {
+    Log("%d", nemu_state.state);
+  }
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
