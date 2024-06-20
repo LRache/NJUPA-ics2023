@@ -55,7 +55,6 @@ static void nemu_intr(Decode *s) {
   vaddr_t dnpc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
   s->dnpc = dnpc;
   nemu_state.state = NEMU_RUNNING;
-  Log(FMT_PADDR, dnpc);
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
