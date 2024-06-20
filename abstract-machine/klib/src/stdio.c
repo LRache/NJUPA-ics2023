@@ -5,14 +5,26 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-typedef void (*fmt_fun_t)(char**, va_list*, char*);
+typedef struct FmtBuffer {
+  char *buffer;
+  size_t cnt;
+  void (*write)(struct FmtBuffer *buffer, char c);
+} FmtBuffer;
 
-static void __fmt_s    (char **out, va_list *ap, char *arg);
-static void __fmt_d    (char **out, va_list *ap, char *arg);
-static void __fmt_u    (char **out, va_list *ap, char *arg);
-static void __fmt_x    (char **out, va_list *ap, char *arg);
-static void __fmt_X    (char **out, va_list *ap, char *arg);
-static void __fmt_llu  (char **out, va_list *ap, char *arg);
+static void out_buffer_init(FmtBuffer *buffer, char *out);
+static void putch_buffer_init(FmtBuffer *buffer);
+
+static void write_buffer_out   (FmtBuffer *buffer, char c);
+static void write_buffer_putch (FmtBuffer *buffer, char c);
+
+typedef void (*fmt_fun_t)(FmtBuffer *buffer, va_list*, char*);
+
+static void __fmt_s    (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_d    (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_u    (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_x    (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_X    (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_llu  (FmtBuffer *buffer, va_list *ap, char *arg);
 
 typedef struct {
   char fmt[10];
@@ -31,12 +43,34 @@ static FmtEntry fmtTable[] = {
 
 #define FMT_TABLE_LEN (sizeof(fmtTable) / sizeof(fmtTable[0]))
 
-static void __fmt_s(char **out, va_list *ap, char *arg) {
-  char *s = va_arg(*ap, char*);
-  while (*s) *((*out)++) = *(s++);
+static int __vsprintf(FmtBuffer *buffer, const char *fmt, va_list ap);
+
+static void out_buffer_init(FmtBuffer *buffer, char *out) {
+  buffer->buffer = out;
+  buffer->cnt = 0;
+  buffer->write = write_buffer_out;
 }
 
-static void __fmt_d(char **out, va_list *ap, char *arg) {
+static void putch_buffer_init(FmtBuffer *buffer) {
+  buffer->buffer = NULL;
+  buffer->cnt = 0;
+  buffer->write = write_buffer_putch;
+}
+
+static void write_buffer_out(FmtBuffer *buffer, char c) {
+  buffer->buffer[buffer->cnt++] = c;
+}
+
+static void write_buffer_putch(FmtBuffer *buffer, char c) {
+  putch(c);
+}
+
+static void __fmt_s(FmtBuffer *buffer, va_list *ap, char *arg) {
+  char *s = va_arg(*ap, char*);
+  while (*s) buffer->write(buffer, *(s++));
+}
+
+static void __fmt_d(FmtBuffer *buffer, va_list *ap, char *arg) {
   int d = va_arg(*ap, int);
   int leftAlign = 0;
   int minWidth = 0;
@@ -73,26 +107,26 @@ static void __fmt_d(char **out, va_list *ap, char *arg) {
   char *h = stack;
   if (width < minWidth) {
     if (leftAlign) {
-      while (t > h) *((*out)++) = *(--t);
+      while (t > h) buffer->write(buffer, *(--t));
       while (width < minWidth) {
-        *((*out)++) = ' ';
+        buffer->write(buffer, ' ');
         width ++;
       }
     } else {
       char fill = zeroFill ? '0' : ' ';
       while (width < minWidth) {
-        *((*out)++) = fill;
+        buffer->write(buffer, fill);
         width++;
       }
-      while (t > h) *((*out)++) = *(--t);
+      while (t > h) buffer->write(buffer, *(--t));
     }
   } else {
-    if (sign) (*(*out)++) = '-';
-    while (t > h) *((*out)++) = *(--t);
+    if (sign) buffer->write(buffer, '-');
+    while (t > h) buffer->write(buffer, *(--t));
   }
 }
 
-static void __fmt_u(char **out, va_list *ap, char *arg) {
+static void __fmt_u(FmtBuffer *buffer, va_list *ap, char *arg) {
   unsigned int d = va_arg(*ap, unsigned int);
   int leftAlign = 0;
   int minWidth = 0;
@@ -127,25 +161,25 @@ static void __fmt_u(char **out, va_list *ap, char *arg) {
   char *h = stack;
   if (width < minWidth) {
     if (leftAlign) {
-      while (t > h) *((*out)++) = *(--t);
+      while (t > h) buffer->write(buffer, *(--t));
       while (width < minWidth) {
-        *((*out)++) = ' ';
+        buffer->write(buffer, ' ');
         width ++;
       }
     } else {
       char fill = zeroFill ? '0' : ' ';
       while (width < minWidth) {
-        *((*out)++) = fill;
+        buffer->write(buffer, fill);
         width++;
       }
-      while (t > h) *((*out)++) = *(--t);
+      while (t > h) buffer->write(buffer, *(--t));
     }
   } else {
-    while (t > h) *((*out)++) = *(--t);
+    while (t > h) buffer->write(buffer, *(--t));
   }
 }
 
-static void __fmt_hex(char **out, va_list *ap, char *arg, char base) {
+static void __fmt_hex(FmtBuffer *buffer, va_list *ap, char *arg, char base) {
   unsigned int d = va_arg(*ap, unsigned int);
   
   char stack[9] = {};
@@ -162,22 +196,21 @@ static void __fmt_hex(char **out, va_list *ap, char *arg, char base) {
   }
 
   char *h = stack;
-  while (t > h) *((*out)++) = *(--t); 
+  while (t > h) buffer->write(buffer, *(--t)); 
 }
 
-static void __fmt_x(char **out, va_list *ap, char *arg) {
-  __fmt_hex(out, ap, arg, 'a');
+static void __fmt_x(FmtBuffer *buffer, va_list *ap, char *arg) {
+  __fmt_hex(buffer, ap, arg, 'a');
 }
 
-static void __fmt_X(char **out, va_list *ap, char *arg) {
-  __fmt_hex(out, ap, arg, 'A');
+static void __fmt_X(FmtBuffer *buffer, va_list *ap, char *arg) {
+  __fmt_hex(buffer, ap, arg, 'A');
 }
 
-static void __fmt_llu(char **out, va_list *ap, char *arg) {
+static void __fmt_llu(FmtBuffer *buffer, va_list *ap, char *arg) {
   unsigned long long d = va_arg(*ap, unsigned long long);
   if (d == 0) {
-    *(*out) = '0';
-    (*out)++;
+    buffer->write(buffer, '0');
   } else {
     char stack[21] = {};
     char *t = stack;
@@ -186,33 +219,34 @@ static void __fmt_llu(char **out, va_list *ap, char *arg) {
       d = d / 10;
     }
     char *h = stack;
-    while (t > h) *((*out)++) = *(--t);
+    while (t > h) buffer->write(buffer, *(--t));
   }
 }
 
 int printf(const char *fmt, ...) {
-  char buffer[4096];
   va_list ap;
   va_start(ap, fmt);
-  int r = vsprintf(buffer, fmt, ap);
+  FmtBuffer buffer;
+  putch_buffer_init(&buffer);
+  int r = __vsprintf(&buffer, fmt, ap);
   va_end(ap);
-  char *c = buffer;
-  while (*c)
-  {
-    putch(*c++);
-  }
   return r;
 }
 
-int vsprintf(char *out, const char *fmt, va_list ap) {
+int vsprintf(char *str, const char *format, va_list ap) {
+  FmtBuffer buffer;
+  out_buffer_init(&buffer, str);
+  return __vsprintf(&buffer, format, ap);
+}
+
+static int __vsprintf(FmtBuffer *buffer, const char *fmt, va_list ap) {
   char *p = (char*) fmt;
-  char *ori = out;
   while (*p)
   {
     if (*p == '%') {
       p++;
       if (*p == '%') {
-        *(out++) = '%';
+        buffer->write(buffer, '%');
         continue;
       }
 
@@ -222,18 +256,18 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       
       for (int i = 0; i < FMT_TABLE_LEN; i++) {
         if (strncmp(p, fmtTable[i].fmt, fmtTable[i].length) == 0) {
-          fmtTable[i].fun(&out, &ap, arg);
+          fmtTable[i].fun(buffer, &ap, arg);
           p += fmtTable[i].length;
           break;
         } 
       }
     }
     else {
-      *(out++) = *(p++);
+      buffer->write(buffer, *(p++));
     }
   }
-  *out = 0;
-  return out - ori;
+  buffer->write(buffer, 0);
+  return buffer->cnt;
 }
 
 int sprintf(char *out, const char *fmt, ...) {
