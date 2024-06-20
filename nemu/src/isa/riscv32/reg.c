@@ -34,8 +34,8 @@ void isa_reg_display() {
       i++;
     }
     printf("\n");
-    
   }
+  printf("mcause=0x%x\n", cpu.mcause);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
