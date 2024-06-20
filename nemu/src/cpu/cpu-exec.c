@@ -83,13 +83,20 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 }
 
+static void nemu_intr(Decode *s) {
+  vaddr_t dnpc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
+  s->dnpc = dnpc;
+  nemu_state.state = NEMU_RUNNING;
+}
+
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING) break;
+    if (nemu_state.state == NEMU_INTR) nemu_intr(&s);
+    else if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
 }
@@ -101,12 +108,6 @@ static void statistic() {
   Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
   if (g_timer > 0) Log("simulation frequency = " NUMBERIC_FMT " inst/s", g_nr_guest_inst * 1000000 / g_timer);
   else Log("Finish running in less than 1 us and can not calculate the simulation frequency");
-}
-
-void nemu_intr() {
-  vaddr_t pc = isa_raise_intr(nemu_state.halt_ret, nemu_state.halt_pc);
-  cpu.pc = pc;
-  nemu_state.state = NEMU_STOP;
 }
 
 void assert_fail_msg() {
@@ -132,7 +133,6 @@ void cpu_exec(uint64_t n) {
 
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
-    case NEMU_INTR: nemu_intr();
 
     case NEMU_END: case NEMU_ABORT:
       Log("nemu: %s at pc = " FMT_WORD,
