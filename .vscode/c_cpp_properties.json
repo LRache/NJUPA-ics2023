@@ -9,7 +9,7 @@
         ],
         "includePath": [
             "${workspaceFolder}/nemu/include",
-            "${workspaceFolder}/nemu/include/config", 
+            "${workspaceFolder}/nemu/include/config",
             "${workspaceFolder}/nemu/include/cpu",
             "${workspaceFolder}/nemu/include/device",
             "${workspaceFolder}/nemu/include/memory",
@@ -19,8 +19,10 @@
             "${workspaceFolder}/abstract-machine/am/include",
             "${workspaceFolder}/abstract-machine/am/src",
             "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include",
-            "${workspaceFolder}/am-kernels/tests/am-tests/include",
-            "${workspaceFolder}/am-kernels/tests/nanos-lite/include"
+            "${workspaceFolder}/am-kernels/tests/am-tests/include"
+        ],
+        "nanosIncludePath": [
+            "${workspaceFolder}/am-kernels/tests/am-tests/include"
         ]
     },
     "configurations": [
@@ -29,13 +31,43 @@
             "cStandard": "gnu11",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "linux-gcc-x64",
-            "includePath": ["${includePath}"],
+            "includePath": [
+                "${workspaceFolder}/nemu/include",
+                "${workspaceFolder}/nemu/include/config",
+                "${workspaceFolder}/nemu/include/cpu",
+                "${workspaceFolder}/nemu/include/device",
+                "${workspaceFolder}/nemu/include/memory",
+                "${workspaceFolder}/nemu/src/monitor/sdb",
+                "${workspaceFolder}/nemu/src/isa/riscv32/**",
+                "${workspaceFolder}/abstract-machine/klib/include",
+                "${workspaceFolder}/abstract-machine/am/include",
+                "${workspaceFolder}/abstract-machine/am/src",
+                "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include",
+                "${workspaceFolder}/am-kernels/tests/am-tests/include"
+            ],
             "forcedInclude": [
-                "${workspaceFolder}/nemu/include/generated/autoconf.h", 
+                "${workspaceFolder}/nemu/include/generated/autoconf.h",
                 "${workspaceFolder}/nemu/include/macro.h"
             ],
-            "defines": ["${myDefines}"],
+            "defines": [
+                "${myDefines}"
+            ],
             "compilerPath": "/usr/bin/gcc"
+        },
+        {
+            "name": "Nanos-lite",
+            "includePath": [
+                "${workspaceFolder}/nanos-lite/include",
+                "${workspaceFolder}/abstract-machine/klib/include",
+                "${workspaceFolder}/abstract-machine/am/include",
+                "${workspaceFolder}/abstract-machine/am/src",
+                "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
