@@ -63,7 +63,9 @@
                 "${workspaceFolder}/abstract-machine/am/src",
                 "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include"
             ],
-            "defines": [],
+            "defines": [
+                "${myDefines}"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "gnu++17",
