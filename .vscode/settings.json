@@ -49,7 +49,10 @@
         "types.h": "c",
         "memory.h": "c",
         "system_error": "c",
-        "syscall.h": "c"
+        "syscall.h": "c",
+        "time.h": "c",
+        "assert.h": "c",
+        "stat.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
