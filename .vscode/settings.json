@@ -55,7 +55,8 @@
         "stat.h": "c",
         "local.h": "c",
         "fs.h": "c",
-        "files.h": "c"
+        "files.h": "c",
+        "algorithm": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
