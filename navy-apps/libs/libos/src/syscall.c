@@ -45,6 +45,9 @@
 #error _syscall_ is not implemented
 #endif
 
+extern char end;
+static void *brk = &end;
+
 intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
   register intptr_t _gpr1 asm (GPR1) = type;
   register intptr_t _gpr2 asm (GPR2) = a0;
@@ -71,7 +74,14 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
-  return (void *)-1;
+  int ret = _syscall_(SYS_brk, 0, 0, 0);
+  if (ret == 0) {
+    void *oldBrk = brk;
+    brk += increment;
+    return oldBrk;
+  } else {
+    return (void *)-1;
+  }
 }
 
 int _read(int fd, void *buf, size_t count) {

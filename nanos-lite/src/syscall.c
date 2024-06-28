@@ -3,22 +3,24 @@
 #include <inttypes.h>
 
 int sys_write(int fd, const void *buf, size_t count);
+int sys_brk();
 
 void do_syscall(Context *c) {
-  uintptr_t a[4];
-  a[0] = c->GPR1;
-  a[1] = c->GPR2;
-  a[2] = c->GPR3;
-  a[3] = c->GPR4;
+  uintptr_t s = c->GPR1;
+  uintptr_t arg[3];
+  arg[0] = c->GPR2;
+  arg[1] = c->GPR3;
+  arg[2] = c->GPR4;
 
   uintptr_t r = 0;
-  switch (a[0]) {
-    case SYS_exit:  halt(a[1]);       break;
-    case SYS_yield: yield();          break;
+  switch (s) {
+    case SYS_exit:  halt(arg[0]); break;
+    case SYS_yield: yield();      break;
     case SYS_write: 
-      r = sys_write(a[1], (void*)a[2], a[3]); 
-      break;
-    default: panic("Unhandled syscall ID = %d", a[0]);
+      r = sys_write(arg[0], (void*)arg[1], arg[2]); break;
+    case SYS_brk:
+      r = sys_brk();
+    default: panic("Unhandled syscall ID = %d", s);
   }
   c->GPRx = r;
 }
@@ -27,10 +29,14 @@ int sys_write(int fd, const void *buf, size_t count) {
   const char *buffer = (const char *)buf;
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
-      putch(buffer[i+1]);
+      putch(buffer[i]);
     }
     Log("%u", count);
     return count;
   }
   return -1;
+}
+
+int sys_brk() {
+  return 0;
 }
