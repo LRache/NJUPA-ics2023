@@ -19,12 +19,13 @@ static void write_buffer_putch (FmtBuffer *buffer, char c);
 
 typedef void (*fmt_fun_t)(FmtBuffer *buffer, va_list*, char*);
 
-static void __fmt_s    (FmtBuffer *buffer, va_list *ap, char *arg);
-static void __fmt_d    (FmtBuffer *buffer, va_list *ap, char *arg);
-static void __fmt_u    (FmtBuffer *buffer, va_list *ap, char *arg);
-static void __fmt_x    (FmtBuffer *buffer, va_list *ap, char *arg);
-static void __fmt_X    (FmtBuffer *buffer, va_list *ap, char *arg);
-static void __fmt_llu  (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_s   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_d   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_u   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_x   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_X   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_p   (FmtBuffer *buffer, va_list *ap, char *arg);
+static void __fmt_llu (FmtBuffer *buffer, va_list *ap, char *arg);
 
 typedef struct {
   char fmt[10];
@@ -38,6 +39,7 @@ static FmtEntry fmtTable[] = {
   {"u"   , 1, __fmt_u},
   {"x"   , 1, __fmt_x},
   {"X"   , 1, __fmt_X},
+  {"p"   , 1, __fmt_p},
   {"llu" , 3, __fmt_llu},
 };
 
@@ -179,7 +181,7 @@ static void __fmt_u(FmtBuffer *buffer, va_list *ap, char *arg) {
   }
 }
 
-static void __fmt_hex(FmtBuffer *buffer, va_list *ap, char *arg, char base) {
+static void __fmt_hex(FmtBuffer *buffer, va_list *ap, char *arg, char base, int width, char fill) {
   unsigned int d = va_arg(*ap, unsigned int);
   
   char stack[9] = {};
@@ -192,19 +194,27 @@ static void __fmt_hex(FmtBuffer *buffer, va_list *ap, char *arg, char base) {
       if (x > 9) *(t++) = x - 10 + base;
       else *(t++) = x + '0';
       d = d / 16;
+      width--;
     }
   }
 
+  for (int i = width; i > 0; i--) buffer->write(buffer, fill);
   char *h = stack;
   while (t > h) buffer->write(buffer, *(--t)); 
 }
 
 static void __fmt_x(FmtBuffer *buffer, va_list *ap, char *arg) {
-  __fmt_hex(buffer, ap, arg, 'a');
+  __fmt_hex(buffer, ap, arg, 'a', -1, 0);
 }
 
 static void __fmt_X(FmtBuffer *buffer, va_list *ap, char *arg) {
-  __fmt_hex(buffer, ap, arg, 'A');
+  __fmt_hex(buffer, ap, arg, 'A', -1, 0);
+}
+
+static void __fmt_p(FmtBuffer *buffer, va_list *ap, char *arg) {
+  buffer->write(buffer, '0');
+  buffer->write(buffer, 'x');
+  __fmt_hex(buffer, ap, arg, 'a', 8, '0');
 }
 
 static void __fmt_llu(FmtBuffer *buffer, va_list *ap, char *arg) {
