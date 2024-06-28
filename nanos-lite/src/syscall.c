@@ -52,8 +52,9 @@ int sys_write(int fd, const void *buf, size_t count) {
       putch(buffer[i]);
     }
     return count;
+  } else {
+    return fs_write(fd, buf, count);
   }
-  return -1;
 }
 
 int sys_close(int fd) {
