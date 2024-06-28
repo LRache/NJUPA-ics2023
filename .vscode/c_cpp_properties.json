@@ -5,7 +5,8 @@
             "ITRACE_COND=true",
             "ARCH_H=\"arch/riscv.h\"",
             "ISA_H=\"riscv/riscv.h\"",
-            "__ISA__=\"riscv32\""
+            "__ISA__=\"riscv32\"",
+            "__ISA_RISCV32__"
         ],
         "includePath": [
             "${workspaceFolder}/nemu/include",
