@@ -25,7 +25,7 @@ void do_syscall(Context *c) {
 
 int sys_write(int fd, const void *buf, size_t count) {
   const char *buffer = (const char *)buf;
-  printf("%u\n", count);
+  printf("%s\n", buffer);
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < 13; i++) {
       putch(buffer[i]);
