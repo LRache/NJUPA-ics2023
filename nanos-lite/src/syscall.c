@@ -29,6 +29,7 @@ int sys_write(int fd, const void *buf, size_t count) {
     for (int i = 0; i < count; i++) {
       putch(buffer[i]);
     }
+    Log("%u", count);
     return count;
   }
   return -1;
