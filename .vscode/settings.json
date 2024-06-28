@@ -47,7 +47,8 @@
         "*.inc": "c",
         "proc.h": "c",
         "types.h": "c",
-        "memory.h": "c"
+        "memory.h": "c",
+        "system_error": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
