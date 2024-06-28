@@ -10,11 +10,10 @@ Context* __am_irq_handle(Context *c) {
     switch (c->mcause) {
       default: ev.event = EVENT_ERROR; break;
     }
-    printf("HANDLE\n", ev.event);
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-  return 
+  return c;
 }
 
 extern void __am_asm_trap(void);

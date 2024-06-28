@@ -1,6 +1,5 @@
 *.*
 *
-!*/
 !/nemu/*
 !/nexus-am/*
 !/nanos-lite/*
@@ -13,3 +12,4 @@
 !/reports/*
 !/fceux-am/*
 !/am-kernels/*
+*/build
