@@ -86,11 +86,10 @@ size_t fs_lseek(int fd, off_t offset, int whence) {
   {
   case SEEK_SET: new_off = offset; break;
   case SEEK_CUR: new_off = file_table[fd].open_offset + offset; break;
-  case SEEK_END: new_off = file_table[fd].size + offset;
+  case SEEK_END: new_off = file_table[fd].size + offset; break;
   default:
     return -1;
   }
-  Log("SEEK %u", new_off);
   if (new_off >= 0 && new_off <= file_table[fd].size) {
     file_table[fd].open_offset = new_off;
     return new_off;
