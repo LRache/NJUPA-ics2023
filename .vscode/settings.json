@@ -52,7 +52,8 @@
         "syscall.h": "c",
         "time.h": "c",
         "assert.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "local.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
