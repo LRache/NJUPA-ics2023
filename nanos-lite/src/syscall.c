@@ -11,21 +11,20 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3;
   a[3] = c->GPR4;
 
-  uintptr_t a0 = 0;
+  uintptr_t r = 0;
   switch (a[0]) {
     case SYS_exit:  halt(a[1]);       break;
     case SYS_yield: yield();          break;
     case SYS_write: 
-      a0 = sys_write(a[1], (void*)a[2], a[3]); 
+      r = sys_write(a[1], (void*)a[2], a[3]); 
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
-  c->GPRx = a0;
+  c->GPRx = r;
 }
 
 int sys_write(int fd, const void *buf, size_t count) {
   const char *buffer = (const char *)buf;
-  printf("%p\n", buf);
   if (fd == 1 || fd == 2) {
     for (int i = 0; i < count; i++) {
       putch(buffer[i]);
