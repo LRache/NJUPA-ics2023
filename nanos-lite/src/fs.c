@@ -90,9 +90,9 @@ size_t fs_lseek(int fd, off_t offset, int whence) {
   default:
     return -1;
   }
+  Log("SEEK %u", new_off);
   if (new_off >= 0 && new_off <= file_table[fd].size) {
     file_table[fd].open_offset = new_off;
-    Log("SEEK %u", new_off);
     return new_off;
   } else {
     return -1;
