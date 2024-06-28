@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include "klib.h"
 
 #ifdef __ISA_NATIVE__
 #error can not support ISA=native

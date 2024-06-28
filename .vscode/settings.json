@@ -53,7 +53,9 @@
         "time.h": "c",
         "assert.h": "c",
         "stat.h": "c",
-        "local.h": "c"
+        "local.h": "c",
+        "fs.h": "c",
+        "files.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
