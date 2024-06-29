@@ -72,6 +72,7 @@ static int sys_brk() {
 
 static int sys_gettimeofday(struct timeval *t) {
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  Log("%llu", us);
   t->s  = us / 1000000;
   t->us = us % 1000000;
   return 0;
