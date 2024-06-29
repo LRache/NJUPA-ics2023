@@ -23,7 +23,7 @@ int NDL_PollEvent(char *buf, int len) {
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
-  if (getenv("NWM_APP")) {
+  //if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
     screen_w = *w; screen_h = *h;
@@ -39,7 +39,7 @@ void NDL_OpenCanvas(int *w, int *h) {
       if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
-  }
+  //}
   printf("Open\n");
 }
 
@@ -68,7 +68,6 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-  printf("%d\n", getenv("NWM_APP") == 0);
   return 0;
 }
 
