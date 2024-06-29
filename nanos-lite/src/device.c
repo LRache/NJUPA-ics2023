@@ -95,6 +95,10 @@ size_t fbctl_write(const void *buf, size_t offset, size_t len) {
   canvas_width = width;
   canvas_height = height;
   canvas_ready = true;
+
+  AM_GPU_CONFIG_T c = io_read(AM_GPU_CONFIG);
+  canvas_x = (c.width - width) / 2;
+  canvas_y = (c.height - height) / 2;
   return i;
 }
 
