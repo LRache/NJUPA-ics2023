@@ -31,7 +31,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 
 size_t events_read(void *buf, size_t offset, size_t len) {
   if (canvas_ready) {
-    const char *s = "mmap ok\n";
+    const char *s = "mmap ok";
     size_t l = strlen(s);
     size_t p = 0;
     for (; p < l && p < len; p++) ((char*)buf)[p] = s[p];
