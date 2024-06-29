@@ -43,6 +43,10 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  for (int x_ = 0; x_ < h; x_++) {
+    int offset = ((x + x_) * screen_w + y) * 4;
+    write(5, pixels, w);
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
