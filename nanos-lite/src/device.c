@@ -32,13 +32,13 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
   size_t p = 0;
   for (int i = 0; i < 3 && p < len; i++, p++) ((char*)buf)[p] = buffer[i];
+  Log("%d %d", e.keycode, p);
 
   size_t l = strlen(keyname[e.keycode]);
   for (int i = 0; i < l && p < len; i++, p++) ((char*)buf)[p] = keyname[e.keycode][i];
   if (p < len) ((char*)buf)[p++] = '\n';
 
   printf("%u\n", p);
-  Log("%d %d", e.keycode, p);
   return p;
 }
 
