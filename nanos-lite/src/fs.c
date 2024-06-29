@@ -49,7 +49,6 @@ int fs_open(const char *pathname, int flags, int mode) {
   for (int i = 0; i < FILE_NUM; i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
       file_table[i].open_offset = 0;
-      Log("Open %s", pathname);
       return i;
     }
   }
@@ -60,6 +59,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 size_t fs_read(int fd, void *buf, size_t len) {
   Finfo info = file_table[fd];
   if (info.read != NULL) {
+    Log("%s", info.name);
     return info.read(buf, info.open_offset, len);
   }
 
