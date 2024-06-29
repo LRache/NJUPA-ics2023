@@ -74,6 +74,5 @@ static int sys_gettimeofday(struct timeval *t) {
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
   t->s  = us / 1000000;
   t->us = us % 1000000;
-  Log("%d %d", t->s, t->us);
   return 0;
 }
