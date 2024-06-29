@@ -46,15 +46,7 @@ size_t sys_read(int fd, void *buf, size_t len) {
 }
 
 int sys_write(int fd, const void *buf, size_t count) {
-  const char *buffer = (const char *)buf;
-  if (fd == 1 || fd == 2) {
-    for (int i = 0; i < count; i++) {
-      putch(buffer[i]);
-    }
-    return count;
-  } else {
     return fs_write(fd, buf, count);
-  }
 }
 
 int sys_close(int fd) {
