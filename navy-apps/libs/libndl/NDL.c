@@ -43,16 +43,11 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  for (int i = 0; i < w * h; i++) {
-    if (pixels[i] != 0x00ffffff) {
-      printf("FOUND\n");
-      break;
-    }
-  }
   for (int x_ = 0; x_ < h; x_++) {
     int offset = ((x + x_) * screen_w + y) * 4;
     lseek(5, offset, SEEK_SET);
     write(5, pixels, w*4);
+    pixels += w * 4;
   }
 }
 
