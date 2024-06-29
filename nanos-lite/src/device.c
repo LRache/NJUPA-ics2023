@@ -68,7 +68,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 size_t fb_write(const void *buf, size_t offset, size_t len) {
   int x = (offset / 4) % canvas_width;
   int y = (offset / 4) / canvas_width;
-  int count = len / 4;
+  int count = len;
   Log("%u %d %d %d", offset, x, y, count);
   int i = 0;
   for (; i < count; i++) {
