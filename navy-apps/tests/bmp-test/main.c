@@ -11,6 +11,7 @@ int main() {
   assert(bmp);
   printf("%d %d\n", w, h);
   NDL_OpenCanvas(&w, &h);
+  printf("Open\n");
   NDL_DrawRect(bmp, 0, 0, w, h);
   printf("OK\n");
   free(bmp);
