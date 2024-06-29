@@ -35,7 +35,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
-  [FD_DEV_EVENT] = {"/dev/events", 0, 0, events_read},
+  [FD_DEV_EVENT] = {"/dev/events", 0, 0, events_read, invalid_write},
 #include "files.h"
 };
 
@@ -49,6 +49,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   for (int i = 0; i < FILE_NUM; i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
       file_table[i].open_offset = 0;
+      Log("Open %s", pathname);
       return i;
     }
   }
@@ -63,9 +64,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
   }
 
   size_t left = info.size - info.open_offset;
-  if (left == 0) {
-    return 0;
-  }
+  if (left == 0) return 0;
   size_t read_length = left > len ? len : left;
   ramdisk_read(buf, info.disk_offset + info.open_offset, read_length);
   file_table[fd].open_offset += read_length;
