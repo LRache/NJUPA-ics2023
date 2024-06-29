@@ -31,7 +31,6 @@ void NDL_OpenCanvas(int *w, int *h) {
     int len = sprintf(buf, "%d %d", screen_w, screen_h);
     // let NWM resize the window and create the frame buffer
     write(fbctl, buf, len);
-    printf("Open\n");
     while (1) {
       // 3 = evtdev
       int nread = read(3, buf, sizeof(buf) - 1);
@@ -41,6 +40,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  printf("Open\n");
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
