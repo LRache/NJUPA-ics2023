@@ -57,7 +57,8 @@
         "fs.h": "c",
         "files.h": "c",
         "algorithm": "c",
-        "complex": "c"
+        "complex": "c",
+        "ndl.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
