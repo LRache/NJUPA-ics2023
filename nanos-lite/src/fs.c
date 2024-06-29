@@ -59,7 +59,6 @@ int fs_open(const char *pathname, int flags, int mode) {
 size_t fs_read(int fd, void *buf, size_t len) {
   Finfo info = file_table[fd];
   if (info.read != NULL) {
-    Log("%s", info.name);
     return info.read(buf, info.open_offset, len);
   }
 
