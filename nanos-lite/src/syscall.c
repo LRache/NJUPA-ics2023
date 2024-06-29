@@ -1,13 +1,20 @@
 #include <common.h>
 #include "syscall.h"
 #include "fs.h"
+#include "klib.h"
 
-int sys_open(char *pathname, int flags, int mode);
-size_t sys_read(int fd, void *buf, size_t len);
-int sys_write(int fd, const void *buf, size_t count);
-int sys_close(int fd);
-size_t sys_lseek(int fd, off_t offset, int whence);
-int sys_brk();
+struct timeval {
+  long s;
+  long us;
+};
+
+static int sys_open  (char *pathname, int flags, int mode);
+static int sys_read  (int fd, void *buf, size_t len);
+static int sys_write (int fd, const void *buf, size_t count);
+static int sys_close (int fd);
+static int sys_lseek (int fd, off_t offset, int whence);
+static int sys_brk   ();
+static int sys_gettimeofday(struct timeval *t);
 
 void do_syscall(Context *c) {
   uintptr_t s = c->GPR1;
@@ -32,31 +39,40 @@ void do_syscall(Context *c) {
       r = sys_lseek(arg[0], arg[1], arg[2]); break;
     case SYS_brk:
       r = sys_brk(); break;
+    case SYS_gettimeofday:
+      r = sys_gettimeofday((struct timeval *)arg[0]); break;
     default: panic("Unhandled syscall ID = %d", s);
   }
   c->GPRx = r;
 }
 
-int sys_open(char *pathname, int flags, int mode) {
+static int sys_open(char *pathname, int flags, int mode) {
   return fs_open(pathname, flags, mode);
 }
 
-size_t sys_read(int fd, void *buf, size_t len) {
+static int sys_read(int fd, void *buf, size_t len) {
   return fs_read(fd, buf, len);
 }
 
-int sys_write(int fd, const void *buf, size_t count) {
+static int sys_write(int fd, const void *buf, size_t count) {
     return fs_write(fd, buf, count);
 }
 
-int sys_close(int fd) {
+static int sys_close(int fd) {
   return fs_close(fd);
 }
 
-size_t sys_lseek(int fd, off_t offset, int whence) {
+static int sys_lseek(int fd, off_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
 }
 
-int sys_brk() {
+static int sys_brk() {
+  return 0;
+}
+
+static int sys_gettimeofday(struct timeval *t) {
+  uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  t->s  = us / 1000000;
+  t->us = us % 1000000;
   return 0;
 }
