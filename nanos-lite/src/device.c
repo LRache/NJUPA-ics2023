@@ -72,6 +72,9 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   Log("%u %d %d %d", offset, x, y, count);
   int i = 0;
   for (; i < count; i++) {
+    if (((uint32_t*)buf)[i] != 0x00ffffff) {
+      Log("A");
+    }
     io_write(AM_GPU_FBDRAW, canvas_x + x, canvas_y + y, &((uint32_t*)buf)[i], 1, 1, false);
     x ++;
     y += (x == canvas_width);
