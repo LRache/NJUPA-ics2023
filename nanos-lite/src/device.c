@@ -69,6 +69,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   int x = (offset / 4) % canvas_width;
   int y = (offset / 4) / canvas_width;
   int count = len / 4;
+  Log("%u %d %d", offset, x, y);
   int i = 0;
   for (; i < count; i++) {
     io_write(AM_GPU_FBDRAW, canvas_x + x, canvas_y + y, ((uint32_t*)buf+i), 1, 1, false);
@@ -76,7 +77,6 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
     y += (x == canvas_width);
     x %= canvas_width;
   }
-  Log("%u", offset);
   io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
   return i * 4;
 }
