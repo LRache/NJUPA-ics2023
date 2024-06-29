@@ -35,6 +35,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     size_t l = strlen(s);
     size_t p = 0;
     for (; p < l && p < len; p++) ((char*)buf)[p] = s[p];
+    canvas_ready = false;
     return p;
   }
 
@@ -93,6 +94,7 @@ size_t fbctl_write(const void *buf, size_t offset, size_t len) {
   }
   canvas_width = width;
   canvas_height = height;
+  canvas_ready = true;
   return i;
 }
 
