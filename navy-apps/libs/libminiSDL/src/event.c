@@ -19,7 +19,6 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  printf("SDL_WAIT\n");
   char buffer[16];
   read(3, buffer, sizeof(buffer));
   if (strcmp(buffer, "mmap ok\n") == 0) {
@@ -29,18 +28,13 @@ int SDL_WaitEvent(SDL_Event *event) {
     sscanf("%c %s", &type, keynameS);
     if (type == 'u') event->key.type = SDL_KEYUP;
     else if (type == 'd') event->key.type = SDL_KEYDOWN;
-    printf("Finding...\n");
     for (int i = 0; i < SDLK_COUNT; i++) {
       if (strcmp(keynameS, keyname[i]) == 0) {
-        printf("FOUND\n");
         event->key.keysym.sym = i;
-        
         break;
       }
     }
-    printf("END\n");
   }
-  printf("event\n");
   return 1;
 }
 
