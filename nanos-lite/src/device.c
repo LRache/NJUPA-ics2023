@@ -34,7 +34,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
     const char *s = "mmap ok";
     size_t l = strlen(s);
     size_t p = 0;
-    for (; p < l && p < len; p++) ((char*)buf)[p] = s[p];
+    for (; p < l && p <= len; p++) ((char*)buf)[p] = s[p];
     canvas_ready = false;
     return p;
   }
@@ -52,6 +52,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   size_t l = strlen(keyname[e.keycode]);
   for (int i = 0; i < l && p < len; i++, p++) ((char*)buf)[p] = keyname[e.keycode][i];
   if (p < len) ((char*)buf)[p++] = '\n';
+  if (p < len) ((char*)buf)[p++] = 0;
 
   return p;
 }
