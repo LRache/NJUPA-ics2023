@@ -36,7 +36,7 @@ static uint32_t buf_tail = 0;
 static uint32_t *audio_base = NULL;
 static uint32_t count = 0;
 
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+// static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static SDL_AudioSpec s = {};
 
@@ -46,7 +46,7 @@ static inline void set_buf_count(uint32_t c) {
 }
 
 static void audio_callback(void *userdata, uint8_t *stream, int len) {
-  pthread_mutex_lock(&mutex);
+  //pthread_mutex_lock(&mutex);
   int i = 0;
   for (; i < len && i < buf_count; i++) {
     stream[i] = audio_buffer[buf_head];
@@ -57,7 +57,7 @@ static void audio_callback(void *userdata, uint8_t *stream, int len) {
   for (; i < len; i++) {
     stream[i] = 0;
   }
-  pthread_mutex_unlock(&mutex);
+  //pthread_mutex_unlock(&mutex);
 }
 
 static void audio_io_handler(uint32_t offset, int len, bool is_write) {
@@ -82,13 +82,13 @@ static void audio_io_handler(uint32_t offset, int len, bool is_write) {
 static void audio_buf_io_handler(uint32_t offset, int len, bool is_write) {
   assert(is_write == 1);
   assert(CONFIG_SB_SIZE - buf_count >= len);
-  pthread_mutex_lock(&mutex);
+  SDL_LockAudio();
   for (int i = 0; i < len; i++) {
     audio_buffer[buf_tail] = sbuf[offset+i];
     buf_tail = (buf_tail + 1) % CONFIG_SB_SIZE;
   }
   set_buf_count(buf_count + len);
-  pthread_mutex_unlock(&mutex);
+  SDL_UnlockAudio();
 }
 
 void init_audio() {
