@@ -22,7 +22,6 @@ int SDL_WaitEvent(SDL_Event *event) {
   printf("waiting\n");
   char buffer[16];
   int r = read(3, buffer, sizeof(buffer));
-  print("%d\n", r);
   if (strcmp(buffer, "mmap ok\n") == 0) {
     event->type = SDL_USEREVENT;
   } else {
