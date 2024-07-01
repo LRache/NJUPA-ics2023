@@ -21,15 +21,16 @@ int SDL_PollEvent(SDL_Event *ev) {
 int SDL_WaitEvent(SDL_Event *event) {
   char buffer[16];
   read(3, buffer, sizeof(buffer));
-  if (strcmp(buffer, "mmap ok\n") == 0) {
+  char type[6], arg[12];
+  sscanf("%s %s", type, arg);
+  if (strcmp(type, "mmap") == 0) {
     event->type = SDL_USEREVENT;
-  } else {
-    char keynameS[8], type;
-    sscanf("%c %s", &type, keynameS);
-    if (type == 'u') event->type = SDL_KEYUP;
-    else if (type == 'd') event->type = SDL_KEYDOWN;
+  } 
+  else if (strcmp(type, "kd") == 0 || strcmp(type, "ku") == 0) {
+    if (type[1] == 'u') event->type = SDL_KEYUP;
+    else if (type[1] == 'd') event->type = SDL_KEYDOWN;
     for (int i = 0; i < SDLK_COUNT; i++) {
-      if (strcmp(keynameS, keyname[i]) == 0) {
+      if (strcmp(arg, keyname[i]) == 0) {
         event->key.keysym.sym = i;
         break;
       }
