@@ -64,7 +64,8 @@
         "stddef.h": "c",
         "cstdint": "c",
         "io.h": "c",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "sdl-event.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
