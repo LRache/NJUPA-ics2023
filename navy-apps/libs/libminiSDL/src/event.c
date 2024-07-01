@@ -19,13 +19,11 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  printf("waiting\n");
   char buffer[16];
   int r = read(3, buffer, sizeof(buffer));
   if (strcmp(buffer, "mmap ok\n") == 0) {
     event->type = SDL_USEREVENT;
   } else {
-    printf("event\n");
     char keyname[8], type;
     sscanf("%c %s", &type, keyname);
     if (type == 'u') event->key.type = SDL_KEYUP;
