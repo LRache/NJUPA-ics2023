@@ -35,6 +35,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     for (int i = 0; i < SDLK_COUNT; i++) {
       if (strcmp(arg, keyname[i]) == 0) {
         event->key.keysym.sym = i;
+        printf("FOUND\n");
         break;
       }
     }
