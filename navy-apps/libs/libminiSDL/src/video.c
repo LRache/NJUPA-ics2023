@@ -8,7 +8,6 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  printf("A\n");
   if (srcrect == NULL && dstrect == NULL) {
     memcpy(dst->pixels, src->pixels, srcrect->h * srcrect->w * sizeof(uint32_t));
   } else {
@@ -25,7 +24,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
       }
     }
   }
-  printf("B\n");
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
