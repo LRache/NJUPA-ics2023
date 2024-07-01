@@ -32,11 +32,13 @@ int SDL_WaitEvent(SDL_Event *event) {
     printf("Finding...\n");
     for (int i = 0; i < SDLK_COUNT; i++) {
       if (strcmp(keyname, keyname[i]) == 0) {
-        event->key.keysym.sym = i;
         printf("FOUND\n");
+        event->key.keysym.sym = i;
+        
         break;
       }
     }
+    printf("END\n");
   }
   printf("event\n");
   return 1;
