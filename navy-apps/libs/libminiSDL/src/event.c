@@ -19,6 +19,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
+  printf("waiting\n");
   char buffer[16];
   int r = read(4, buffer, sizeof(buffer));
   print("%d\n", r);
