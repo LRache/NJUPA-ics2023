@@ -58,7 +58,8 @@
         "files.h": "c",
         "algorithm": "c",
         "complex": "c",
-        "ndl.h": "c"
+        "ndl.h": "c",
+        "fixedptc.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

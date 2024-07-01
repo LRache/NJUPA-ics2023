@@ -36,7 +36,7 @@ static uint32_t buf_tail = 0;
 static uint32_t *audio_base = NULL;
 static uint32_t count = 0;
 
-// static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+// static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; 
 
 static SDL_AudioSpec s = {};
 
