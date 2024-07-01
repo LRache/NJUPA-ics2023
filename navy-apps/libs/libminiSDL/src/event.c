@@ -20,7 +20,9 @@ int SDL_PollEvent(SDL_Event *ev) {
 
 int SDL_WaitEvent(SDL_Event *event) {
   char buffer[16];
-  read(3, buffer, sizeof(buffer));
+  int r = read(3, buffer, sizeof(buffer));
+  if (r == 0) return 0;
+
   char type[6], arg[12];
   sscanf("%s %s", type, arg);
   printf("%s\n", type);
