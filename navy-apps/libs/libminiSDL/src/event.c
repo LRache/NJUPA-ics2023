@@ -25,13 +25,13 @@ int SDL_WaitEvent(SDL_Event *event) {
   if (strcmp(buffer, "mmap ok\n") == 0) {
     event->type = SDL_USEREVENT;
   } else {
-    char keyname[8], type;
-    sscanf("%c %s", &type, keyname);
+    char keynameS[8], type;
+    sscanf("%c %s", &type, keynameS);
     if (type == 'u') event->key.type = SDL_KEYUP;
     else if (type == 'd') event->key.type = SDL_KEYDOWN;
     printf("Finding...\n");
     for (int i = 0; i < SDLK_COUNT; i++) {
-      if (strcmp(keyname, keyname[i]) == 0) {
+      if (strcmp(keynameS, keyname[i]) == 0) {
         printf("FOUND\n");
         event->key.keysym.sym = i;
         
