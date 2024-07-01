@@ -28,6 +28,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     sscanf("%c %s", &type, keyname);
     if (type == 'u') event->key.type = SDL_KEYUP;
     else if (type == 'd') event->key.type = SDL_KEYDOWN;
+    printf("Finding...\n");
     for (int i = 0; i < SDLK_COUNT; i++) {
       if (strcmp(keyname, keyname[i]) == 0) {
         event->key.keysym.sym = i;
