@@ -33,7 +33,7 @@ void NDL_OpenCanvas(int *w, int *h) {
       int nread = read(3, buf, sizeof(buf) - 1);
       if (nread <= 0) continue;
       buf[nread] = '\0';
-      if (strcmp(buf, "mmap ok\n") == 0) break;
+      if (strcmp(buf, "mmap ok") == 0) break;
     }
     close(fbctl);
   //}
