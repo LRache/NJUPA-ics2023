@@ -5,24 +5,24 @@
 #include <stdlib.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
-  // assert(dst && src);
-  // assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  // if (srcrect == NULL && dstrect == NULL) {
-  //   memcpy(dst->pixels, src->pixels, srcrect->h * srcrect->w * sizeof(uint32_t));
-  // } else {
-  //   int height, width;
-  //   if (srcrect != NULL) {
-  //     height = srcrect->h; width = srcrect->w;
-  //   } else {
-  //     height = dstrect->h; width = dstrect->w;
-  //   }
-  //   for (int h = 0; h < height; h++) {
-  //     for (int w = 0; w < width; w++) {
-  //       *(uint32_t *)(dst->pixels + (dstrect->y + h) * width + (dstrect->x + w)) = 
-  //       *(uint32_t *)(src->pixels + (srcrect->y + h) * width + (srcrect->x + w));
-  //     }
-  //   }
-  // }
+  assert(dst && src);
+  assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  if (srcrect == NULL && dstrect == NULL) {
+    memcpy(dst->pixels, src->pixels, srcrect->h * srcrect->w * sizeof(uint32_t));
+  } else {
+    int height, width;
+    if (srcrect != NULL) {
+      height = srcrect->h; width = srcrect->w;
+    } else {
+      height = dstrect->h; width = dstrect->w;
+    }
+    for (int h = 0; h < height; h++) {
+      for (int w = 0; w < width; w++) {
+        *(uint32_t *)(dst->pixels + (dstrect->y + h) * width + (dstrect->x + w)) = 
+        *(uint32_t *)(src->pixels + (srcrect->y + h) * width + (srcrect->x + w));
+      }
+    }
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
