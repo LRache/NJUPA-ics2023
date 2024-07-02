@@ -8,14 +8,12 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   if (srcrect == NULL && dstrect == NULL) {
-    memcpy(dst->pixels, src->pixels, srcrect->h * srcrect->w * sizeof(uint32_t));
+    memcpy(dst->pixels, src->pixels, src->h * src->w * sizeof(uint32_t));
   } else {
     int height, width;
-    if (srcrect != NULL) {
-      height = srcrect->h; width = srcrect->w;
-    } else {
-      height = dstrect->h; width = dstrect->w;
-    }
+    if (srcrect == NULL) { height = src->h; width = src->w; }
+    else { height = srcrect->h; width = srcrect->w; }
+    
     for (int h = 0; h < height; h++) {
       for (int w = 0; w < width; w++) {
         *(uint32_t *)(dst->pixels + (dstrect->y + h) * width + (dstrect->x + w)) = 
