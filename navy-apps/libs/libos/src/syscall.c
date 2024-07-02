@@ -102,6 +102,16 @@ int _execve(const char *fname, char * const argv[], char *const envp[]) {
   return 0;
 }
 
+int _ioe_read(int reg, void *buf) {
+  _syscall_(SYS_ioe_read, reg, (uintptr_t)buf, 0);
+  return 0;
+}
+
+int _ioe_write(int reg, void *buf) {
+  _syscall_(SYS_ioe_write, reg, (uintptr_t)buf, 0);
+  return 0;
+}
+
 // Syscalls below are not used in Nanos-lite.
 // But to pass linking, they are defined as dummy functions.
 

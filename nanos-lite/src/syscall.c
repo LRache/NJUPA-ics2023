@@ -15,6 +15,8 @@ static int sys_close (int fd);
 static int sys_lseek (int fd, off_t offset, int whence);
 static int sys_brk   ();
 static int sys_gettimeofday(struct timeval *t);
+static int sys_ioe_read (int reg, void *buf);
+static int sys_ioe_write(int reg, void *buf);
 
 void do_syscall(Context *c) {
   uintptr_t s = c->GPR1;
@@ -41,6 +43,10 @@ void do_syscall(Context *c) {
       r = sys_brk(); break;
     case SYS_gettimeofday:
       r = sys_gettimeofday((struct timeval *)arg[0]); break;
+    case SYS_ioe_read:
+      sys_ioe_read(arg[0], (void *)arg[1]); break;
+    case SYS_ioe_write:
+      sys_ioe_write(arg[0], (void *)arg[1]); break;
     default: panic("Unhandled syscall ID = %d", s);
   }
   c->GPRx = r;
@@ -74,5 +80,15 @@ static int sys_gettimeofday(struct timeval *t) {
   uint64_t us = io_read(AM_TIMER_UPTIME).us;
   t->s  = us / 1000000;
   t->us = us % 1000000;
+  return 0;
+}
+
+static int sys_ioe_read(int reg, void *buf) {
+  ioe_read(reg, buf);
+  return 0;
+}
+
+static int sys_ioe_write(int reg, void *buf) {
+  ioe_write(reg, buf);
   return 0;
 }
