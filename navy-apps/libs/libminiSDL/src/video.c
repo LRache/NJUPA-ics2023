@@ -10,14 +10,22 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   if (srcrect == NULL && dstrect == NULL) {
     memcpy(dst->pixels, src->pixels, src->h * src->w * sizeof(uint32_t));
   } else {
-    int height, width;
-    if (srcrect == NULL) { height = src->h; width = src->w; }
-    else { height = srcrect->h; width = srcrect->w; }
-    
+    int height, width, sx, sy, dx, dy;
+    if (srcrect == NULL) { 
+      height = src->h; width = src->w;
+      sx = 0; sy = 0;
+    }
+    else { 
+      height = srcrect->h; width = srcrect->w; 
+      sx = srcrect->x; sy = srcrect->y;
+    }
+    if (dstrect == NULL) {dx = 0; dy = 0; }
+    else {dx = dstrect->x; dy = dstrect->y; }
+
     for (int h = 0; h < height; h++) {
       for (int w = 0; w < width; w++) {
-        *(uint32_t *)(dst->pixels + (dstrect->y + h) * width + (dstrect->x + w)) = 
-        *(uint32_t *)(src->pixels + (srcrect->y + h) * width + (srcrect->x + w));
+        *(uint32_t *)(dst->pixels + (dy + h) * width + (dx + w)) = 
+        *(uint32_t *)(src->pixels + (sy + h) * width + (sx + w));
       }
     }
   }
