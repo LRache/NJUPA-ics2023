@@ -39,6 +39,7 @@ void __am_local_close(AM_LOCAL_CLOSE_T *c) {
 void __am_local_read(AM_LOCAL_READ_T *c) {
     *(uint32_t *)CTL_OP_ADDR = CTL_READ;
     *(int *)CTL_FD_ADDR = c->fd;
+    *(uint32_t *)CTL_ARG_ADDR = c->length;
     __execute();
     volatile int ret = *(int *)CTL_ARG_ADDR;
     *c->ret = ret;
