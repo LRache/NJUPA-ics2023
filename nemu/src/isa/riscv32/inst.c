@@ -129,7 +129,7 @@ static int decode_exec(Decode *s) {
   INSTPAT_END();
 
   R(0) = 0; // reset $zero to 0
-  if (s->pc == 0x830067d4)
+  if (s->pc == 0x83006860)
   Log("%x", s->dnpc);
 
   return 0;
