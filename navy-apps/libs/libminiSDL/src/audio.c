@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 static int pause_on = 0;
+static uint8_t buffer[8192];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 
 void CallbackHelper() {
@@ -11,7 +12,6 @@ void CallbackHelper() {
     return ;
   }
   if (callback != NULL) {
-    uint8_t buffer[8192];
     callback(NULL, buffer, 8192);
     NDL_PlayAudio(buffer, 8192);
     return;
