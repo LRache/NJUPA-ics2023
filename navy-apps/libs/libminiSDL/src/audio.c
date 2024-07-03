@@ -10,7 +10,7 @@ void CallbackHelper() {
   if (NDL_QueryAudio() < 8192) {
     return ;
   }
-  
+  printf("CallBack\n");
   if (callback != NULL) {
     uint8_t buffer[8192];
     callback(NULL, buffer, 8192);
