@@ -111,9 +111,9 @@ size_t sbctl_read(void *buf, size_t offset, size_t len) {
 
 size_t sbctl_write(const void *buf, size_t offset, size_t len) {
   if (len < 12) return 0;
-  uint32_t freq = *(uint32_t *)buf;
+  uint32_t freq     = *((uint32_t *)buf + 0);
   uint32_t channels = *((uint32_t *)buf + 1);
-  uint32_t samples = *((uint32_t *)buf + 2);
+  uint32_t samples  = *((uint32_t *)buf + 2);
   io_write(AM_AUDIO_CTRL, freq, channels, samples);
   return 12;
 }
