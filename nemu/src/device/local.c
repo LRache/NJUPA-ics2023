@@ -1,10 +1,44 @@
 #include <device/map.h>
 #include <stdio.h>
 
+#define LOCAL_BUF_SIZE 1024
+
 static uint32_t *ctl;
 static char *arg;
 static char *buf;
 static uint32_t ctl_space_size;
+
+/*
+int open(
+    char *filepath  in buf_space
+    int mode        in reg_arg
+)
+    ret fd in reg_fd
+
+int close(
+    int fd          in reg_fd
+)
+    ret status in reg_arg
+
+int read(
+    int fd          in reg_fd
+    int length      in reg_arg
+)
+    ret count in reg_arg
+
+int write(
+    int fd          in reg_fd
+    int length      in reg_arg
+    char *buf       in buf_space
+)
+    ret count in reg_arg
+long seek(
+    int fd          in reg_fd
+    int whence      in reg_arg
+    long offset     in buf_space
+)
+    ret offset in buf_space
+ */
 
 enum {
     reg_op,
@@ -87,10 +121,9 @@ void init_local() {
     ctl_space_size = sizeof(uint32_t) * nr_reg;
     ctl = (uint32_t*)new_space(ctl_space_size);
     arg = (char *)new_space(48);
-    buf = (char *)new_space(1024);
+    buf = (char *)new_space(LOCAL_BUF_SIZE);
 
     add_mmio_map("local disk ctl", CONFIG_LOCAL_CTL_MMIO, ctl, ctl_space_size, local_ctl_handler);
     add_mmio_map("local disk arg", CONFIG_LOCAL_ARG_MMIO, arg, 48, local_arg_handler);
-    add_mmio_map("local disk buf", CONFIG_LOCAL_BUF_MMIO, buf, 1024, local_buf_handler);
-
+    add_mmio_map("local disk buf", CONFIG_LOCAL_BUF_MMIO, buf, LOCAL_BUF_SIZE, local_buf_handler);
 }

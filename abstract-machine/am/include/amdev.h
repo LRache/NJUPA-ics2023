@@ -33,9 +33,9 @@ AM_DEVREG(23, NET_TX,       WR, Area buf);
 AM_DEVREG(24, NET_RX,       WR, Area buf);
 AM_DEVREG(25, LOCAL_OPEN,   WR, char *pathname; int mode; int *fd);
 AM_DEVREG(26, LOCAL_CLOSE,  WR, int fd; int *ret);
-AM_DEVREG(27, LOCAL_READ,   WR, int fd; char *buffer; uint32_t *length);
-AM_DEVREG(28, LOCAL_WRITE,  WR, int fd; char *buffer; uint32_t *length);
-AM_DEVREG(29, LOCAL_SEEK,   WR, int fd; uint64_t offset; int whence; uint64_t *off);
+AM_DEVREG(27, LOCAL_READ,   WR, int fd; char *buffer; uint32_t length; int *ret);
+AM_DEVREG(28, LOCAL_WRITE,  WR, int fd; char *buffer; uint32_t length; int *ret);
+AM_DEVREG(29, LOCAL_SEEK,   WR, int fd; int64_t offset; int whence; uint64_t *ret);
 
 // Input
 
