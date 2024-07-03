@@ -2,17 +2,19 @@
 #include <SDL.h>
 #include <unistd.h>
 
+#define BUF_SIZE 4096
+
 static int pause_on = 0;
-static uint8_t buffer[8192];
+static uint8_t buffer[BUF_SIZE];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 
 void CallbackHelper() {
-  if (NDL_QueryAudio() < 8192) {
+  if (NDL_QueryAudio() < BUF_SIZE) {
     return ;
   }
   if (callback != NULL) {
-    callback(NULL, buffer, 8192);
-    NDL_PlayAudio(buffer, 8192);
+    callback(NULL, buffer, BUF_SIZE);
+    NDL_PlayAudio(buffer, BUF_SIZE);
     return;
   }
 }
