@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
   int error;
   v = stb_vorbis_open_memory(buf, size, &error, NULL);
-  printf("%p\n", v);
+  printf("%d\n", error);
   assert(v);
   info = stb_vorbis_get_info(v);
 
