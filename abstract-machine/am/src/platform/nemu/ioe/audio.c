@@ -29,6 +29,7 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 
 void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
   volatile uint32_t count = *(uint32_t*)AUDIO_COUNT_ADDR;
+  printf("AUDIO STATUS%d\n", count);
   stat->count = count;
 }
 
