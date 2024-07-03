@@ -1,5 +1,6 @@
 #include <vorbis.h>
 #include <fixedptc.h>
+#include <stdio.h>
 // global configuration settings (e.g. set these in the project/makefile),
 // or just set them in this file at the top (although ideally the first few
 // should be visible when the header file is compiled too, although it's not
@@ -4693,6 +4694,7 @@ stb_vorbis * stb_vorbis_open_memory(const unsigned char *data, int len, int *err
    p.stream_len = len;
    p.push_mode = FALSE;
    if (start_decoder(&p)) {
+      printf("ddd\n");
       f = vorbis_alloc(&p);
       if (f) {
          *f = p;
