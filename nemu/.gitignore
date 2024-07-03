@@ -1,13 +1,4 @@
-*.*
-*
-!*/
-!Makefile
-!*.mk
-!*.[cSh]
-!*.cc
-!.gitignore
-!README.md
-!Kconfig
-!.vscode
-include/config
-include/generated
+.config
+.config.old
+/include/config
+/include/generated
