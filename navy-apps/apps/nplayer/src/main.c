@@ -95,6 +95,7 @@ int main(int argc, char *argv[]) {
   v = stb_vorbis_open_memory(buf, size, &error, NULL);
   assert(v);
   info = stb_vorbis_get_info(v);
+  printf("A");
 
   SDL_AudioSpec spec;
   spec.freq = info.sample_rate;
