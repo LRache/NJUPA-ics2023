@@ -7,7 +7,6 @@ static uint8_t buffer[8192];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 
 void CallbackHelper() {
-  printf("CallBack\n");
   if (NDL_QueryAudio() < 8192) {
     return ;
   }
@@ -16,7 +15,6 @@ void CallbackHelper() {
     NDL_PlayAudio(buffer, 8192);
     return;
   }
-  //printf("CallBack return\n");
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
