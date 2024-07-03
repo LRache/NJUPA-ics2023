@@ -75,6 +75,7 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
 }
 
 int main(int argc, char *argv[]) {
+  printf("Hello World\n");
   SDL_Init(0);
   screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
   SDL_FillRect(screen, NULL, 0);
@@ -95,7 +96,6 @@ int main(int argc, char *argv[]) {
   v = stb_vorbis_open_memory(buf, size, &error, NULL);
   assert(v);
   info = stb_vorbis_get_info(v);
-  printf("A");
 
   SDL_AudioSpec spec;
   spec.freq = info.sample_rate;
