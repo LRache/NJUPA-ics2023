@@ -110,6 +110,7 @@ int main(int argc, char *argv[]) {
   printf("Playing %s(freq = %d, channels = %d)...\n", MUSIC_PATH, info.sample_rate, info.channels);
   SDL_PauseAudio(0);
 
+  CallbackHelper();
   while (!is_end) {
     SDL_Event ev;
     while (SDL_PollEvent(&ev)) {
@@ -120,6 +121,7 @@ int main(int argc, char *argv[]) {
         }
       }
     }
+    CallbackHelper();
     SDL_Delay(1000 / FPS);
     visualize(stream_save, SAMPLES * info.channels);
   }

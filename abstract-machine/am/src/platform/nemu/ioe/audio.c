@@ -34,13 +34,10 @@ void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
   uint32_t len = ctl->buf.end - ctl->buf.start;
   volatile uint32_t left = bufsize - *(uint32_t*)AUDIO_COUNT_ADDR;
-  // printf("WAITING %u %u\n", left, len);
   while (left < len) {
     volatile uint32_t count = *(uint32_t*)AUDIO_COUNT_ADDR;
     left = bufsize - count;
-    //printf("A\n");
   }
-  // printf("DONE\n");
 
   uint8_t *dst = (uint8_t*)AUDIO_SBUF_ADDR;
   uint8_t *src = (uint8_t*)ctl->buf.start;

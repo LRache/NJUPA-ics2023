@@ -1,7 +1,24 @@
 #include <NDL.h>
 #include <SDL.h>
+#include <unistd.h>
+
+static int pause_on = 0;
+static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
+
+void CallbackHelper() {
+  if (NDL_QueryAudio() < 8192) {
+    return ;
+  }
+  uint8_t buffer[8192];
+  if (callback != NULL) {
+    callback(NULL, buffer, 8192);
+  }
+  NDL_PlayAudio(buffer, 8192);
+}
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
+  NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
+  callback = desired->callback;
   return 0;
 }
 

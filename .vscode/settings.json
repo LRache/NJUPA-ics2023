@@ -65,7 +65,16 @@
         "cstdint": "c",
         "io.h": "c",
         "chrono": "cpp",
-        "sdl-event.h": "c"
+        "sdl-event.h": "c",
+        "_stdint.h": "c",
+        "am-origin.h": "c",
+        "debug.h": "c",
+        "vorbis.h": "c",
+        "sdl-general.h": "c",
+        "sdl-timer.h": "c",
+        "sdl-video.h": "c",
+        "sdl-audio.h": "c",
+        "sdl-file.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
