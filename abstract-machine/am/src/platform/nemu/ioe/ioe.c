@@ -48,6 +48,10 @@ static void *lut[128] = {
   [AM_DISK_BLKIO  ] = __am_disk_blkio,
   [AM_NET_CONFIG  ] = __am_net_config,
   [AM_LOCAL_OPEN  ] = __am_local_open, 
+  [AM_LOCAL_CLOSE ] = __am_local_close,
+  [AM_LOCAL_READ  ] = __am_local_read,
+  [AM_LOCAL_WRITE ] = __am_local_write,
+  [AM_LOCAL_SEEK  ] = __am_local_seek,
 };
 
 static void fail(void *buf) { panic("access nonexist register"); }
