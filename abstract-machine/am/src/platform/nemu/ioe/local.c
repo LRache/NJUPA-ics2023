@@ -50,6 +50,7 @@ void __am_local_read(AM_LOCAL_READ_T *c) {
 
 void __am_local_write(AM_LOCAL_WRITE_T *c) {
     *(uint32_t *)CTL_OP_ADDR = CTL_WRITE;
+    *(int *)CTL_FD_ADDR = c->fd;
     uint32_t length = c->length < LOCAL_BUF_SIZE ? c->length : LOCAL_BUF_SIZE;
     *(uint32_t *)CTL_ARG_ADDR = length;
     memcpy((void *)LOCAL_BUF_ADDR, (void *)c->buffer, length);
