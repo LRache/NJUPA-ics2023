@@ -44,7 +44,7 @@ void __am_local_read(AM_LOCAL_READ_T *c) {
     volatile int ret = *(int *)CTL_ARG_ADDR;
     *c->ret = ret;
     if (ret != -1) {
-        memcpy((void *)LOCAL_BUF_ADDR, c->buffer, ret);
+        memcpy(c->buffer, (void *)LOCAL_BUF_ADDR, ret);
     }
 }
 
