@@ -7,6 +7,7 @@
 static int pause_on = 0;
 static uint8_t buffer[BUF_SIZE];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
+extern SDL_Surface *screen;
 
 void CallbackHelper() {
   printf("buffer at %p, %p\n", buffer, buffer+BUF_SIZE);
@@ -14,6 +15,7 @@ void CallbackHelper() {
     return ;
   }
   if (callback != NULL) {
+    printf("at call back %p\n", screen->pixels);
     callback(NULL, buffer, BUF_SIZE);
     NDL_PlayAudio(buffer, BUF_SIZE);
     return;
