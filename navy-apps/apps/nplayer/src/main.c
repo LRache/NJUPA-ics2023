@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
   SDL_UpdateRect(screen, 0, 0, 0, 0);
 
   FILE *fp = fopen(MUSIC_PATH, "r");
+  printf("a");
   assert(fp);
   printf("1");
   fseek(fp, 0, SEEK_END);
