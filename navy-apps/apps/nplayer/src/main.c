@@ -79,20 +79,17 @@ int main(int argc, char *argv[]) {
   screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
   SDL_FillRect(screen, NULL, 0);
   SDL_UpdateRect(screen, 0, 0, 0, 0);
+  printf("0");
 
   FILE *fp = fopen(MUSIC_PATH, "r");
-  printf("a");
   assert(fp);
-  printf("1");
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
   void *buf = malloc(size);
   assert(size);
-  printf("1");
   fseek(fp, 0, SEEK_SET);
   int ret = fread(buf, size, 1, fp);
   assert(ret == 1);
-  printf("1");
   fclose(fp);
 
   int error;
