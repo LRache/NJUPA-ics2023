@@ -114,6 +114,19 @@ static void local_write() {
     ctl[reg_arg] = fwrite(buf, 1, length, f);
 }
 
+static void local_seek() {
+    uint32_t fd = ctl[reg_fd];
+    if (fd >= 32) {
+        *(int64_t *)buf = -1;
+        return ;
+    }
+    FILE *f = files[fd];
+    int whence = ctl[reg_arg];
+    int64_t offset = *(int64_t *)buf;
+    int64_t ret = fseek(f, offset, whence);
+    *(int64_t *)buf = ret;
+}
+
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
     if (!is_write) return;
     if (offset % 4) return;
@@ -127,6 +140,7 @@ static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
         case LOCAL_CLOSE:   local_close();  break;
         case LOCAL_READ:    local_read();   break;
         case LOCAL_WRITE:   local_write();  break;
+        case LOCAL_SEEK:    local_seek();   break;
         default:
             break;
         }
@@ -150,4 +164,8 @@ void init_local() {
     add_mmio_map("local disk ctl", CONFIG_LOCAL_CTL_MMIO, ctl, ctl_space_size, local_ctl_handler);
     add_mmio_map("local disk arg", CONFIG_LOCAL_ARG_MMIO, arg, 48, local_arg_handler);
     add_mmio_map("local disk buf", CONFIG_LOCAL_BUF_MMIO, buf, LOCAL_BUF_SIZE, local_buf_handler);
+
+    files[0] = stdin;
+    files[1] = stdout;
+    files[2] = stderr;
 }
