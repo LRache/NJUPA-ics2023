@@ -15,9 +15,8 @@ void CallbackHelper() {
     return ;
   }
   if (callback != NULL) {
-    printf("at call back %p\n", screen->pixels);
     callback(NULL, buffer, BUF_SIZE);
-    NDL_PlayAudio(buffer, BUF_SIZE);
+    //NDL_PlayAudio(buffer, BUF_SIZE);
     printf("at call back %p\n", screen->pixels);
     return;
   }
