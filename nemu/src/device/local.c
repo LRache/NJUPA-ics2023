@@ -101,6 +101,7 @@ static void local_read() {
     FILE *f = files[fd];
     size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = fread(buf, 1, length, f);
+    printf("Read %d bytes\n", ctl[reg_arg]);
 }
 
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
