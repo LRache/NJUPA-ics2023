@@ -15,7 +15,7 @@ void CallbackHelper() {
   }
   if (callback != NULL) {
     callback(NULL, buffer, BUF_SIZE);
-    //NDL_PlayAudio(buffer, BUF_SIZE);
+    NDL_PlayAudio(buffer, BUF_SIZE);
     return;
   }
 }
