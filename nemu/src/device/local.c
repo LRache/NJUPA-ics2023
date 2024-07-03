@@ -127,7 +127,7 @@ static void local_arg_handler(uint32_t offset, int len, bool is_write) {
 }
 
 static void local_buf_handler(uint32_t offset, int len, bool is_write) {
-    assert(!is_write);
+    
 }
 
 void init_local() {
