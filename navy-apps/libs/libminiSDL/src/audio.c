@@ -14,8 +14,9 @@ void CallbackHelper() {
     uint8_t buffer[8192];
     callback(NULL, buffer, 8192);
     NDL_PlayAudio(buffer, 8192);
+    return;
   }
-  printf("CallBack return\n");
+  //printf("CallBack return\n");
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
