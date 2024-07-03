@@ -92,6 +92,17 @@ static void local_close() {
     fclose(files[fd]);
 }
 
+static void local_read() {
+    uint32_t fd = ctl[reg_fd];
+    if (fd >= 32) {
+        ctl[reg_arg] = 0;
+        return ;
+    }
+    FILE *f = files[fd];
+    size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
+    ctl[reg_arg] = fread(buf, 1, length, f);
+}
+
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
     if (!is_write) return;
     if (offset % 4) return;
@@ -103,6 +114,7 @@ static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
         {
         case LOCAL_OPEN:    local_open();   break;
         case LOCAL_CLOSE:   local_close();  break;
+        case LOCAL_READ:    local_read();   break;
         default:
             break;
         }
