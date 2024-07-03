@@ -10,15 +10,12 @@ static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 extern SDL_Surface *screen;
 
 void CallbackHelper() {
-  printf("buffer at %p, %p\n", buffer, buffer+BUF_SIZE);
   if (NDL_QueryAudio() < BUF_SIZE) {
     return ;
   }
   if (callback != NULL) {
-    printf("at call back %p\n", screen->pixels);
     callback(NULL, buffer, BUF_SIZE);
     //NDL_PlayAudio(buffer, BUF_SIZE);
-    printf("at call back %p\n", screen->pixels);
     return;
   }
 }
