@@ -9,6 +9,7 @@ static uint8_t buffer[BUF_SIZE];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 
 void CallbackHelper() {
+  printf("CALL\n");
   printf("buffer at %p, %p\b", buffer, buffer+BUF_SIZE);
   if (NDL_QueryAudio() < BUF_SIZE) {
     return ;
