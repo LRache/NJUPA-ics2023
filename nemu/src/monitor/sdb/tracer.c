@@ -67,7 +67,7 @@ void free_function_tracer() {
     funTracer = NULL;
 }
 
-void function_trace_display(){
+void function_trace_display() {
     int level = 0;
     FunTracer *node = funTracer;
     while (node) {
