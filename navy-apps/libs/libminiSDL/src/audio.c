@@ -6,7 +6,6 @@ static int pause_on = 0;
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 
 void CallbackHelper() {
-  printf("%d\n", NDL_QueryAudio());
   if (NDL_QueryAudio() < 8192) {
     return ;
   }
