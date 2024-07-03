@@ -75,7 +75,6 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
 }
 
 int main(int argc, char *argv[]) {
-  printf("Hello World\n");
   SDL_Init(0);
   screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
   SDL_FillRect(screen, NULL, 0);
@@ -83,13 +82,16 @@ int main(int argc, char *argv[]) {
 
   FILE *fp = fopen(MUSIC_PATH, "r");
   assert(fp);
+  printf("1");
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
   void *buf = malloc(size);
   assert(size);
+  printf("1");
   fseek(fp, 0, SEEK_SET);
   int ret = fread(buf, size, 1, fp);
   assert(ret == 1);
+  printf("1");
   fclose(fp);
 
   int error;
