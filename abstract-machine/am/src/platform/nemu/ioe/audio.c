@@ -28,7 +28,8 @@ void __am_audio_ctrl(AM_AUDIO_CTRL_T *ctrl) {
 }
 
 void __am_audio_status(AM_AUDIO_STATUS_T *stat) {
-  stat->count = *(uint32_t*)AUDIO_COUNT_ADDR;
+  volatile uint32_t count = *(uint32_t*)AUDIO_COUNT_ADDR;
+  stat->count = count;
 }
 
 void __am_audio_play(AM_AUDIO_PLAY_T *ctl) {
