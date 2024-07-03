@@ -9,11 +9,12 @@ void CallbackHelper() {
   if (NDL_QueryAudio() < 8192) {
     return ;
   }
-  uint8_t buffer[8192];
+  
   if (callback != NULL) {
+    uint8_t buffer[8192];
     callback(NULL, buffer, 8192);
+    NDL_PlayAudio(buffer, 8192);
   }
-  NDL_PlayAudio(buffer, 8192);
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
