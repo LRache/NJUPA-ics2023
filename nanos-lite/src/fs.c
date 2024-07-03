@@ -54,6 +54,7 @@ static Finfo file_table[] __attribute__((used)) = {
 
 #define FILE_NUM (sizeof(file_table) / sizeof(file_table[0]))
 
+void sbctl_init();
 void init_fs() {
   char s[32];
   dispinfo_read(s, 0, 32);
@@ -68,6 +69,8 @@ void init_fs() {
     height = height * 10 + s[i] - '0';
   }
   file_table[FD_FB].size = width * height * 4;
+
+  sbctl_init();
 }
 
 int fs_open(const char *pathname, int flags, int mode) {

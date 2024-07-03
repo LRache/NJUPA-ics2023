@@ -103,9 +103,15 @@ size_t fbctl_write(const void *buf, size_t offset, size_t len) {
   return i;
 }
 
+static uint32_t audio_bufsize = 0;
+
+void sbctl_init() {
+  audio_bufsize = io_read(AM_AUDIO_CONFIG).bufsize;
+}
+
 size_t sbctl_read(void *buf, size_t offset, size_t len) {
   if (len < 4) return 0;
-  *(uint32_t *)buf = io_read(AM_AUDIO_STATUS).count;
+  *(uint32_t *)buf = audio_bufsize - io_read(AM_AUDIO_STATUS).count;
   return 4;
 }
 
