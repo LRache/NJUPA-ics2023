@@ -130,7 +130,7 @@ static int decode_exec(Decode *s) {
 
   R(0) = 0; // reset $zero to 0
   if (s->pc == 0x83006814)
-  Log("%u", gpr(1));
+  Log("%x", gpr(1));
 
   return 0;
 }
