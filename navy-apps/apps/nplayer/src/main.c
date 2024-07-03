@@ -82,7 +82,6 @@ int main(int argc, char *argv[]) {
 
   FILE *fp = fopen(MUSIC_PATH, "r");
   assert(fp);
-  printf("%p\n", fp);
 
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
@@ -91,6 +90,7 @@ int main(int argc, char *argv[]) {
   fseek(fp, 0, SEEK_SET);
   int ret = fread(buf, size, 1, fp);
   assert(ret == 1);
+  printf("1\n");
   fclose(fp);
 
   int error;
