@@ -60,7 +60,10 @@ static void local_close() {
 
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
     if (!is_write) return;
-    if (offset == reg_excute) {
+    if (offset % 4) return;
+    int reg = offset / 4;
+    if (reg == reg_excute) {
+        ctl[reg_excute] = 0;
         uint32_t op = ctl[reg_op];
         switch (op)
         {

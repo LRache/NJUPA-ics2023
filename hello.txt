@@ -1,0 +1,2 @@
+Hello, Abstrace Machine!
+Hello, NanOS!
