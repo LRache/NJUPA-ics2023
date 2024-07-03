@@ -83,6 +83,8 @@ int main(int argc, char *argv[]) {
 
   FILE *fp = fopen(MUSIC_PATH, "r");
   assert(fp);
+  printf("0");
+
   fseek(fp, 0, SEEK_END);
   size_t size = ftell(fp);
   void *buf = malloc(size);
