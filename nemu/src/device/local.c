@@ -101,7 +101,17 @@ static void local_read() {
     FILE *f = files[fd];
     size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = fread(buf, 1, length, f);
-    printf("Read %u bytes\n", ctl[reg_arg]);
+}
+
+static void local_write() {
+    uint32_t fd = ctl[reg_fd];
+    if (fd >= 32) {
+        ctl[reg_arg] = 0;
+        return ;
+    }
+    FILE *f = files[fd];
+    size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
+    ctl[reg_arg] = fwrite(buf, 1, length, f);
 }
 
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
@@ -116,6 +126,7 @@ static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
         case LOCAL_OPEN:    local_open();   break;
         case LOCAL_CLOSE:   local_close();  break;
         case LOCAL_READ:    local_read();   break;
+        case LOCAL_WRITE:   local_write();  break;
         default:
             break;
         }
@@ -127,7 +138,7 @@ static void local_arg_handler(uint32_t offset, int len, bool is_write) {
 }
 
 static void local_buf_handler(uint32_t offset, int len, bool is_write) {
-    
+
 }
 
 void init_local() {
