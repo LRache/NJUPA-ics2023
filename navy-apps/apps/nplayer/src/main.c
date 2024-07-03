@@ -90,13 +90,13 @@ int main(int argc, char *argv[]) {
   fseek(fp, 0, SEEK_SET);
   int ret = fread(buf, size, 1, fp);
   assert(ret == 1);
-  printf("1\n");
   fclose(fp);
 
   int error;
   v = stb_vorbis_open_memory(buf, size, &error, NULL);
   assert(v);
   info = stb_vorbis_get_info(v);
+  printf("1\n");
 
   SDL_AudioSpec spec;
   spec.freq = info.sample_rate;
