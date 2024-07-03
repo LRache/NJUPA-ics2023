@@ -76,6 +76,7 @@ void FillAudio(void *userdata, uint8_t *stream, int len) {
 
 int main(int argc, char *argv[]) {
   SDL_Init(0);
+  printf("0");
   screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
   SDL_FillRect(screen, NULL, 0);
   SDL_UpdateRect(screen, 0, 0, 0, 0);
