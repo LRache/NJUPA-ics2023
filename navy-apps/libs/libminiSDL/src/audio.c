@@ -19,6 +19,7 @@ void CallbackHelper() {
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
   callback = desired->callback;
+  printf("SDL_OpenAudio\n");
   return 0;
 }
 
