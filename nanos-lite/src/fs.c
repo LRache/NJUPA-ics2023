@@ -1,5 +1,6 @@
 #include <fs.h>
 #include <am.h>
+#include <amdev.h>
 
 size_t ramdisk_read (void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -82,15 +83,22 @@ int fs_open(const char *pathname, int flags, int mode) {
     }
   }
   int fd;
-  io_write(AM_LOCAL_OPEN, pathname, mode, &fd);
+  io_write(AM_LOCAL_OPEN, (char *)pathname, mode, &fd);
   if (fd != -1) {
-    return fd;
+    return fd + 128;
   }
   panic("FileNotFoundError: %s", pathname);
   return -1;
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
+  if (fd >= 128) {
+    fd -= 128;
+    size_t n;
+    io_write(AM_LOCAL_READ, fd, buf, len, &n);
+    return n;
+  }
+
   Finfo info = file_table[fd];
   if (info.read != NULL) {
     return info.read(buf, info.open_offset, len);
@@ -105,6 +113,13 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
+  if (fd >= 128) {
+    fd -= 128;
+    size_t n;
+    io_write(AM_LOCAL_WRITE, fd, (char *)buf, len, &n);
+    return n;
+  }
+
   Finfo info = file_table[fd];
   if (info.write != NULL) {
     return info.write(buf, info.open_offset, len);
@@ -121,6 +136,13 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 }
 
 size_t fs_lseek(int fd, off_t offset, int whence) {
+  if (fd >= 128) {
+    fd -= 128;
+    uint64_t off;
+    io_write(AM_LOCAL_SEEK, fd, offset, whence, &off);
+    return off;
+  }
+
   size_t new_off = 0;
   switch (whence)
   {

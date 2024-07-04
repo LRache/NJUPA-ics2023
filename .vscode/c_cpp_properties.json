@@ -68,10 +68,11 @@
             "defines": [
                 "${myDefines}"
             ],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/riscv64-linux-gnu-gcc",
             "cStandard": "c17",
             "cppStandard": "gnu++17",
-            "intelliSenseMode": "linux-gcc-x86"
+            "intelliSenseMode": "linux-gcc-x86",
+            "compilerArgs": ["-nostdlib"]
         },
         {
             "name": "Navy-apps",
