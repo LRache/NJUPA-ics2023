@@ -90,6 +90,7 @@ static void local_close() {
 }
 
 static void local_read() {
+    Log("READ");
     uint32_t fd = ctl[reg_fd];
     if (fd >= 32) {
         ctl[reg_arg] = 0;
