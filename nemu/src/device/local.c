@@ -71,6 +71,7 @@ static void local_open() {
         return;
     }
 
+    Log("%s", buf);
     int local_fd = open(buf, ctl[reg_arg]);
     if (local_fd == -1) {
         ctl[reg_fd] = -1;
