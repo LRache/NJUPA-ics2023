@@ -98,6 +98,7 @@ static void local_read() {
     LOCAL_FD;
     size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = read(local_fd, buf, nbytes);
+    Log("READ");
 }
 
 static void local_write() {
