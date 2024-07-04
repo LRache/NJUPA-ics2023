@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define LOCAL_FD int local_fd = files[reg_fd]; if (local_fd == -1) {ctl[reg_fd] = -1; return;}
+#define LOCAL_FD int local_fd = files[ctl[reg_fd]]; if (local_fd == -1) {ctl[reg_fd] = -1; return;}
 
 #define LOCAL_BUF_SIZE 1024
 
