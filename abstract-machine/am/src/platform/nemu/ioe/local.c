@@ -22,6 +22,7 @@ static inline void __execute() {
 void __am_local_open(AM_LOCAL_OPEN_T *c) {
     *(uint32_t *)CTL_OP_ADDR = CTL_OPEN;
     *(uint32_t *)CTL_ARG_ADDR = c->mode;
+    printf("%s\n", c->pathname);
     strcpy((char *)LOCAL_ARG_ADDR, c->pathname);
     __execute();
     volatile int fd = *(int *)CTL_FD_ADDR;
