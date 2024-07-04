@@ -80,6 +80,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
+  io_write(AM_LOCAL_OPEN, pathname)
   panic("FileNotFoundError: %s", pathname);
   return -1;
 }

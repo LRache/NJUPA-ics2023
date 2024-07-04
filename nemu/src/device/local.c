@@ -110,7 +110,6 @@ static void local_write() {
         return ;
     }
     FILE *f = files[fd];
-    printf("%d\n", fd);
     size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = fwrite(buf, 1, length, f);
 }
