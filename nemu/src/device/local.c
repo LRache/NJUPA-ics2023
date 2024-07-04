@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#define LOCAL_FD int local_fd = files[reg_fd]; if (local_fd == -1) {ctl[reg_fd] = -1; return;}
+
 #define LOCAL_BUF_SIZE 1024
 
 static uint32_t *ctl;
@@ -93,7 +95,7 @@ static void local_read() {
         ctl[reg_arg] = 0;
         return ;
     }
-    int local_fd = files[fd];
+    LOCAL_FD;
     size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = read(local_fd, buf, nbytes);
 }
@@ -104,7 +106,7 @@ static void local_write() {
         ctl[reg_arg] = 0;
         return ;
     }
-    int local_fd = files[fd];
+    LOCAL_FD;
     size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = write(local_fd, buf, nbytes);
 }
@@ -115,7 +117,7 @@ static void local_seek() {
         *(int64_t *)buf = -1;
         return ;
     }
-    int local_fd = files[fd];
+    LOCAL_FD;
     int whence = ctl[reg_arg];
     int64_t offset = *(int64_t *)buf;
     int64_t ret = lseek(local_fd, offset, whence);
