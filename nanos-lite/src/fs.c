@@ -1,4 +1,5 @@
 #include <fs.h>
+#include <am.h>
 
 size_t ramdisk_read (void *buf, size_t offset, size_t len);
 size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -80,7 +81,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  io_write(AM_LOCAL_OPEN, pathname)
+  io_write(AM_LOCAL_OPEN, pathname, 
   panic("FileNotFoundError: %s", pathname);
   return -1;
 }
