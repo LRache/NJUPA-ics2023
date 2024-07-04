@@ -75,7 +75,13 @@
         "sdl-video.h": "c",
         "sdl-audio.h": "c",
         "sdl-file.h": "c",
-        "map.h": "c"
+        "map.h": "c",
+        "iosfwd": "c",
+        "istream": "c",
+        "limits": "c",
+        "sstream": "c",
+        "stop_token": "c",
+        "streambuf": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

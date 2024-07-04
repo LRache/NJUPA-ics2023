@@ -68,7 +68,7 @@
             "defines": [
                 "${myDefines}"
             ],
-            "compilerPath": "/usr/bin/riscv64-linux-gnu-gcc",
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "linux-gcc-x86"

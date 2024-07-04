@@ -1,5 +1,6 @@
 #include <device/map.h>
-#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #define LOCAL_BUF_SIZE 1024
 
@@ -56,29 +57,23 @@ enum {
     LOCAL_SEEK,
 };
 
-static FILE *files[32];
+static int files[32];
 
 static void local_open() {
     int fd = 0;
     for (; fd < 32; fd++) {
-        if (files[fd] == NULL) break;
+        if (files[fd] == -1) break;
     }
     if (fd == 32) {
         ctl[reg_fd] = -1;
         return;
     }
-    char *mode;
-    if (ctl[reg_arg] == 0) {
-        mode = "r";
-    } else {
-        mode = "w";
-    }
 
-    FILE *f = fopen(arg, mode);
-    if (f == NULL) {
+    int local_fd = open(buf, ctl[reg_arg]);
+    if (local_fd == -1) {
         ctl[reg_fd] = -1;
     } else {
-        files[fd] = f;
+        files[fd] = local_fd;
         ctl[reg_fd] = fd;
     }
 }
@@ -89,7 +84,7 @@ static void local_close() {
         ctl[reg_arg] = -1;
         return ;
     }
-    fclose(files[fd]);
+    close(files[ctl[reg_fd]]);
 }
 
 static void local_read() {
@@ -98,9 +93,9 @@ static void local_read() {
         ctl[reg_arg] = 0;
         return ;
     }
-    FILE *f = files[fd];
-    size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
-    ctl[reg_arg] = fread(buf, 1, length, f);
+    int local_fd = files[fd];
+    size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
+    ctl[reg_arg] = read(local_fd, buf, nbytes);
 }
 
 static void local_write() {
@@ -109,9 +104,9 @@ static void local_write() {
         ctl[reg_arg] = 0;
         return ;
     }
-    FILE *f = files[fd];
-    size_t length = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
-    ctl[reg_arg] = fwrite(buf, 1, length, f);
+    int local_fd = files[fd];
+    size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
+    ctl[reg_arg] = write(local_fd, buf, nbytes);
 }
 
 static void local_seek() {
@@ -120,10 +115,10 @@ static void local_seek() {
         *(int64_t *)buf = -1;
         return ;
     }
-    FILE *f = files[fd];
+    int local_fd = files[fd];
     int whence = ctl[reg_arg];
     int64_t offset = *(int64_t *)buf;
-    int64_t ret = fseek(f, offset, whence);
+    int64_t ret = lseek(local_fd, offset, whence);
     *(int64_t *)buf = ret;
 }
 
@@ -165,7 +160,10 @@ void init_local() {
     add_mmio_map("local disk arg", CONFIG_LOCAL_ARG_MMIO, arg, 48, local_arg_handler);
     add_mmio_map("local disk buf", CONFIG_LOCAL_BUF_MMIO, buf, LOCAL_BUF_SIZE, local_buf_handler);
 
-    files[0] = stdin;
-    files[1] = stdout;
-    files[2] = stderr;
+    for (int i = 0; i < 32; i++) {
+        files[i] = -1;
+    }
+    files[0] = 0;
+    files[1] = 1;
+    files[2] = 2;
 }
