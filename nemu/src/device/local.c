@@ -90,7 +90,6 @@ static void local_close() {
 }
 
 static void local_read() {
-    Log("READ");
     uint32_t fd = ctl[reg_fd];
     if (fd >= 32) {
         ctl[reg_arg] = 0;
@@ -99,7 +98,6 @@ static void local_read() {
     LOCAL_FD;
     size_t nbytes = ctl[reg_arg] < LOCAL_BUF_SIZE ? ctl[reg_arg] : LOCAL_BUF_SIZE;
     ctl[reg_arg] = read(local_fd, buf, nbytes);
-    Log("READ");
 }
 
 static void local_write() {
