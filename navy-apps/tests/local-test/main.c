@@ -4,7 +4,7 @@
 
 int main() {
     const char *filepath = "/home/rache/Documents/ics2023/hello.txt";
-    int fd = open(filepath, 0);
+    int fd = open(filepath, O_RDONLY);
     char buffer[64];
     size_t nbytes = read(fd, buffer, 63);
     buffer[nbytes] = 0;
