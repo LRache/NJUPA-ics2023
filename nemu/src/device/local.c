@@ -64,7 +64,6 @@ static int files[32];
 static void local_open() {
     int fd = 0;
     for (; fd < 32; fd++) {
-        Log("%d", files[fd]);
         if (files[fd] == -1) break;
     }
     if (fd == 32) {
