@@ -9,7 +9,11 @@ static uint8_t buffer[BUF_SIZE];
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 extern SDL_Surface *screen;
 
+static int is_CallbackHelper_reenter = 0;
+
 void CallbackHelper() {
+  if (is_CallbackHelper_reenter) return;
+  is_CallbackHelper_reenter = 1;
   if (NDL_QueryAudio() < BUF_SIZE) {
     return ;
   }
@@ -18,6 +22,7 @@ void CallbackHelper() {
     NDL_PlayAudio(buffer, BUF_SIZE);
     return;
   }
+  is_CallbackHelper_reenter = 0;
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {

@@ -92,7 +92,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     fs_read(fd, &sym, sizeof(sym));
     if (strcmp(&string[sym.st_name], "__libc_init_array") == 0) {
       init_entry = sym.st_value;
-      Log("Found __libc_init_array at 0x%x", init_entry);
     }
   }
 
@@ -102,10 +101,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
-  Log("Jump to entry = %p", entry);
   if (init_entry != 0) {
+    Log("Jump to __libc_init_array = %p", init_entry);
     ((void(*)())init_entry) ();
   }
+  Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
 
