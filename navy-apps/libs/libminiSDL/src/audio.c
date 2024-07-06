@@ -51,6 +51,7 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
     *_src = (int16_t)v;
     _src++;
     _dst++;
+    printf("%d", *_src);
   }
 }
 
