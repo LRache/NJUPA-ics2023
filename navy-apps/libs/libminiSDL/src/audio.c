@@ -22,6 +22,7 @@ void CallbackHelper() {
       NDL_PlayAudio(buffer, BUF_SIZE);
     }
   }
+  printf("CALL BACK HELPER\n");
   is_CallbackHelper_reenter = 0;
 }
 
