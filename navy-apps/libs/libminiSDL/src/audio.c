@@ -20,7 +20,6 @@ void CallbackHelper() {
     if (callback != NULL) {
       callback(NULL, buffer, BUF_SIZE);
       NDL_PlayAudio(buffer, BUF_SIZE);
-      printf("CALL BACK HELPER\n");
     }
   }
   is_CallbackHelper_reenter = 0;
@@ -29,7 +28,6 @@ void CallbackHelper() {
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
   callback = desired->callback;
-  printf("SDL_OpenAudio\n");
   return 0;
 }
 
@@ -62,11 +60,9 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audi
   int r;
   uint32_t chunckID;
   Read(chunckID, 4);
-  printf("0x%x\n", chunckID);
   if (chunckID != 0x46464952) {
     return NULL;
   }
-  printf("continue\n");
   uint16_t channels, freq, samples;
   Seek(22);
   Read(channels, 2);
