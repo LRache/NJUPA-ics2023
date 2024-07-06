@@ -58,6 +58,7 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
 #define Seek(s) r = lseek(fd, s, SEEK_SET); if (r != s) return NULL;
 
 SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audio_buf, uint32_t *audio_len) {
+  printf("Load wav");
   int fd = open(file, O_RDONLY);
   int r;
   uint32_t chunckID;
