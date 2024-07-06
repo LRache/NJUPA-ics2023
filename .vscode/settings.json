@@ -81,7 +81,8 @@
         "limits": "c",
         "sstream": "c",
         "stop_token": "c",
-        "streambuf": "c"
+        "streambuf": "c",
+        "random": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
