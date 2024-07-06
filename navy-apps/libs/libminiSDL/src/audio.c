@@ -15,7 +15,6 @@ void CallbackHelper() {
   if (is_CallbackHelper_reenter) return;
   is_CallbackHelper_reenter = 1;
   if (NDL_QueryAudio() >= lengthWanted) {
-    printf("%d\n", NDL_QueryAudio());
     if (callback != NULL) {
       callback(NULL, buffer, lengthWanted);
       NDL_PlayAudio(buffer, lengthWanted);
@@ -51,7 +50,6 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
     *_dst = (int16_t)v;
     _src++;
     _dst++;
-    //printf("%d\n", *_dst);
   }
 }
 
