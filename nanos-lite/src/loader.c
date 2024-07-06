@@ -91,8 +91,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_Sym sym;
     fs_read(fd, &sym, sizeof(sym));
     if (strcmp(&string[sym.st_name], "__libc_init_array") == 0) {
-      Log("Found __libc_init_array at 0x%x", init_entry);
       init_entry = sym.st_value;
+      Log("Found __libc_init_array at 0x%x", init_entry);
     }
   }
 
