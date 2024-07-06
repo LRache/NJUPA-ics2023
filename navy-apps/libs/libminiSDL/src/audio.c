@@ -66,6 +66,7 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audi
   if (chunckID != 0x46465952) {
     return NULL;
   }
+  printf("continue\n");
   uint16_t channels, freq, samples;
   Seek(22);
   Read(channels, 2);
