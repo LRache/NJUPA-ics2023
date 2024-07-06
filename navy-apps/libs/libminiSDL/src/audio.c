@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 static int pause_on = 0;
-static uint8_t *buffer;
+static uint8_t *buffer = NULL;
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
 static uint16_t lengthWanted = 0;
 
@@ -28,6 +28,7 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
   callback = desired->callback;
   lengthWanted = desired->samples * 2 * desired->channels;
+  buffer = malloc(lengthWanted);
   return 0;
 }
 
