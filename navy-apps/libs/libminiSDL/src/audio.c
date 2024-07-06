@@ -15,10 +15,10 @@ void CallbackHelper() {
   if (is_CallbackHelper_reenter) return;
   is_CallbackHelper_reenter = 1;
   if (NDL_QueryAudio() >= lengthWanted) {
+    printf("%d\n", NDL_QueryAudio());
     if (callback != NULL) {
       callback(NULL, buffer, lengthWanted);
       NDL_PlayAudio(buffer, lengthWanted);
-      printf("Call back\n");
     }
   }
   is_CallbackHelper_reenter = 0;
