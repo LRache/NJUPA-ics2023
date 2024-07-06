@@ -48,10 +48,10 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
     int32_t v = (int32_t) *_src + *_dst * volume / SDL_MIX_MAXVOLUME;
     if (v < -32768) v = -32768;
     else if (v > 32767) v = 32767;
-    *_src = (int16_t)v;
+    *_dst = (int16_t)v;
     _src++;
     _dst++;
-    printf("%d\n", *_dst);
+    //printf("%d\n", *_dst);
   }
 }
 
