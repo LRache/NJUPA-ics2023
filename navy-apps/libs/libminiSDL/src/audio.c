@@ -20,9 +20,9 @@ void CallbackHelper() {
     if (callback != NULL) {
       callback(NULL, buffer, BUF_SIZE);
       NDL_PlayAudio(buffer, BUF_SIZE);
+      printf("CALL BACK HELPER\n");
     }
   }
-  printf("CALL BACK HELPER\n");
   is_CallbackHelper_reenter = 0;
 }
 
