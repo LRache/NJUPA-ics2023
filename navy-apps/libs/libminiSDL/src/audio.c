@@ -63,7 +63,7 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audi
   int r;
   uint32_t chunckID;
   Read(chunckID, 4);
-  printf("0x%x\n", chunckID)
+  printf("0x%x\n", chunckID);
   if (chunckID != 0x46465952) {
     return NULL;
   }
