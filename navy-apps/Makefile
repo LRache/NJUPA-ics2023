@@ -87,6 +87,7 @@ CFLAGS   += -Og -MMD $(INCFLAGS) -static -D__NAVY__ \
             -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector
 CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions -DHAVE_INITFINI_ARRAY
 ASFLAGS  +=  $(CFLAGS)
+LDFLAGS  += --undefined=my_func	
 
 ## 4. ISA-Specific Configurations
 

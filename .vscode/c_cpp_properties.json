@@ -84,7 +84,8 @@
                 "${workspaceFolder}/abstract-machine/am/src/platform/nemu/include"
             ],
             "defines": [
-                "${myDefines}"
+                "${myDefines}",
+                "HAVE_INITFINI_ARRAY"
             ],
             "compilerPath": "/usr/bin/riscv64-linux-gnu-gcc",
             "cStandard": "c17",
