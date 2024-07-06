@@ -14,16 +14,13 @@ extern SDL_Surface *screen;
 static int is_CallbackHelper_reenter = 0;
 
 void CallbackHelper() {
-  printf("CALL BACK HELPER\n");
   if (is_CallbackHelper_reenter) return;
   is_CallbackHelper_reenter = 1;
-  if (NDL_QueryAudio() < BUF_SIZE) {
-    return ;
-  }
-  if (callback != NULL) {
-    callback(NULL, buffer, BUF_SIZE);
-    NDL_PlayAudio(buffer, BUF_SIZE);
-    return;
+  if (NDL_QueryAudio() >= BUF_SIZE) {
+    if (callback != NULL) {
+      callback(NULL, buffer, BUF_SIZE);
+      NDL_PlayAudio(buffer, BUF_SIZE);
+    }
   }
   is_CallbackHelper_reenter = 0;
 }
