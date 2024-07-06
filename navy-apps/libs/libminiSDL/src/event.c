@@ -10,6 +10,8 @@ static const char *keyname[] = {
   _KEYS(keyname)
 };
 
+extern void CallbackHelper();
+
 int SDL_PushEvent(SDL_Event *ev) {
   return 0;
 }
@@ -34,10 +36,12 @@ int SDL_PollEvent(SDL_Event *event) {
       }
     }
   }
+  CallbackHelper();
   return 1;
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
+  CallbackHelper();
   char buffer[16];
   while (read(3, buffer, sizeof(buffer)) == 0);
 
