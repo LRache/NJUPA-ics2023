@@ -4,22 +4,20 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#define BUF_SIZE 4096
-
 static int pause_on = 0;
-static uint8_t buffer[BUF_SIZE];
+static uint8_t *buffer;
 static void (*callback)(void *userdata, uint8_t *stream, int len) = NULL;
-extern SDL_Surface *screen;
+static uint16_t lengthWanted = 0;
 
 static int is_CallbackHelper_reenter = 0;
 
 void CallbackHelper() {
   if (is_CallbackHelper_reenter) return;
   is_CallbackHelper_reenter = 1;
-  if (NDL_QueryAudio() >= BUF_SIZE) {
+  if (NDL_QueryAudio() >= lengthWanted) {
     if (callback != NULL) {
-      callback(NULL, buffer, BUF_SIZE);
-      NDL_PlayAudio(buffer, BUF_SIZE);
+      callback(NULL, buffer, lengthWanted);
+      NDL_PlayAudio(buffer, lengthWanted);
       printf("Call back\n");
     }
   }
@@ -29,10 +27,13 @@ void CallbackHelper() {
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained) {
   NDL_OpenAudio(desired->freq, desired->channels, desired->samples);
   callback = desired->callback;
+  lengthWanted = desired->samples * 2 * desired->channels;
   return 0;
 }
 
 void SDL_CloseAudio() {
+  lengthWanted = 0;
+  free(buffer);
 }
 
 void SDL_PauseAudio(int pause_on) {
@@ -56,7 +57,6 @@ void SDL_MixAudio(uint8_t *dst, uint8_t *src, uint32_t len, int volume) {
 #define Seek(s) r = lseek(fd, s, SEEK_SET); if (r != s) return NULL;
 
 SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audio_buf, uint32_t *audio_len) {
-  printf("Load wav\n");
   int fd = open(file, O_RDONLY);
   int r;
   uint32_t chunckID;
@@ -87,7 +87,6 @@ SDL_AudioSpec *SDL_LoadWAV(const char *file, SDL_AudioSpec *spec, uint8_t **audi
   spec->freq = freq;
   spec->samples = samples;
   spec->channels = channels;
-  printf("Load wav OK\n");
   return spec;
 }
 
