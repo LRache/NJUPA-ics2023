@@ -82,7 +82,8 @@
         "sstream": "c",
         "stop_token": "c",
         "streambuf": "c",
-        "random": "c"
+        "random": "c",
+        "wait.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

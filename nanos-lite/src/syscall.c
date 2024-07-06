@@ -2,6 +2,7 @@
 #include "syscall.h"
 #include "fs.h"
 #include "klib.h"
+#include "proc.h"
 
 struct timeval {
   long s;
@@ -14,6 +15,7 @@ static int sys_write (int fd, const void *buf, size_t count);
 static int sys_close (int fd);
 static int sys_lseek (int fd, off_t offset, int whence);
 static int sys_brk   ();
+static int sys_execve(char *pathname);
 static int sys_gettimeofday(struct timeval *t);
 static int sys_ioe_read (int reg, void *buf);
 static int sys_ioe_write(int reg, void *buf);
@@ -41,6 +43,8 @@ void do_syscall(Context *c) {
       r = sys_lseek(arg[0], arg[1], arg[2]); break;
     case SYS_brk:
       r = sys_brk(); break;
+    case SYS_execve:
+      r = sys_execve((char *)arg[0]); break;
     case SYS_gettimeofday:
       r = sys_gettimeofday((struct timeval *)arg[0]); break;
     case SYS_ioe_read:
@@ -90,5 +94,10 @@ static int sys_ioe_read(int reg, void *buf) {
 
 static int sys_ioe_write(int reg, void *buf) {
   ioe_write(reg, buf);
+  return 0;
+}
+
+static int sys_execve(char *pathname) {
+  naive_uload(NULL, pathname);
   return 0;
 }
