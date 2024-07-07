@@ -34,7 +34,7 @@ void init_proc() {
   // naive_uload(NULL, "/bin/menu");
   context_kload(&pcb[0], hello_fun, (void *)1);
   context_kload(&pcb[1], hello_fun, (void *)2);
-  switch_boot_pcb();
+
   for (int i = 0; i < 2; i++) {
     Log("%d %p", i, pcb[i].cp);
   }
