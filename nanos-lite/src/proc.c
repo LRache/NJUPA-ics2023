@@ -56,7 +56,7 @@ Context* schedule(Context *prev) {
   currentPcbIndex = (currentPcbIndex + 1) % pcbCount; 
   current = pcb + currentPcbIndex;
   for(int i = 0; i < 2; i++) {
-    Log("%d %p", i, pcb[i].cp);
+    Log("%d %d", i, pcb[i].cp == 0);
   }
   return current->cp;
 }
