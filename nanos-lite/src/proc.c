@@ -32,8 +32,10 @@ void init_proc() {
 
   // load program here
   // naive_uload(NULL, "/bin/menu");
-  context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  // context_kload(&pcb[0], hello_fun, (void *)1);
+  // context_kload(&pcb[1], hello_fun, (void *)2);
+  pcb[0].cp = kcontext((Area) { pcb[0].stack, &pcb[0] + 1 }, hello_fun, (void *)1L);
+  pcb[1].cp = kcontext((Area) { pcb[1].stack, &pcb[1] + 1 }, hello_fun, (void *)2L);
 
   yield();
 }
