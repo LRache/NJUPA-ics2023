@@ -26,7 +26,7 @@ f(30) f(31)
 #define NR_REGS 16
 #endif
 
-#define REGS(f) REGS_LO16(f) REGS_HI16(f) f(3)
+#define REGS(f) REGS_LO16(f) REGS_HI16(f)
 
 #define PUSH(n) STORE concat(x, n), (n * XLEN)(sp);
 #define POP(n)  LOAD  concat(x, n), (n * XLEN)(sp);
@@ -59,8 +59,7 @@ __am_asm_trap:
 
   mv a0, sp
   jal __am_irq_handle
-  mv sp, a0
-  
+
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
@@ -68,4 +67,5 @@ __am_asm_trap:
 
   MAP(REGS, POP)
 
+  addi sp, sp, CONTEXT_SIZE
   mret
