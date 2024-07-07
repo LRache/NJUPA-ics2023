@@ -46,8 +46,7 @@ Context* schedule(Context *prev) {
   Log("%p %d", prev, currentPcbIndex);
   current->cp = prev;
   currentPcbIndex = (currentPcbIndex + 1) % pcbCount; 
-  Log("%d", currentPcbIndex);
   current = pcb + currentPcbIndex;
-  Log("%p", current->cp);
+  Log("%d %p", currentPcbIndex, current->cp);
   return current->cp;
 }
