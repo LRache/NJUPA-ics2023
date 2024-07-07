@@ -12,10 +12,11 @@ void switch_boot_pcb() {
   current = &pcb_boot;
 }
 
-void context_kload(PCB *pcb, void (*entry)(void *), void *arg) {
-  Area kstack = {.start = pcb->stack, .end = pcb->stack+STACK_SIZE};
+void context_kload(PCB *p, void (*entry)(void *), void *arg) {
+  Area kstack = {.start = p->stack, .end = p->stack+STACK_SIZE};
   Context *context = kcontext(kstack, entry, arg);
-  pcb->cp = context;
+  p->cp = context;
+  if (p == &pcb[1]) Log("%p", p->cp);
 }
 
 void hello_fun(void *arg) {
