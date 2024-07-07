@@ -11,7 +11,7 @@ void switch_boot_pcb() {
 }
 
 void context_kload(PCB *p, void (*entry)(void *), void *arg) {
-  Area kstack = {.start = p->stack, .end = p->stack+STACK_SIZE};
+  Area kstack = {.start = p->stack, .end = p->stack+4096};
   Context *context = kcontext(kstack, entry, arg);
   p->cp = context;
 }
