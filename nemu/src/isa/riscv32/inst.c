@@ -57,7 +57,7 @@ static void decode_operand(Decode *s, int *rd, int *csr, word_t *src1, word_t *s
 }
 
 static int decode_exec(Decode *s) {
-  if (s->pc == 0x81010113) Log("0x%x", gpr(2));
+  if (s->pc == 0x80000010) Log("0x%x", gpr(2));
   int rd = 0, csr = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
   s->dnpc = s->snpc;
