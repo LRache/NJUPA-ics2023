@@ -55,45 +55,45 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     }
   }
 
-  Elf_Shdr shdrArray[elfHeader.e_shnum];
-  fs_lseek(fd, elfHeader.e_shoff, SEEK_SET);
-  r = fs_read(fd, shdrArray, sizeof(shdrArray));
-  assert(r == sizeof(shdrArray));
+  // Elf_Shdr shdrArray[elfHeader.e_shnum];
+  // fs_lseek(fd, elfHeader.e_shoff, SEEK_SET);
+  // r = fs_read(fd, shdrArray, sizeof(shdrArray));
+  // assert(r == sizeof(shdrArray));
 
-  size_t strTableOffset = 0;
-  size_t strTableSize = 0;
-  for (int i = 0; i < elfHeader.e_shnum; i++) {
-    Elf_Shdr shdr = shdrArray[i];
-    if (shdr.sh_type == SHT_STRTAB) {
-      strTableOffset = shdr.sh_offset;
-      strTableSize = shdr.sh_size;
-      break;
-    }
-  }
-  char string[strTableSize];
-  fs_lseek(fd, strTableOffset, SEEK_SET);
-  r = fs_read(fd, string, strTableSize);
-  assert(r == strTableSize);
+  // size_t strTableOffset = 0;
+  // size_t strTableSize = 0;
+  // for (int i = 0; i < elfHeader.e_shnum; i++) {
+  //   Elf_Shdr shdr = shdrArray[i];
+  //   if (shdr.sh_type == SHT_STRTAB) {
+  //     strTableOffset = shdr.sh_offset;
+  //     strTableSize = shdr.sh_size;
+  //     break;
+  //   }
+  // }
+  // char string[strTableSize];
+  // fs_lseek(fd, strTableOffset, SEEK_SET);
+  // r = fs_read(fd, string, strTableSize);
+  // assert(r == strTableSize);
 
-  fs_lseek(fd, elfHeader.e_shoff, SEEK_SET);
-  Elf_Shdr symTableShdr;
-  for (int i = 0; i < elfHeader.e_shnum; i++) {
-    Elf_Shdr shdr = shdrArray[i];
-    if (shdr.sh_type == SHT_SYMTAB) {
-      symTableShdr = shdr;
-      break;
-    }
-  }
+  // fs_lseek(fd, elfHeader.e_shoff, SEEK_SET);
+  // Elf_Shdr symTableShdr;
+  // for (int i = 0; i < elfHeader.e_shnum; i++) {
+  //   Elf_Shdr shdr = shdrArray[i];
+  //   if (shdr.sh_type == SHT_SYMTAB) {
+  //     symTableShdr = shdr;
+  //     break;
+  //   }
+  // }
 
-  fs_lseek(fd, symTableShdr.sh_offset, SEEK_SET);
-  int count = symTableShdr.sh_size / symTableShdr.sh_entsize;
-  for (int i = 0; i < count; i++) {
-    Elf_Sym sym;
-    fs_read(fd, &sym, sizeof(sym));
-    if (strcmp(&string[sym.st_name], "__libc_init_array") == 0) {
-      init_entry = sym.st_value;
-    }
-  }
+  // fs_lseek(fd, symTableShdr.sh_offset, SEEK_SET);
+  // int count = symTableShdr.sh_size / symTableShdr.sh_entsize;
+  // for (int i = 0; i < count; i++) {
+  //   Elf_Sym sym;
+  //   fs_read(fd, &sym, sizeof(sym));
+  //   if (strcmp(&string[sym.st_name], "__libc_init_array") == 0) {
+  //     init_entry = sym.st_value;
+  //   }
+  // }
 
   fs_close(fd);
   return elfHeader.e_entry;
