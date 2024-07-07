@@ -31,9 +31,9 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  //naive_uload(NULL, "/bin/hello");
-  context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  naive_uload(NULL, "/bin/hello");
+  // context_kload(&pcb[0], hello_fun, (void *)1);
+  // context_kload(&pcb[1], hello_fun, (void *)2);
 
   yield();
 }
@@ -42,5 +42,6 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   if (current != pcb) current = pcb;
   else current = pcb+1;
+  printf("schedule\n");
   return current->cp;
 }
