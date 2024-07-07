@@ -4,8 +4,6 @@
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
-static int pcbCount = 0;
-static int currentPcbIndex = 0;
 PCB *current = NULL;
 
 void switch_boot_pcb() {
@@ -36,7 +34,6 @@ void init_proc() {
   // naive_uload(NULL, "/bin/menu");
   context_kload(&pcb[0], hello_fun, (void *)1);
   context_kload(&pcb[1], hello_fun, (void *)2);
-  pcbCount = 2;
   switch_boot_pcb();
   for (int i = 0; i < 2; i++) {
     Log("%d %p", i, pcb[i].cp);
@@ -45,18 +42,8 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  if (pcbCount == 0) return NULL;
-  Log("prev=%p", prev);
-  //current->cp = prev;
-  if (current == &pcb_boot) {
-    current = pcb;
-    return current->cp;
-  }
-  Log("set %d %p", currentPcbIndex, prev);
-  currentPcbIndex = (currentPcbIndex + 1) % pcbCount; 
-  current = pcb + currentPcbIndex;
-  for(int i = 0; i < 2; i++) {
-    Log("%d %p", i, pcb[i].cp);
-  }
+  current->cp = prev;
+  if (current != pcb) current =  pcb;
+  else current = pcb+1;
   return current->cp;
 }
