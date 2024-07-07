@@ -188,6 +188,7 @@ static void __fmt_hex(FmtBuffer *buffer, va_list *ap, char *arg, char base, int 
   char *t = stack;
   if (d == 0) {
     *(t++) = '0';
+    width--;
   } else {
     while (d) {
       int x = d % 16;
