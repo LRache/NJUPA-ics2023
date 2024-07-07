@@ -39,7 +39,7 @@ void init_proc() {
   pcbCount = 2;
   switch_boot_pcb();
   for (int i = 0; i < 2; i++) {
-    Log("%d %p", pcb[i], pcb[i].cp);
+    Log("%d %p", i, pcb[i].cp);
   }
   yield();
 }
