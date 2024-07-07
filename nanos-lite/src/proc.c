@@ -16,7 +16,6 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
   Area kstack = {.start = p->stack, .end = p->stack+STACK_SIZE};
   Context *context = kcontext(kstack, entry, arg);
   p->cp = context;
-  if (p == &pcb[1]) Log("%p", p->cp);
 }
 
 void hello_fun(void *arg) {
@@ -39,6 +38,9 @@ void init_proc() {
   context_kload(&pcb[1], hello_fun, (void *)2);
   pcbCount = 2;
   switch_boot_pcb();
+  for (int i = 0; i < 2; i++) {
+    Log("%d %p", pcb[i], pcb[i].cp);
+  }
   yield();
 }
 
