@@ -43,8 +43,12 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   if (pcbCount == 0) return NULL;
-  Log("set %d %p", currentPcbIndex, prev);
   current->cp = prev;
+  if (current == &pcb_boot) {
+    current = pcb;
+    return current->cp;
+  }
+  Log("set %d %p", currentPcbIndex, prev);
   currentPcbIndex = (currentPcbIndex + 1) % pcbCount; 
   current = pcb + currentPcbIndex;
   for(int i = 0; i < 2; i++) {
