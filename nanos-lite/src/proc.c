@@ -45,5 +45,6 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   if (current != pcb) current =  pcb;
   else current = pcb+1;
+  Log("%p", current->cp);
   return current->cp;
 }
