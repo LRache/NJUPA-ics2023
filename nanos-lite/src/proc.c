@@ -42,6 +42,5 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   if (current != pcb) current = pcb;
   else current = pcb+1;
-  printf("schedule\n");
   return current->cp;
 }
