@@ -17,10 +17,15 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 }
 
 void hello_fun(void *arg) {
-  int j = 1;
+  // int j = 1;
+  // while (1) {
+  //   Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
+  //   j ++;
+  //   yield();
+  // }
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
-    j ++;
+    putch("?AB"[(uintptr_t)arg > 2 ? 0 : (uintptr_t)arg]);
+    for (int volatile i = 0; i < 100000; i++) ;
     yield();
   }
 }
