@@ -11,7 +11,7 @@ void switch_boot_pcb() {
 }
 
 void context_kload(PCB *p, void (*entry)(void *), void *arg) {
-  Area kstack = {.start = p->stack, .end = p->stack+STACK_SIZE};
+  Area kstack = {.start = p->stack, .end = p+1};
   Context *context = kcontext(kstack, entry, arg);
   p->cp = context;
 }
@@ -43,7 +43,7 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  if (current != pcb) current =  pcb;
+  if (current != pcb) current = pcb;
   else current = pcb+1;
   Log("%p", current->cp);
   return current->cp;
