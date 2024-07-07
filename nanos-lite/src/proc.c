@@ -11,18 +11,19 @@ void switch_boot_pcb() {
 }
 
 void context_kload(PCB *p, void (*entry)(void *), void *arg) {
-  Area kstack = {.start = p->stack, .end = p+1};
+  Area kstack = {.start = p->stack, .end = p->stack+STACK_SIZE};
   Context *context = kcontext(kstack, entry, arg);
   p->cp = context;
 }
 
 void hello_fun(void *arg) {
-  int j = 1;
-  while (1) {
-    Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
-    j ++;
-    yield();
-  }
+  // int j = 1;
+  // while (1) {
+  //   Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
+  //   j ++;
+  //   yield();
+  // }
+  yield();
 }
 
 void init_proc() {
