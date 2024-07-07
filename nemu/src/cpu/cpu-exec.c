@@ -112,6 +112,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
+  
   statistic();
 }
 
