@@ -20,5 +20,6 @@ extern PCB *current;
 
 Context* schedule(Context *prev);
 void naive_uload(PCB *pcb, const char *filename);
+void context_uload(PCB *pcb, const char *filename);
 
 #endif

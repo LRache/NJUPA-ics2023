@@ -11,7 +11,7 @@ void switch_boot_pcb() {
 }
 
 void context_kload(PCB *p, void (*entry)(void *), void *arg) {
-  Area kstack = {.start = p, .end = p->stack+4096};
+  Area kstack = {.start = p, .end = p+1};
   Context *context = kcontext(kstack, entry, arg);
   p->cp = context;
 }
@@ -31,9 +31,9 @@ void init_proc() {
   Log("Initializing processes...");
 
   // load program here
-  // naive_uload(NULL, "/bin/menu");
-  context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  naive_uload(NULL, "/bin/cpp-test");
+  // context_kload(&pcb[0], hello_fun, (void *)1);
+  // context_kload(&pcb[1], hello_fun, (void *)2);
 
   yield();
 }

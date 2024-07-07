@@ -8,12 +8,6 @@ public:
 
 Test test;
 
-extern "C" {
-  extern void __libc_init_array(void);
-}
-
-void (*f)(void) = __libc_init_array;
-
 int main() {
   printf("%s,%d: Hello world!\n", __func__, __LINE__);
   return 0;

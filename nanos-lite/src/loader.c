@@ -101,11 +101,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
 void naive_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
-  if (init_entry != 0) {
-    Log("Jump to __libc_init_array = %p", init_entry);
-    ((void(*)())init_entry) ();
-  }
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
 
+void context_uload(PCB *pcb, const char *filename) {
+  //uintptr_t entry = loader(pcb, filename);
+}
