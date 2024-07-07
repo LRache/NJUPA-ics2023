@@ -54,6 +54,7 @@ void do_syscall(Context *c) {
     default: panic("Unhandled syscall ID = %d", s);
   }
   c->GPRx = r;
+  printf("%p\n", c->mepc);
 }
 
 static int sys_open(char *pathname, int flags, int mode) {
