@@ -40,7 +40,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     argvPointer[i] = p;
   }
   p--;
-  *p = 0;
+  *(uint32_t *)p = 0;
   for (int i = envpc-1; i >= 0; i--) {
     p -= 4;
     *(char **)p = envpPointer[i];
