@@ -1,8 +1,11 @@
 #include <proc.h>
+#include <am.h>
 
 #define MAX_NR_PROC 4
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
+static int pcbCount = 0;
+static int pcbIndex = 0;
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
@@ -20,8 +23,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t entry = loader(pcb, filename);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
   
-  char *p = (char *)0x87ffffff;
-  int argc = 0, envpc = 0;
+  char *p = (char *)(new_page(8) + 8 * PGSIZE);
+  int argc = 0, envpc = 0;  
   while (argv[argc] != NULL) argc++;
   while (envp[envpc] != NULL) envpc++;
   char *argvPointer[argc], *envpPointer[envpc];
@@ -50,11 +53,16 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   for (int i = argc-1; i >= 0; i--) {
     p -= 4;
     *(char **)p = argvPointer[i];
-    Log("%p", p);
   }
   p -= 4;
   *(uint32_t *)p = argc;
   pcb->cp->gpr[10] = (intptr_t)p;
+}
+
+void execve(const char *filename, char *const argv[], char *const envp[]) {
+  context_uload(current, filename, argv, envp);
+  switch_boot_pcb();
+  yield();
 }
 
 void hello_fun(void *arg) {
@@ -73,17 +81,22 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  char * const argv[] = {"1a", "2b", "3c", NULL};
-  char * const envp[] = {"a=1", "b=2", "c=3", NULL};
-  context_uload(&pcb[1], "/bin/mainargs-test", argv, envp);
-  context_kload(&pcb[0], hello_fun, (void *)0);
+  context_uload(&pcb[0], "/bin/exec-test", NULL, NULL);
+  pcbCount = 0;
+  //context_kload(&pcb[0], hello_fun, (void *)0);
 
   yield();
 }
 
 Context* schedule(Context *prev) {
+  if (pcbCount == 0) return prev;
   current->cp = prev;
-  if (current != pcb) current = pcb;
-  else current = pcb+1;
+  if (current == &pcb_boot) {
+    pcbIndex = 0;
+    current = pcb;
+  } else {
+    pcbIndex = (pcbIndex + 1) % pcbCount;
+    current = pcb + pcbIndex;
+  }
   return current->cp;
 }
