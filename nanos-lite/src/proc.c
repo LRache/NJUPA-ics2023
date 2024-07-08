@@ -50,7 +50,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   for (int i = argc-1; i >= 0; i--) {
     p -= 4;
     *(char **)p = argvPointer[i];
-    Log("%p, %s", p, *p);
+    Log("%p", p);
   }
   p -= 4;
   *(uint32_t *)p = argc;
