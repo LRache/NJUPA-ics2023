@@ -19,7 +19,7 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 void context_uload(PCB *pcb, const char *filename) {
   uintptr_t entry = loader(pcb, filename);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
-  pcb->cp->gpr[10] = pcb->max_brk;
+  pcb->cp->gpr[10] = 0x87000000;
 }
 
 void hello_fun(void *arg) {
