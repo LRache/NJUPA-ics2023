@@ -81,7 +81,8 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  context_uload(&pcb[0], "/bin/exec-test", NULL, NULL);
+  char *const empty[] = {NULL};
+  context_uload(&pcb[0], "/bin/exec-test", empty, empty);
   pcbCount = 0;
   //context_kload(&pcb[0], hello_fun, (void *)0);
 
