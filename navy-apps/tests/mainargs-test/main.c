@@ -8,7 +8,7 @@ int main(int argc, char **argv, char **envp) {
     }
     printf("envp:\n");
     char **e = envp;
-    while (e) {
+    while (*e) {
         printf("%s\n", *e);
         e++;
     }
