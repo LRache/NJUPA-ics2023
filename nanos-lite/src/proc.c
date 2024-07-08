@@ -39,7 +39,7 @@ void init_proc() {
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
   context_uload(&pcb[0], "/bin/menu");
-  // context_kload(&pcb[1], hello_fun, (void *)2);
+  context_kload(&pcb[1], hello_fun, (void *)0);
 
   yield();
 }
