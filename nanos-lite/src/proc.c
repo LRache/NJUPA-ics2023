@@ -74,7 +74,7 @@ void init_proc() {
   //naive_uload(NULL, "/bin/cpp-test");
   char * const argv[] = {"1a", "2b", "3c", NULL};
   char * const envp[] = {"a=1", "b=2", "c=3", NULL};
-  context_uload(&pcb[1], "/bin/menu", argv, envp);
+  context_uload(&pcb[1], "/bin/mainargs-test", argv, envp);
   context_kload(&pcb[0], hello_fun, (void *)0);
 
   yield();
