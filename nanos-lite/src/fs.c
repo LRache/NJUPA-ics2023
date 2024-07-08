@@ -87,7 +87,6 @@ int fs_open(const char *pathname, int flags, int mode) {
   if (fd != -1) {
     return fd + 128;
   }
-  panic("FileNotFoundError: %s", pathname);
   return -1;
 }
 
