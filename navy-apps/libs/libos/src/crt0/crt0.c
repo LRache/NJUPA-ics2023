@@ -8,9 +8,9 @@ void call_main(uintptr_t *args) {
   char *empty[] =  {NULL };
   environ = empty;
   int argc = *(int *)args;
-  char **args = (char **)(args + 1);
+  char **argv = (char **)(args + 1);
   char **envp = (char **)(args + argc + 2);
-  int r = main(argc, args, envp);
+  int r = main(argc, argv, envp);
   exit(r);
   assert(0);
 }
