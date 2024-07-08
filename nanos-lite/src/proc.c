@@ -16,6 +16,12 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
   p->cp = context;
 }
 
+void context_uload(PCB *pcb, const char *filename) {
+  uintptr_t entry = loader(pcb, filename);
+  pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
+  pcb->cp->gpr[10] = pcb->max_brk;
+}
+
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
@@ -32,8 +38,8 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  context_uload(&pcb[0], "/bin/menu");
+  // context_kload(&pcb[1], hello_fun, (void *)2);
 
   yield();
 }
