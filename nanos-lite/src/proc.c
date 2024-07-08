@@ -81,7 +81,7 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  char *const argv[] = {"TEST", NULL};
+  char *const argv[] = {"/bin/exec-test", NULL};
   char *const envp[] = {NULL};
   context_uload(&pcb[0], "/bin/exec-test", argv, envp);
   pcbCount = 1;
