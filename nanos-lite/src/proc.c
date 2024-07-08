@@ -36,7 +36,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   for (int i = argc - 1; i >= 0; i--) {
     int length = strlen(argv[i]) + 1;
     p -= length;
-    memcpy(p, envp[i], length);
+    memcpy(p, argv[i], length);
     argvPointer[i] = p;
   }
   p--;
