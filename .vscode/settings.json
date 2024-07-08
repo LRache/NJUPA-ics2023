@@ -83,7 +83,9 @@
         "stop_token": "c",
         "streambuf": "c",
         "random": "c",
-        "wait.h": "c"
+        "wait.h": "c",
+        "sched.h": "c",
+        "_timespec.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
