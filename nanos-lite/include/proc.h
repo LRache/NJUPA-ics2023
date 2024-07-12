@@ -19,7 +19,7 @@ typedef union {
 extern PCB *current;
 
 Context* schedule(Context *prev);
-uintptr_t loader(PCB *pcb, const char *filename);
+uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as);
 void naive_uload(PCB *pcb, const char *filename);
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 void execve(const char *filename, char *const argv[], char *const envp[]);

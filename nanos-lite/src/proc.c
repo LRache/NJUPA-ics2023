@@ -1,4 +1,5 @@
 #include <proc.h>
+#include <memory.h>
 #include <am.h>
 
 #define MAX_NR_PROC 4
@@ -20,10 +21,10 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
-  AddrSpace space;
-  protect(&space);
+  AddrSpace as;
+  protect(&as);
 
-  uintptr_t entry = loader(pcb, filename);
+  uintptr_t entry = loader(pcb, filename, &as);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
   
   char *p = (char *)(new_page(8) + 8 * PGSIZE);

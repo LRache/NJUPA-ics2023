@@ -7,11 +7,15 @@
 # define Elf_Phdr Elf64_Phdr
 # define Elf_Shdr Elf64_Shdr
 # define Elf_Sym  Elf64_Sym
+# define Elf_Addr Elf64_Addr
+# define Elf_Xword Elf64_Xword
 #else
 # define Elf_Ehdr Elf32_Ehdr
 # define Elf_Phdr Elf32_Phdr
 # define Elf_Shdr Elf32_Shdr
 # define Elf_Sym  Elf32_Sym
+# define Elf_Addr Elf32_Addr
+# define Elf_Xword Elf32_Xword
 #endif
 
 #if defined(__ISA_AM_NATIVE__)
@@ -27,7 +31,7 @@ static const char ELF_MAGIC_NUMBER[] = {0x7f, 'E', 'L', 'F'};
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
 size_t get_ramdisk_size();
 
-uintptr_t loader(PCB *pcb, const char *filename) {
+uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
   int fd = fs_open(filename, 0, 0);
   assert(fd != -1);
   
@@ -48,6 +52,27 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     Elf_Phdr phdr = phdrArray[i];
     if (phdr.p_type == PT_LOAD) {
       fs_lseek(fd, phdr.p_offset, SEEK_SET);
+      Elf_Addr vaddr = phdr.p_vaddr;
+      Elf_Xword size = phdr.p_filesz;
+      if (vaddr % PGSIZE != 0) {
+        void *pa = pg_alloc(1);
+        uint32_t s = PGSIZE - (vaddr % PGSIZE);
+        r = fs_read(fd, pa + vaddr % PGSIZE, s);
+        assert(r == s);
+        size -= s;
+      }
+      while (size >= PGSIZE) {
+        void *pa = pg_alloc(1);
+        r = fs_read(fd, pa, PGSIZE);
+        assert(r == PGSIZE);
+        size -= PGSIZE;
+      }
+      if (size != 0) {
+        void *pa = pg_alloc(1);
+        r = fs_read(fd, pa, PGSIZE);
+        assert(r == PGSIZE);
+      }
+      
       fs_read(fd, (void*)(phdr.p_vaddr), phdr.p_filesz);
       memset((void*)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz); 
     }
@@ -59,7 +84,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-  uintptr_t entry = loader(pcb, filename);
+  uintptr_t entry = loader(pcb, filename, NULL);
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
