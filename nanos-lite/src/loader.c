@@ -54,6 +54,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       fs_lseek(fd, phdr.p_offset, SEEK_SET);
       Elf_Addr vaddr = phdr.p_vaddr;
       int32_t size = phdr.p_filesz;
+      Log("%d", phdr.p_filesz);
       void *pa;
       if (vaddr % PGSIZE != 0) {
         pa = pg_alloc(1);
