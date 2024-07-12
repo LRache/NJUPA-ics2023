@@ -26,8 +26,16 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   uintptr_t entry = loader(pcb, filename, &as);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
+
+  for (int i = 1; i < 8; i++) {
+    void *paddr = pg_alloc(1);
+    map(&as, (void *)(as.area.start - i * PGSIZE), paddr, 1);
+  }
   
-  char *p = (char *)(new_page(8) + 8 * PGSIZE);
+  char *p = (char *)pg_alloc(1);
+  map(&as, (void *)(as.area.end - PGSIZE), (void *)p, 1);
+  p += PGSIZE;
+
   int argc = 0, envpc = 0;  
   while (argv[argc] != NULL) argc++;
   while (envp[envpc] != NULL) envpc++;
