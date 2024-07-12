@@ -30,12 +30,12 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t a = (cpu.satp & 0x3fffff) * PAGE_SIZE;
   for (int i = 1; i >= 0; i--) {
     uint32_t pte = paddr_read(a + vpn[i] * PTE_SIZE, 4);
-    // uint32_t v = pte & 0x1;
-    // if (!v) {
-    //   Log("Invalid");
-    //   if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
-    //   else break;
-    // }
+    uint32_t v = pte & 0x1;
+    if (!v) {
+      Log("Invalid");
+      if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
+      else break;
+    }
     
     uint32_t ppn = pte >> 10;
     uint32_t r = (pte & 0x2) >> 1;
