@@ -79,6 +79,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
   }
 
   fs_close(fd);
+  Log("Load finished");
   Log("%p", elfHeader.e_entry);
   return elfHeader.e_entry;
 }
