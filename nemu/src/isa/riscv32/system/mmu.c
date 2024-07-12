@@ -28,8 +28,10 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t a = (cpu.satp & 0x3fffff) * PAGE_SIZE;
   for (int i = 1; i >= 0; i--) {
     uint32_t pte = paddr_read(a + vpn[i] * PTE_SIZE, 4);
+    uint32_t v = pte & 0x1;
+    if (!v) panic("Invalid PTE");
+    
     uint32_t ppn = (pte >> 10) << 12;
-    if (!(pte & 0x1)) panic("Invalid PTE");
     uint32_t r = (pte & 0x2) >> 1;
     uint32_t w = (pte & 0x4) >> 2;
     uint32_t x = (pte & 0x8) >> 3;
