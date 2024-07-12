@@ -31,6 +31,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     uint32_t pte = paddr_read(a + vpn[i] * PTE_SIZE, 4);
     uint32_t v = pte & 0x1;
     if (!v) {
+      Log("Invalid");
       if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
       else return MEM_RET_FAIL;
     }
