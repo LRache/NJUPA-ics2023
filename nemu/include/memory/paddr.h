@@ -25,7 +25,7 @@
 #define MEM_TRACER_MAX 128
 
 enum MEM_OP_TYPE {
-  MEM_READ, MEM_WRITE
+  MEM_READ, MEM_WRITE, MEM_EXCUTE
 };
 
 typedef struct {

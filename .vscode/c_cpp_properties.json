@@ -7,7 +7,9 @@
             "ISA_H=\"riscv/riscv.h\"",
             "__ISA__=\"riscv32\"",
             "__ISA_RISCV32__",
-            "__riscv"
+            "__riscv",
+            "__riscv_xlen=32",
+            "HAS_VME"
         ],
         "includePath": [
             "${workspaceFolder}/nemu/include",

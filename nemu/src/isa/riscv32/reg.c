@@ -52,6 +52,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 word_t* get_csr(int idx) {
   switch (idx)
   {
+    case 0x180: return &cpu.satp;
     case 0x300: return &cpu.mstatus;
     case 0x305: return &cpu.mtvec;
     case 0x341: return &cpu.mepc;
