@@ -20,6 +20,7 @@
 #define PTE_SIZE 4
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  Log("MMU: 0x%x", vaddr);
   if (!(cpu.satp >> 31)) return vaddr;
   uint32_t pgoff = vaddr & 0xfff;
   uint32_t vpn[2];
