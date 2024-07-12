@@ -29,6 +29,7 @@ size_t get_ramdisk_size();
 
 uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
+  assert(fd != -1);
   
   size_t r;
   Elf_Ehdr elfHeader;
