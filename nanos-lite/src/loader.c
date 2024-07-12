@@ -59,6 +59,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       if (vaddr % PGSIZE != 0) {
         pa = pg_alloc(1);
         uint32_t s = PGSIZE - (vaddr % PGSIZE);
+        s = size < s ? size : s;
         r = fs_read(fd, pa + vaddr % PGSIZE, s);
         assert(r == s);
         size -= s;
