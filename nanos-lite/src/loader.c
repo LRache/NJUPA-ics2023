@@ -54,6 +54,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   }
 
   fs_close(fd);
+  Log("%p", elfHeader.e_entry);
   return elfHeader.e_entry;
 }
 
