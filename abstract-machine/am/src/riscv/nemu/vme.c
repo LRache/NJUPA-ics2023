@@ -87,6 +87,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     ppn = pt[vpn[1]] >> 10;
   }
   pt = (uint32_t *)(ppn * PGSIZE);
+  printf("%p\n", pt);
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
 }
 
