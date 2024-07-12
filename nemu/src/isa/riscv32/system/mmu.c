@@ -24,31 +24,31 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 
   paddr_t paddr = MEM_RET_FAIL;
   Log("MMU: 0x%x", vaddr);
-  // uint32_t pgoff = vaddr & 0xfff;
-  // uint32_t vpn[2];
-  // vpn[0] = (vaddr >> 12) & 0x3ff;
-  // vpn[1] = (vaddr >> 22) & 0x3ff;
-  // uint32_t a = (cpu.satp & 0x3fffff) * PAGE_SIZE;
-  // for (int i = 1; i >= 0; i--) {
-  //   uint32_t pte = paddr_read(a + vpn[i] * PTE_SIZE, 4);
-  //   // uint32_t v = pte & 0x1;
-  //   // if (!v) {
-  //   //   Log("Invalid");
-  //   //   if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
-  //   //   else break;
-  //   // }
+  uint32_t pgoff = vaddr & 0xfff;
+  uint32_t vpn[2];
+  vpn[0] = (vaddr >> 12) & 0x3ff;
+  vpn[1] = (vaddr >> 22) & 0x3ff;
+  uint32_t a = (cpu.satp & 0x3fffff) * PAGE_SIZE;
+  for (int i = 1; i >= 0; i--) {
+    Log("0x%x", a);
+    uint32_t pte = paddr_read(a + vpn[i] * PTE_SIZE, 4);
+    // uint32_t v = pte & 0x1;
+    // if (!v) {
+    //   Log("Invalid");
+    //   if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
+    //   else break;
+    // }
     
-  //   uint32_t ppn = (pte >> 10) << 12;
-  //   uint32_t r = (pte & 0x2) >> 1;
-  //   uint32_t w = (pte & 0x4) >> 2;
-  //   uint32_t x = (pte & 0x8) >> 3;
+    uint32_t ppn = (pte >> 10) << 12;
+    uint32_t r = (pte & 0x2) >> 1;
+    uint32_t w = (pte & 0x4) >> 2;
+    uint32_t x = (pte & 0x8) >> 3;
     
-  //   if (r || w || x) {
-  //     paddr = ppn + pgoff;
-  //     break;
-  //   }
-  //   a = ppn * PAGE_SIZE;
-  // }
-  Log("0x%x", paddr);
+    if (r || w || x) {
+      paddr = ppn + pgoff;
+      break;
+    }
+    a = ppn * PAGE_SIZE;
+  }
   return paddr;
 }
