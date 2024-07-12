@@ -22,7 +22,6 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
   AddrSpace space;
   protect(&space);
-  Log("a");
 
   uintptr_t entry = loader(pcb, filename);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
