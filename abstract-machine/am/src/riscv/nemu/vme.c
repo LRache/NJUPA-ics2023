@@ -85,7 +85,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pt[vpn[1]] = (ppa >> 2) | 0x1;
   } else {
     ppa = (pt[vpn[1]] & ~0x3ff) << 2;
-    printf("%p\n", ppa);
+    //printf("%p\n", ppa);
   }
   pt = (uint32_t *)ppa;
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
