@@ -88,6 +88,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   pt = (uint32_t *)ppa;
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
+  printf("pte=0x%x", pt[vpn[0]]);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
