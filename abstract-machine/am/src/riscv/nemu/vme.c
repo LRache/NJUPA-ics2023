@@ -79,15 +79,15 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   vpn[1] = (vaddr >> 22) & 0x3ff;
   
   uint32_t v = pt[vpn[1]] & 0x1;
-  uint32_t ppn;
+  uint32_t ppa;
   if (!v) {
-    ppn = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
-    pt[vpn[1]] = (ppn >> 2) | 0x1;
+    ppa = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
+    pt[vpn[1]] = (ppa >> 2) | 0x1;
   } else {
-    ppn = pt[vpn[1]] >> 10;
+    ppa = pt[vpn[1]] << 2 & ~(as->pgsize);
   }
-  pt = (uint32_t *)(ppn * PGSIZE);
-  printf("%p\n", ppn);
+  pt = (uint32_t *)ppa;
+  printf("%p\n", ppa);
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
 }
 
