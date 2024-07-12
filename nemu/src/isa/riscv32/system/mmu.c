@@ -39,7 +39,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     // }
     
     uint32_t ppn = pte >> 10;
-    Log("PTE=0x%x", pte);
+    //Log("PTE=0x%x", pte);
     uint32_t r = (pte & 0x2) >> 1;
     uint32_t w = (pte & 0x4) >> 2;
     uint32_t x = (pte & 0x8) >> 3;
