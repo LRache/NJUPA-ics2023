@@ -53,29 +53,32 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
     if (phdr.p_type == PT_LOAD) {
       fs_lseek(fd, phdr.p_offset, SEEK_SET);
       Elf_Addr vaddr = phdr.p_vaddr;
-      Elf_Xword size = phdr.p_filesz;
+      Elf_Xword filesz = phdr.p_filesz;
       Log("%d 0x%x", phdr.p_filesz, vaddr);
-      void *pa;
+      void *paddr;
       if (vaddr % PGSIZE != 0) {
-        pa = pg_alloc(1);
-        uint32_t s = PGSIZE - (vaddr % PGSIZE);
-        s = size < s ? size : s;
-        r = fs_read(fd, pa + vaddr % PGSIZE, s);
-        assert(r == s);
-        size -= s;
-      }
-      Log("%d", size);
-      while (size > PGSIZE) {
-        pa = pg_alloc(1);
-        r = fs_read(fd, pa, PGSIZE);
-        assert(r == PGSIZE);
-        size -= PGSIZE;
-      }
-      if (size != 0) {
-        pa = pg_alloc(1);
-        r = fs_read(fd, pa, size);
-        Log("%d %d", r, size);
+        paddr = pg_alloc(1);
+        map(as, (void *)(vaddr - vaddr % PGSIZE), paddr, 1);
+        uint32_t size = PGSIZE - (vaddr % PGSIZE);
+        size = filesz < size ? filesz : size;
+        r = fs_read(fd, paddr + vaddr % PGSIZE, size);
         assert(r == size);
+        filesz -= size;
+        vaddr += PGSIZE - vaddr % PGSIZE;
+      }
+      while (filesz > PGSIZE) {
+        paddr = pg_alloc(1);
+        map(as, (void *)vaddr, paddr, 1);
+        r = fs_read(fd, paddr, PGSIZE);
+        assert(r == PGSIZE);
+        filesz -= PGSIZE;
+        vaddr += PGSIZE;
+      }
+      if (filesz != 0) {
+        paddr = pg_alloc(1);
+        map(as, (void *)vaddr, paddr, 1);
+        r = fs_read(fd, paddr, filesz);
+        assert(r == filesz);
       }
     }
   }
