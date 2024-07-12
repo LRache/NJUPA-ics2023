@@ -82,7 +82,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if (!v) {
     uint32_t pg = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
     printf("%p\n", pg);
-    pt[vpn[1]] = (((uint32_t)pgalloc_usr(as->pgsize) & (as->pgsize - 1)) >> 2) | 0x1;
+    pt[vpn[1]] = (pg >> 2) | 0x1;
   }
   pt = (uint32_t *)pt[vpn[1]];
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
