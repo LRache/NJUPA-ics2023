@@ -100,6 +100,5 @@ Context* schedule(Context *prev) {
     pcbIndex = (pcbIndex + 1) % pcbCount;
     current = pcb + pcbIndex;
   }
-  Log("change to %d", pcbIndex);
   return current->cp;
 }
