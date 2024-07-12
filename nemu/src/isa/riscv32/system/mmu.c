@@ -21,6 +21,8 @@
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   if (!(cpu.satp >> 31)) return vaddr;
+
+  paddr_t paddr = MEM_RET_FAIL;
   Log("MMU: 0x%x", vaddr);
   uint32_t pgoff = vaddr & 0xfff;
   uint32_t vpn[2];
@@ -33,7 +35,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     if (!v) {
       Log("Invalid");
       if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
-      else return MEM_RET_FAIL;
+      else break;
     }
     
     uint32_t ppn = (pte >> 10) << 12;
@@ -42,11 +44,11 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     uint32_t x = (pte & 0x8) >> 3;
     
     if (r || w || x) {
-      Log("ppn=0x%x", ppn);
-      return ppn + pgoff;
+      paddr = ppn + pgoff;
+      break;
     }
     a = ppn * PAGE_SIZE;
   }
   printf("Return");
-  return MEM_RET_FAIL;
+  return paddr;
 }
