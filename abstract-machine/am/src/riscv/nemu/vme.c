@@ -79,14 +79,15 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   vpn[1] = (vaddr >> 22) & 0x3ff;
   
   uint32_t v = pt[vpn[1]] & 0x1;
+  uint32_t ppn;
   if (!v) {
-    uint32_t pg = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
-    printf("%p\n", pg);
-    pt[vpn[1]] = (pg >> 2) | 0x1;
+    ppn = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
+    pt[vpn[1]] = (ppn >> 2) | 0x1;
+  } else {
+    ppn = pt[vpn[1]] >> 10;
   }
-  pt = (uint32_t *)pt[vpn[1]];
+  pt = (uint32_t *)pt[ppn];
   pt[vpn[0]] = ((paddr & (as->pgsize - 1)) >> 2) | 0xf;
-  printf("MAP\n");
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
