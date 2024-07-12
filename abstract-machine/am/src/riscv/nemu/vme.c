@@ -84,7 +84,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     ppa = (uint32_t)pgalloc_usr(as->pgsize) & ~(as->pgsize - 1);
     pt[vpn[1]] = (ppa >> 2) | 0x1;
   } else {
-    ppa = pt[vpn[1]] << 2 & ~(as->pgsize);
+    ppa = (pt[vpn[1]] << 2) & ~(as->pgsize);
   }
   pt = (uint32_t *)ppa;
   printf("%p\n", ppa);
