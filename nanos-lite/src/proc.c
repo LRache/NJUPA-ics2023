@@ -25,7 +25,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   protect(&as);
 
   uintptr_t entry = loader(pcb, filename, &as);
-  pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
+  pcb->cp = ucontext(&as, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
 
   for (int i = 1; i < 8; i++) {
     void *paddr = pg_alloc(1);
