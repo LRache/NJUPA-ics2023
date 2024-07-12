@@ -50,5 +50,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     }
     a = ppn * PAGE_SIZE;
   }
+  Log("paddr=0x%x", paddr);
   return paddr;
 }
