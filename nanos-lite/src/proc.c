@@ -20,6 +20,9 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 }
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]) {
+  AddrSpace space;
+  protect(&space);
+
   uintptr_t entry = loader(pcb, filename);
   pcb->cp = ucontext(NULL, (Area){.start=pcb, .end=pcb+1}, (void *)entry);
   
@@ -42,7 +45,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     memcpy(p, argv[i], length);
     argvPointer[i] = p;
   }
-  p-=4;
+  p -= 4;
   *(uint32_t *)p = 0;
   for (int i = envpc-1; i >= 0; i--) {
     p -= 4;
@@ -81,10 +84,10 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  // char *const argv[] = {"/bin/exec-test", NULL};
-  // char *const envp[] = {NULL};
+  char *const argv[] = {NULL};
+  char *const envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
-  context_kload(&pcb[1], hello_fun, (void *)2);
+  context_uload(&pcb[1], "/bin/hello/", argv, envp);
   pcbCount = 2;
   //context_kload(&pcb[0], hello_fun, (void *)0);
 
