@@ -41,6 +41,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     uint32_t x = (pte & 0x8) >> 3;
     
     if (r || w || x) {
+      Log("ppn=0x%x", ppn);
       return ppn + pgoff;
     }
     a = ppn * PAGE_SIZE;
