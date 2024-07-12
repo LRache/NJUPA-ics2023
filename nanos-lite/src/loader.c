@@ -48,6 +48,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
   r = fs_read(fd, phdrArray, sizeof(phdrArray));
   assert(r == sizeof(phdrArray));
   
+  Log("a");
   for (int i = 0; i < elfHeader.e_phnum; i++) {
     Elf_Phdr phdr = phdrArray[i];
     if (phdr.p_type == PT_LOAD) {
@@ -70,7 +71,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       if (size != 0) {
         void *pa = pg_alloc(1);
         r = fs_read(fd, pa, PGSIZE);
-        assert(r == PGSIZE);
+        assert(r == size);
       }
       
       fs_read(fd, (void*)(phdr.p_vaddr), phdr.p_filesz);
