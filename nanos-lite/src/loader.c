@@ -54,22 +54,22 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       fs_lseek(fd, phdr.p_offset, SEEK_SET);
       Elf_Addr vaddr = phdr.p_vaddr;
       int32_t size = phdr.p_filesz;
+      void *pa;
       if (vaddr % PGSIZE != 0) {
-        void *pa = pg_alloc(1);
+        pa = pg_alloc(1);
         uint32_t s = PGSIZE - (vaddr % PGSIZE);
         r = fs_read(fd, pa + vaddr % PGSIZE, s);
         assert(r == s);
         size -= s;
       }
-      while (size >= PGSIZE) {
-        Log("%u", size);
-        void *pa = pg_alloc(1);
+      while (size > PGSIZE) {
+        pa = pg_alloc(1);
         r = fs_read(fd, pa, PGSIZE);
         assert(r == PGSIZE);
         size -= PGSIZE;
       }
       if (size != 0) {
-        void *pa = pg_alloc(1);
+        pa = pg_alloc(1);
         r = fs_read(fd, pa, size);
         assert(r == size);
       }
