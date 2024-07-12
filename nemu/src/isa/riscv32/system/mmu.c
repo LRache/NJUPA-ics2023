@@ -39,13 +39,13 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     //   else break;
     // }
     
-    uint32_t ppn = (pte >> 10) << 12;
+    uint32_t ppn = pte >> 10;
     uint32_t r = (pte & 0x2) >> 1;
     uint32_t w = (pte & 0x4) >> 2;
     uint32_t x = (pte & 0x8) >> 3;
     
     if (r || w || x) {
-      paddr = ppn + pgoff;
+      paddr = ppn * PAGE_SIZE + pgoff;
       break;
     }
     a = ppn * PAGE_SIZE;
