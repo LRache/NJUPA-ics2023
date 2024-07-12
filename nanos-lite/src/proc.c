@@ -87,7 +87,7 @@ void init_proc() {
   char *const argv[] = {NULL};
   char *const envp[] = {NULL};
   context_kload(&pcb[0], hello_fun, (void *)1);
-  context_uload(&pcb[1], "/bin/hello/", argv, envp);
+  context_uload(&pcb[1], "/bin/hello", argv, envp);
   pcbCount = 2;
   //context_kload(&pcb[0], hello_fun, (void *)0);
 
