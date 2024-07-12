@@ -62,6 +62,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         size -= s;
       }
       while (size >= PGSIZE) {
+        Log("%u", size);
         void *pa = pg_alloc(1);
         r = fs_read(fd, pa, PGSIZE);
         assert(r == PGSIZE);
