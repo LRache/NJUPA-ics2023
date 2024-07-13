@@ -4,9 +4,10 @@
 
 #define MAX_NR_PROC 4
 
-PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
-static int pcbCount = 0;
-static int pcbIndex = 0;
+static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
+static PCB *running[MAX_NR_PROC];
+static int runningCount = 0;
+static int runningIndex = 0;
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
@@ -98,20 +99,31 @@ void init_proc() {
   char *const empty[] = {NULL};
   context_uload(&pcb[0], "/bin/hello-limit", argv, empty);
   context_uload(&pcb[1], "/bin/hello", empty, empty);
-  pcbCount = 2;
+  running[0] = &pcb[0];
+  running[1] = &pcb[1];
+  runningCount = 2;
 
   yield();
 }
 
+void proc_exit(int r) {
+  Log("Exit with code %d", r);
+  for (int i = runningIndex; i < runningCount-1; i++) {
+    running[i] = running[i+1];
+  }
+  running[runningCount - 1] = NULL;
+  runningCount--;
+}
+
 Context* schedule(Context *prev) {
-  if (pcbCount == 0) return prev;
+  if (runningCount == 0) return prev;
   current->cp = prev;
   if (current == &pcb_boot) {
-    pcbIndex = 0;
-    current = pcb;
+    runningIndex = 0;
+    current = running[0];
   } else {
-    pcbIndex = (pcbIndex + 1) % pcbCount;
-    current = pcb + pcbIndex;
+    runningIndex = (runningIndex + 1) % runningCount;
+    current = running[runningIndex];
   }
   return current->cp;
 }

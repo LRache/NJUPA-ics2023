@@ -9,6 +9,8 @@ struct timeval {
   long us;
 };
 
+static int sys_exit  (int r);
+static int sys_yield ();
 static int sys_open  (char *pathname, int flags, int mode);
 static int sys_read  (int fd, void *buf, size_t len);
 static int sys_write (int fd, const void *buf, size_t count);
@@ -29,8 +31,10 @@ void do_syscall(Context *c) {
 
   uintptr_t r = 0;
   switch (s) {
-    case SYS_exit:  halt(arg[0]); break;
-    case SYS_yield: yield();      break;
+    case SYS_exit:  
+      r = sys_exit((int)arg[0]); break;
+    case SYS_yield: 
+      r = sys_yield(); break;
     case SYS_open:
       r = sys_open((char *)arg[0], arg[1], arg[2]); break;
     case SYS_read:
@@ -54,6 +58,16 @@ void do_syscall(Context *c) {
     default: panic("Unhandled syscall ID = %d", s);
   }
   c->GPRx = r;
+}
+
+static int sys_exit(int r) {
+  proc_exit(r);
+  return 0;
+}
+
+static int sys_yield() {
+  yield();
+  return 0;
 }
 
 static int sys_open(char *pathname, int flags, int mode) {
