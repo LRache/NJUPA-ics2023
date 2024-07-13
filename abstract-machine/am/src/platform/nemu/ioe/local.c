@@ -65,7 +65,7 @@ void __am_local_seek(AM_LOCAL_SEEK_T *c) {
     *(int *)CTL_ARG_ADDR = c->whence;
     *(int64_t *)LOCAL_BUF_ADDR = c->offset;
     __execute();
-    volatile uint64_t ret0 = *(uint32_t *)LOCAL_BUF_ADDR;
+    volatile uint64_t ret0 = *(uint32_t *)(LOCAL_BUF_ADDR + 0);
     volatile uint64_t ret1 = *(uint32_t *)(LOCAL_BUF_ADDR + 4);
     uint64_t ret = ret0 + (ret1 << 32);
     *c->ret = ret;
