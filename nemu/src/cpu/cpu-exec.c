@@ -104,7 +104,6 @@ static void execute(uint64_t n) {
     word_t intr = isa_query_intr();
     if (intr != INTR_EMPTY) {
       word_t dnpc = isa_raise_intr(intr, cpu.pc-4);
-      Assert(dnpc != 0, "mtvec=0");
       cpu.pc = dnpc;
     }
   }
