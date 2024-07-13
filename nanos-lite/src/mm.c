@@ -23,6 +23,7 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  Log("0x%x 0x%x", current->max_brk, brk);
   if (brk < current->max_brk) return -1;
   uint32_t oldVpn = current->max_brk / PGSIZE;
   uint32_t newVpn = brk / PGSIZE;
