@@ -59,7 +59,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       
       void *paddr;
       if (vaddr % PGSIZE != 0) {
-        paddr = pg_alloc(1);
+        paddr = pg_alloc(PGSIZE);
         map(as, (void *)(vaddr - vaddr % PGSIZE), paddr, 1);
         Log("Read to vaddr=0x%x", (vaddr - vaddr % PGSIZE));
         
@@ -72,7 +72,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         vaddr += PGSIZE - vaddr % PGSIZE;
       }
       while (filesz > PGSIZE) {
-        paddr = pg_alloc(1);
+        paddr = pg_alloc(PGSIZE);
         map(as, (void *)vaddr, paddr, 1);
         r = fs_read(fd, paddr, PGSIZE);
         Log("Read to vaddr=0x%x, paddr=0x%x", vaddr, paddr);
@@ -82,7 +82,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         vaddr += PGSIZE;
       }
       if (filesz != 0) {
-        paddr = pg_alloc(1);
+        paddr = pg_alloc(PGSIZE);
         map(as, (void *)vaddr, paddr, 1);
         r = fs_read(fd, paddr, filesz);
         assert(r == filesz);
@@ -93,7 +93,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       vaddr += PGSIZE - vaddr % PGSIZE;
       while (memsz >= 0)
       {
-        paddr = pg_alloc(1);
+        paddr = pg_alloc(PGSIZE);
         map(as, (void *)vaddr, paddr, 1);
         memsz -= PGSIZE;
         vaddr += PGSIZE;
