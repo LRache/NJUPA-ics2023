@@ -24,6 +24,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   uint32_t mie = (cpu.mstatus >> 3) & 0x1;
   cpu.mstatus = cpu.mstatus & ~(1 << 3);
   cpu.mstatus = (cpu.mstatus & ~(1 << 7)) | (mie << 7);
+  Log("%d", (cpu.mstatus >> 7) & 0x1);
   return cpu.mtvec;
 }
 
