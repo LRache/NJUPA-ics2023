@@ -33,7 +33,6 @@ word_t isa_query_intr() {
   if (cpu.intr) {
     uint32_t mie = (cpu.mstatus >> 3) & 0x1;
     cpu.intr = false;
-    Log("%u", mie);
     if (mie) return IRQ_TIMER;
   }
   return INTR_EMPTY;
