@@ -15,7 +15,7 @@ Context* __am_irq_handle(Context *c) {
       case IRQ_YIELD: 
         ev.event = EVENT_YIELD;     break;
       case IRQ_TIMER: 
-        ev.event = EVENT_IRQ_TIMER; break;
+        ev.event = EVENT_IRQ_TIMER; printf("IRQ_TIMER\n"); break;
       default: 
         ev.event = EVENT_SYSCALL;   break;
     }
