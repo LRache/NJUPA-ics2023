@@ -4,7 +4,6 @@
 void do_syscall(Context *c);
 
 static Context* do_event(Event e, Context* c) {
-  Log("%p", c->pdir);
   switch (e.event) {
     case EVENT_YIELD:   c = schedule(c); break;
     case EVENT_SYSCALL: do_syscall(c); break;
