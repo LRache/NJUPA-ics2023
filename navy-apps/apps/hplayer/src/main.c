@@ -7,7 +7,7 @@
 #include <NDL.h>
 #include <fixedptc.h>
 
-#define MUSIC_PATH "/home/rache/Music/xitiejie.pcm"
+#define MUSIC_PATH "/share/music/xitiejie.pcm"
 #define SAMPLES 1024
 #define FPS 10
 #define W 400
