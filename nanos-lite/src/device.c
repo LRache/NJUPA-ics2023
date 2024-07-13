@@ -22,7 +22,6 @@ static int canvas_y = 0;
 static int canvas_ready = 0;
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
-  yield();
   const char *buffer = buf;
   for (int i = 0; i < len; i++) {
     putch(buffer[i]);
@@ -31,7 +30,6 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-  yield();
   if (canvas_ready) {
     const char *s = "mmap ok";
     size_t l = strlen(s);
@@ -69,7 +67,6 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  yield();
   int x = (offset / 4) % canvas_width;
   int y = (offset / 4) / canvas_width;
   int count = len / 4;
