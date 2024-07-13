@@ -85,8 +85,8 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         memsz -= filesz;
         vaddr += filesz;
       }
-      memsz -= PGSIZE - (vaddr % PGSIZE);
-      vaddr += PGSIZE - (vaddr % PGSIZE);
+      memsz -= PGSIZE - vaddr % PGSIZE;
+      vaddr += PGSIZE - vaddr % PGSIZE;
       while (memsz >= 0)
       {
         paddr = pg_alloc(1);

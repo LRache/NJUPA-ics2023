@@ -69,7 +69,6 @@ void __am_switch(Context *c) {
 }
 
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  //printf("MAP\n");
   if (!prot) pa = va;
   uint32_t vaddr = (uint32_t)va;
   uint32_t paddr = (uint32_t)pa;
@@ -89,7 +88,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
   pt = (uint32_t *)ppa;
   pt[vpn[0]] = ((paddr & ~(as->pgsize - 1)) >> 2) | 0xf;
-  //printf("pte=0x%x\n", pt[vpn[0]]);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
