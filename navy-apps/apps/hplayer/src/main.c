@@ -102,7 +102,6 @@ int main(int argc, char *argv[])
 
     FILE *fp = fopen(MUSIC_PATH, "r");
     assert(fp);
-    printf("2\n");
 
     fseek(fp, 0, SEEK_END);
     size_t size = ftell(fp);
@@ -113,6 +112,7 @@ int main(int argc, char *argv[])
     int ret = fread(buf, size, 1, fp);
     assert(ret == 1);
     fclose(fp);
+    printf("111\n");
 
     SDL_AudioSpec spec;
     spec.freq = FREQ;
