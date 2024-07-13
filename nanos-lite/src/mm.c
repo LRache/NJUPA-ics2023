@@ -34,6 +34,7 @@ int mm_brk(uintptr_t brk) {
   for (uint32_t i = oldVpn + 1; i <= newVpn; i++) {
     void *vaddr = (void *)(i * PGSIZE);
     void *paddr = pg_alloc(PGSIZE);
+    Log("Map vaddr=%p, paddr=%p", vaddr, paddr);
     map(&current->as, vaddr, paddr, 1);
   }
   current->max_brk = brk;
