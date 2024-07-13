@@ -75,7 +75,7 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         paddr = pg_alloc(1);
         map(as, (void *)vaddr, paddr, 1);
         r = fs_read(fd, paddr, PGSIZE);
-        Log("Read to vaddr=0x%x", vaddr);
+        Log("Read to vaddr=0x%x, paddr=0x%x", vaddr, paddr);
         assert(r == PGSIZE);
         filesz -= PGSIZE;
         memsz -= PGSIZE;
