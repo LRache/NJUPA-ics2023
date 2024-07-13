@@ -16,7 +16,7 @@
 #define LOCAL_BUF_SIZE 1024
 
 static inline void __execute() {
-     *(uint32_t *)CTL_EXE_ADDR = 1;
+    outl(CTL_EXE_ADDR, 1);
 }
 
 void __am_local_open(AM_LOCAL_OPEN_T *c) {
