@@ -7,7 +7,7 @@
 #include <NDL.h>
 #include <fixedptc.h>
 
-#define MUSIC_PATH "/share/music/bad-apple-10000.pcm"
+#define MUSIC_PATH "/home/rache/Music/xitiejie.pcm"
 #define SAMPLES 1024
 #define FPS 10
 #define W 400
@@ -109,9 +109,7 @@ int main(int argc, char *argv[])
     assert(size);
     buf_length = size;
     fseek(fp, 0, SEEK_SET);
-    printf("loading\n");
     int ret = fread(buf, size, 1, fp);
-    printf("finished\n");
     assert(ret == 1);
     fclose(fp);
 
