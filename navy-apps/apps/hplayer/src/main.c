@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
     size_t size = ftell(fp);
     buf = malloc(size);
     assert(size);
+    printf("0000\n");
     buf_length = size;
     fseek(fp, 0, SEEK_SET);
     int ret = fread(buf, size, 1, fp);
