@@ -37,6 +37,4 @@ typedef struct {
 
 word_t* get_csr(int idx);
 
-#define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
-
 #endif
