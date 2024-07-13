@@ -123,7 +123,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, NEMUINTR(s->pc, R(17)));
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , C, R(rd) = CSR(csr); if (!rs1_is_x0) CSR(csr) = src1;);
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , C, R(rd) = CSR(csr); CSR(csr) = src1 | CSR(csr););
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s->dnpc = cpu.mepc+4);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , I, s->dnpc = cpu.mepc+4; uint32_t mpie = (cpu.mstatus >> 7) & 0x1; cpu.mstatus = (cpu.mstatus & ~(1 << 3)) | mpie; cpu.mstatus |= 1 << 7;);
   
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
