@@ -33,8 +33,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
     uint32_t v = pte & 0x1;
     if (!v) {
       Log("Invalid: 0x%08x, i=%d, vaddr=0x%08x", pte, i, vaddr);
-      if (type == MEM_READ || type == MEM_EXCUTE) panic("Invalid PTE");
-      else break;
+      panic("Invalid PTE");
     }
     
     uint32_t ppn = pte >> 10;
