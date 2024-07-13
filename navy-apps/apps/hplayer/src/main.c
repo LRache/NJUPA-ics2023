@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
         music_path = MUSIC_PATH;
     }
     FILE *fp = fopen(music_path, "r");
+    printf("2222\n");
     assert(fp);
 
     fseek(fp, 0, SEEK_END);
