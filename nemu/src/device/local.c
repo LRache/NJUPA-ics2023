@@ -121,8 +121,8 @@ static void local_seek() {
     int whence = ctl[reg_arg];
     int64_t offset = *(int64_t *)buf;
     int64_t ret = lseek(local_fd, offset, whence);
-    Log("%lu", ret);
     *(int64_t *)buf = ret;
+    Log("%lu", *(int64_t *)buf);
 }
 
 static void local_ctl_handler(uint32_t offset, int len, bool is_write) {
