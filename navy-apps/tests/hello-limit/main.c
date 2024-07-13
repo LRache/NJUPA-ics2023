@@ -6,7 +6,7 @@ int main() {
   int i = 2;
   volatile int j = 0;
   for (int i = 0; i < 100; i++) {
-    printf("Hello World from Navy-apps for the %dth time!\n", i);
+    printf("Hello World limit from Navy-apps for the %dth time!\n", i);
     for (volatile int j = 0; j < 10000; j++);
   }
   return 0;
