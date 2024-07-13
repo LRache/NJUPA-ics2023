@@ -114,5 +114,6 @@ Context* schedule(Context *prev) {
     current = pcb + pcbIndex;
   }
   Log("Change to %d", pcbIndex);
+  Log("%p", current->as.ptr);
   return current->cp;
 }
