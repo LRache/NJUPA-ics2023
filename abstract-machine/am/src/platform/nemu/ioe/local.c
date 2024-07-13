@@ -66,6 +66,6 @@ void __am_local_seek(AM_LOCAL_SEEK_T *c) {
     *(int64_t *)LOCAL_BUF_ADDR = c->offset;
     __execute();
     volatile uint64_t ret = *(uint64_t *)LOCAL_BUF_ADDR;
-    printf("a=%lu\n", *(uint64_t *)LOCAL_BUF_ADDR);
+    printf("a=%llu\n", *(uint64_t *)LOCAL_BUF_ADDR);
     *c->ret = ret;
 }
