@@ -30,7 +30,7 @@ int mm_brk(uintptr_t brk) {
   if (brk < current->max_brk) return -1;
   uint32_t oldVpn = current->max_brk / PGSIZE;
   uint32_t newVpn = brk / PGSIZE;
-  Log("%p", current->as);
+  Log("%p", current->as.ptr);
   for (uint32_t i = oldVpn + 1; i <= newVpn; i++) {
     void *vaddr = (void *)(i * PGSIZE);
     void *paddr = pg_alloc(PGSIZE);
