@@ -14,7 +14,7 @@ static int sys_read  (int fd, void *buf, size_t len);
 static int sys_write (int fd, const void *buf, size_t count);
 static int sys_close (int fd);
 static int sys_lseek (int fd, off_t offset, int whence);
-static int sys_brk   ();
+static int sys_brk   (uintptr_t brk);
 static int sys_execve(char *pathname, char *const argv[], char *const envp[]);
 static int sys_gettimeofday(struct timeval *t);
 static int sys_ioe_read (int reg, void *buf);
@@ -42,7 +42,7 @@ void do_syscall(Context *c) {
     case SYS_lseek:
       r = sys_lseek(arg[0], arg[1], arg[2]); break;
     case SYS_brk:
-      r = sys_brk(); break;
+      r = sys_brk(arg[0]); break;
     case SYS_execve:
       r = sys_execve((char *)arg[0], (char **)arg[1], (char **)arg[2]); break;
     case SYS_gettimeofday:
@@ -76,8 +76,9 @@ static int sys_lseek(int fd, off_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
 }
 
-static int sys_brk() {
-  return 0;
+static int sys_brk(uintptr_t brk) {
+  if (brk == 0) return 0;
+  return mm_brk(brk);
 }
 
 static int sys_execve(char *pathname, char *const argv[], char *const envp[]) {
