@@ -95,12 +95,17 @@ void FillAudio(void *userdata, uint8_t *stream, int len)
 int main(int argc, char *argv[])
 {
     SDL_Init(0);
-    printf("%d\n", NDL_QueryAudio());
     screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
     SDL_FillRect(screen, NULL, 0);
     SDL_UpdateRect(screen, 0, 0, 0, 0);
 
-    FILE *fp = fopen(MUSIC_PATH, "r");
+    char *music_path;
+    if (argc > 1) {
+        music_path = argv[1];
+    } else {
+        music_path = MUSIC_PATH;
+    }
+    FILE *fp = fopen(music_path, "r");
     assert(fp);
 
     fseek(fp, 0, SEEK_END);
@@ -112,7 +117,6 @@ int main(int argc, char *argv[])
     int ret = fread(buf, size, 1, fp);
     assert(ret == 1);
     fclose(fp);
-    printf("111\n");
 
     SDL_AudioSpec spec;
     spec.freq = FREQ;
