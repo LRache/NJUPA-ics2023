@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     fseek(fp, 0, SEEK_END);
     size_t size = ftell(fp);
     buf = malloc(size);
-    printf("1111\n");
+    printf("%u\n", size);
     assert(size);
     printf("0000\n");
     buf_length = size;
