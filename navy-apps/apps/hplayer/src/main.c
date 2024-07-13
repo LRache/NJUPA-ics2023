@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
 
     FILE *fp = fopen(MUSIC_PATH, "r");
     assert(fp);
+    printf("2\n");
 
     fseek(fp, 0, SEEK_END);
     size_t size = ftell(fp);
