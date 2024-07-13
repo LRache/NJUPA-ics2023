@@ -127,5 +127,6 @@ Context* schedule(Context *prev) {
     runningIndex = (runningIndex + 1) % runningCount;
     current = running[runningIndex];
   }
+  if (runningIndex == 0) Log("0x%x", current->cp->mstatus);
   return current->cp;
 }
