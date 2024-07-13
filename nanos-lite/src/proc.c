@@ -113,6 +113,7 @@ void proc_exit(int r) {
   }
   running[runningCount - 1] = NULL;
   runningCount--;
+  yield();
 }
 
 Context* schedule(Context *prev) {
