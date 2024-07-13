@@ -55,7 +55,8 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       Elf_Addr vaddr = phdr.p_vaddr;
       Elf_Word filesz = phdr.p_filesz;
       Elf_Word memsz = phdr.p_memsz;
-      Log("%d 0x%x", phdr.p_filesz, vaddr);
+      Log("%d %d 0x%x", phdr.p_filesz, phdr.p_memsz, vaddr);
+      
       void *paddr;
       if (vaddr % PGSIZE != 0) {
         paddr = pg_alloc(1);
