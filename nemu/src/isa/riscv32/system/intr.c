@@ -21,6 +21,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.mcause = NO;
   cpu.mepc = epc;
+  Log("0x%x", cpu.mstatus);
   uint32_t mie = (cpu.mstatus >> 3) & 0x1;
   cpu.mstatus = cpu.mstatus & ~(1 << 3);
   cpu.mstatus = (cpu.mstatus & ~(1 << 7)) | (mie << 7);
