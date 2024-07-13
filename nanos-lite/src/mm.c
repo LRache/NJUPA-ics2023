@@ -31,11 +31,9 @@ int mm_brk(uintptr_t brk) {
   if (brk < current->max_brk) return -1;
   uint32_t oldVpn = current->max_brk / PGSIZE;
   uint32_t newVpn = brk / PGSIZE;
-  Log("%d", current == &pcb[1]);
   for (uint32_t i = oldVpn + 1; i <= newVpn; i++) {
     void *vaddr = (void *)(i * PGSIZE);
     void *paddr = pg_alloc(PGSIZE);
-    Log("Map vaddr=%p, paddr=%p", vaddr, paddr);
     map(&current->as, vaddr, paddr, 1);
   }
   current->max_brk = brk;
