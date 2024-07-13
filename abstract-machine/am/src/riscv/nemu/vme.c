@@ -73,7 +73,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t paddr = (uint32_t)pa;
 
   PTE *pt = (PTE *)as->ptr;
-  printf("%p\n", pt);
   uint32_t vpn[2];
   vpn[0] = (vaddr >> 12) & 0x3ff;
   vpn[1] = (vaddr >> 22) & 0x3ff;
