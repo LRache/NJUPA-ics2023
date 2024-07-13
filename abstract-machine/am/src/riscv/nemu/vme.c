@@ -95,6 +95,5 @@ Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   context->mepc = (uintptr_t)entry - 4;
   context->mstatus = 0x1800 | (1 << 3) | (1 << 7);
   context->pdir = as->ptr;
-  printf("Ucontext: 0x%x\n", context->mstatus);
   return context;
 }
