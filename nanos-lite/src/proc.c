@@ -97,11 +97,11 @@ void init_proc() {
   //naive_uload(NULL, "/bin/cpp-test");
   char *const argv[] = {"/bin/hplayer", "/home/rache/Music/xitiejie.pcm", NULL};
   char *const empty[] = {NULL};
-  context_uload(&pcb[0], "/bin/hello-limit", argv, empty);
-  //context_uload(&pcb[1], "/bin/hello", empty, empty);
+  context_uload(&pcb[0], "/bin/hplayer", argv, empty);
+  context_uload(&pcb[1], "/bin/hello", empty, empty);
   running[0] = &pcb[0];
-  //running[1] = &pcb[1];
-  runningCount = 1;
+  running[1] = &pcb[1];
+  runningCount = 2;
 
   yield();
 }
