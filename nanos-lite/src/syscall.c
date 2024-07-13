@@ -77,7 +77,6 @@ static int sys_lseek(int fd, off_t offset, int whence) {
 }
 
 static int sys_brk(uintptr_t brk) {
-  Log("0x%x", brk);
   return mm_brk(brk);
 }
 
