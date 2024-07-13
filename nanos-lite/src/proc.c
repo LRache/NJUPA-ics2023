@@ -97,7 +97,7 @@ void init_proc() {
   char *const argv[] = {"a1", "a2", "a3", NULL};
   char *const envp[] = {"e1=1", "e2=2", "e3=3", NULL};
   //context_kload(&pcb[0], hello_fun, (void *)1);
-  context_uload(&pcb[0], "/bin/hello", argv, envp);
+  context_uload(&pcb[0], "/bin/bmp-test", argv, envp);
   pcbCount = 1;
 
   yield();
