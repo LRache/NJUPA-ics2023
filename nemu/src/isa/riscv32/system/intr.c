@@ -28,12 +28,11 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 }
 
 word_t isa_query_intr() {
-  uint32_t mie = (cpu.mstatus >> 3) & 0x1;
-  if (cpu.intr)
-  Log("%u", mie);
-  if (mie && cpu.intr) {
+  if (cpu.intr) {
+    uint32_t mie = (cpu.mstatus >> 3) & 0x1;
     cpu.intr = false;
-    return IRQ_TIMER;
+    Log("%u", mie);
+    if (mie) return IRQ_TIMER;
   }
   return INTR_EMPTY;
 }
