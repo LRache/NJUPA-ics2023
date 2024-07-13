@@ -55,13 +55,11 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
       Elf_Addr vaddr = phdr.p_vaddr;
       Elf_Word filesz = phdr.p_filesz;
       Elf_Word memsz = phdr.p_memsz;
-      Log("%d %d 0x%x", phdr.p_filesz, phdr.p_memsz, vaddr);
       
       void *paddr;
       if (vaddr % PGSIZE != 0) {
         paddr = pg_alloc(PGSIZE);
         map(as, (void *)(vaddr - vaddr % PGSIZE), paddr, 1);
-        Log("Read to vaddr=0x%x", (vaddr - vaddr % PGSIZE));
         
         uint32_t size = PGSIZE - (vaddr % PGSIZE);
         size = filesz < size ? filesz : size;
@@ -75,7 +73,6 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
         paddr = pg_alloc(PGSIZE);
         map(as, (void *)vaddr, paddr, 1);
         r = fs_read(fd, paddr, PGSIZE);
-        Log("Read to vaddr=0x%x, paddr=0x%x", vaddr, paddr);
         assert(r == PGSIZE);
         filesz -= PGSIZE;
         memsz -= PGSIZE;
@@ -102,8 +99,6 @@ uintptr_t loader(PCB *pcb, const char *filename, AddrSpace *as) {
   }
 
   fs_close(fd);
-  Log("Load finished");
-  Log("%p", elfHeader.e_entry);
   return elfHeader.e_entry;
 }
 
