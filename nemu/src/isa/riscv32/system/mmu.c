@@ -21,7 +21,7 @@
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   if (!(cpu.satp >> 31)) return vaddr;
-  if (vaddr >= 0xa000000) return vaddr;
+  if (vaddr >= 0xa0000000) return vaddr;
 
   paddr_t paddr = MEM_RET_FAIL;
   uint32_t pgoff = vaddr & 0xfff;
