@@ -26,6 +26,7 @@ void free_page(void *p) {
 int mm_brk(uintptr_t brk) {
   if (current->max_brk == 0) {
     current->max_brk = brk;
+    Log("%p", brk);
     return 0;
   }
   if (brk < current->max_brk) return -1;
