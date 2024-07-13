@@ -10,7 +10,6 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
   if (user_handler) {
-    printf("0x%x\n", c->mcause);
     Event ev = {0};
     switch (c->mcause) {
       case IRQ_YIELD: 
