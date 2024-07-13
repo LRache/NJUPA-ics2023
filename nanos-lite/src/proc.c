@@ -94,7 +94,7 @@ void init_proc() {
 
   // load program here
   //naive_uload(NULL, "/bin/cpp-test");
-  char *const argv[] = {"/bin/hplayer", "/share/music/xitiejie.pcm", NULL};
+  char *const argv[] = {"/bin/hplayer", "/home/rache/Music/xitiejie.pcm", NULL};
   char *const empty[] = {NULL};
   context_uload(&pcb[0], "/bin/hplayer", argv, empty);
   context_uload(&pcb[1], "/bin/hello", empty, empty);
