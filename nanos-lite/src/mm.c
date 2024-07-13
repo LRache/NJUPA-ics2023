@@ -26,7 +26,6 @@ void free_page(void *p) {
 int mm_brk(uintptr_t brk) {
   if (current->max_brk == 0) {
     current->max_brk = brk;
-    Log("%p", brk);
     return 0;
   }
   if (brk < current->max_brk) return -1;
@@ -35,7 +34,6 @@ int mm_brk(uintptr_t brk) {
   for (uint32_t i = oldVpn + 1; i <= newVpn; i++) {
     void *vaddr = (void *)(i * PGSIZE);
     void *paddr = pg_alloc(PGSIZE);
-    Log("Map vaddr=%p, paddr=%p", vaddr, paddr);
     map(&current->as, vaddr, paddr, 1);
   }
   current->max_brk = brk;
