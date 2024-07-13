@@ -85,7 +85,8 @@
         "random": "c",
         "wait.h": "c",
         "sched.h": "c",
-        "_timespec.h": "c"
+        "_timespec.h": "c",
+        "riscv.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
