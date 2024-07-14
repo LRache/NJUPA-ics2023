@@ -4,7 +4,7 @@
 
 #define MAX_NR_PROC 4
 
-static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
+static PCB pcb[MAX_NR_PROC] = {};
 static PCB *running[MAX_NR_PROC];
 static int runningCount = 0;
 static int runningIndex = 0;
