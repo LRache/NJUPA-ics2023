@@ -9,6 +9,7 @@ static PCB *running[MAX_NR_PROC];
 static int runningCount = 0;
 static int runningIndex = 0;
 static PCB pcb_boot = {};
+// static PCB program[MAX_NR_PROC] = {};
 PCB *current = NULL;
 
 void switch_boot_pcb() {
@@ -97,8 +98,8 @@ void init_proc() {
   //naive_uload(NULL, "/bin/cpp-test");
   char *const argv[] = {"/bin/hplayer", "/home/rache/Music/xitiejie.pcm", NULL};
   char *const empty[] = {NULL};
-  context_uload(&pcb[0], "/bin/hplayer", argv, empty);
-  context_uload(&pcb[1], "/bin/hello", empty, empty);
+  context_uload(&pcb[0], "/bin/hello", empty, empty);
+  context_uload(&pcb[1], "/bin/hplayer", argv, empty);
   running[0] = &pcb[0];
   running[1] = &pcb[1];
   runningCount = 2;
