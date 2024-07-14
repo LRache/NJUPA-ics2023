@@ -98,7 +98,7 @@ void init_proc() {
   //naive_uload(NULL, "/bin/cpp-test");
   // char *const argv[] = {"/bin/hplayer", "/home/rache/Music/xitiejie.pcm", NULL};
   char *const empty[] = {NULL};
-  context_uload(&pcb[0], "/bin/hello", empty, empty);
+  context_kload(&pcb[0], hello_fun, (void *)1);
   context_uload(&pcb[1], "/bin/hello", empty, empty);
   running[0] = &pcb[0];
   running[1] = &pcb[1];
